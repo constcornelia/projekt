@@ -25,12 +25,12 @@ async function handleCookies (request) {
     
     // går till startsidan
     if (request.method == "GET" && url.pathname == "/") {
-        return serveFile(request, "test.html");
+        return serveFile(request, "../../test.html");
     }
     
     // går till login
     if (request.method == "GET" && url.pathname == "/login") {
-        return serveFile(request, "test.html");
+        return serveFile(request, "../../test.html");
     }
 
     // loggar in 
@@ -38,7 +38,7 @@ async function handleCookies (request) {
 
         let body = await request.json(); // users input
 
-        let users = JSON.parse(Deno.readTextfileSync("users.json"));
+        let users = JSON.parse(Deno.readTextfileSync("../data/users.json"));
 
         let loggedInUser = null;
 
@@ -53,16 +53,18 @@ async function handleCookies (request) {
             let cookie = createRandomCookie();
 
             loggedInUser.cookie = cookie;
+            console.log(loggedInUser.cookie);
 
-            Deno.writeTextFileSync("users.json", JSON.stringify(users, null, 2));
+            Deno.writeTextFileSync("../data/users.json", JSON.stringify(users, null, 2));
 
-            return new Response(await Deno.readTextFileSync("test.html"), {
+            return new Response(await Deno.readTextFileSync("../../test.html"), {
                 headers: {
                     "Content-Type": "text/html",
                     "Set-Cookie": "sessionId=" + cookie + "; Max-Age=10080"
                 }
             });
         }
+        console.log("hej");
         cookies.push(loggedInUser);
 
         cookies[username] = loggedInUser.username;

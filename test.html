@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Hej</h1>
+    <form> 
+        <input type="text" name="username"></input>
+        <input type="text" name="password"></input>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        let form = document.querySelector("form");
+        form.addEventListener("submit", async function (event) {
+
+                event.preventDefault();
+
+                let data = JSON.stringify({
+                    username: form.elements.username.value,
+                    password: form.elements.password.value
+                });
+
+                let options = {
+                    method: "POST",
+                    body: data, 
+                    headers: { "Content-Type": "application/json" },
+                };
+
+                let response = await fetch("/login", options);
+        });
+    </script>
+</body>
+</html>
