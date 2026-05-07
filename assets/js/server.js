@@ -40,6 +40,7 @@ async function handleCookies (request) {
         // om användaren inte är utloggad
         if (loggedInUser != null) {
             let cookie = createRandomCookie();
+            console.log(cookie);
 
             // loggedInUser.cookie = cookie;
             // console.log(loggedInUser.cookie);
@@ -49,14 +50,14 @@ async function handleCookies (request) {
             return new Response(await Deno.readTextFileSync("../../test.html"), {
                 headers: {
                     "Content-Type": "text/html",
-                    "Set-Cookie": "sessionId=" + cookie + "; Max-Age=10080"
+                    "Set-Cookie": "sessionId=" + cookie + "; Max-Age=10080" // 7hours, rework to 1 week? in seconds.
                 }
             });
         }
         console.log("hej");
         cookies.push(loggedInUser);
 
-        cookies[username] = loggedInUser.username;
+        // cookies[username] = loggedInUser.username;
 
         return new response("Unauhorized", { status: 401 });
     }
