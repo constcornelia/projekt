@@ -25,22 +25,26 @@ async function handleCookies (request) {
     // loggar in 
     if (request.method == "POST" && url.pathname == "/login") {
 
-        let body = await request.json(); // users input
+        let body = await request.json(); // users input - funkar
 
-        let users = JSON.parse(Deno.readTextfileSync("../data/users.json"));
+        let users = JSON.parse(Deno.readTextFileSync("../data/user.json")); // läser in från json - funkar
+        users = users.users;
 
-        let loggedInUser = null;
-
+        // let loggedInUser = null;
         for (let user of users) {
             if (user.username == body.username && user.password == body.password) {
-                loggedInUser = user;
+                // loggedInUser = user; 
+                let cookie = createRandomCookie();
+                let headers = { 
+                    "Content-Type": "text/html",
+                    "Set-Cookie": "sessionId=" + cookie + "; Max-Age=10080" 
+                }
+                return new Response("Hello", headers);
             }
         }
 
         // om användaren inte är utloggad
-        if (loggedInUser != null) {
-            let cookie = createRandomCookie();
-            console.log(cookie);
+/*         if (loggedInUser != null) {
 
             // loggedInUser.cookie = cookie;
             // console.log(loggedInUser.cookie);
@@ -48,7 +52,7 @@ async function handleCookies (request) {
             // Deno.writeTextFileSync("../data/users.json", JSON.stringify(users, null, 2));
 
             return new Response(await Deno.readTextFileSync("../../test.html"), {
-                headers: {
+                headers: { // note to self: testa sätta detta separat och sedan return new response
                     "Content-Type": "text/html",
                     "Set-Cookie": "sessionId=" + cookie + "; Max-Age=10080" // 7hours, rework to 1 week? in seconds.
                 }
@@ -59,7 +63,7 @@ async function handleCookies (request) {
 
         // cookies[username] = loggedInUser.username;
 
-        return new response("Unauhorized", { status: 401 });
+        return new Response("Unauhorized", { status: 401 }); */
     }
 
 }
