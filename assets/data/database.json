@@ -100,5 +100,20 @@
     { "id": "s-98", "name": "Iris", "artist": "Goo Goo Dolls" },
     { "id": "s-99", "name": "Heartless", "artist": "Kanye West" },
     { "id": "s-100", "name": "Don't Stop Believin'", "artist": "Journey" }
+  ],
+
+  "playlists": [
+    {
+      "id": "p-1",
+      "ownerId": "u-1",
+      "name": "My Emo Romance",
+      "description": "Playlist for the emos",
+      "coverImgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
+      "likes": [],
+      "tags": ["emo"],
+      "songs": [
+        { "songId": "s-1", "editorId": "u-1" }
+      ]
+    }
   ]
 }
