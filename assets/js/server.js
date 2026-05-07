@@ -1,22 +1,11 @@
 import { serveFile } from "jsr:@std/http/file-server";
 
 // till för att lägga till aktiva och ta bort inaktiva users
-let cookies = [{}];
+let cookies = [];
 
  // ger ut random cookie
 function createRandomCookie () {
     return crypto.randomUUID();
-}
-
-// hämtar user av id - flytta till ui.js
-function getUserById(id) {
-    let users = JSON.parse(Deno.readTextFileSync("users.json"));
-
-    for (let user of users) {
-        if (user.id == id) {
-            return user;
-        }
-    }
 }
 
 // tar hand om cookies
@@ -52,10 +41,10 @@ async function handleCookies (request) {
         if (loggedInUser != null) {
             let cookie = createRandomCookie();
 
-            loggedInUser.cookie = cookie;
-            console.log(loggedInUser.cookie);
+            // loggedInUser.cookie = cookie;
+            // console.log(loggedInUser.cookie);
 
-            Deno.writeTextFileSync("../data/users.json", JSON.stringify(users, null, 2));
+            // Deno.writeTextFileSync("../data/users.json", JSON.stringify(users, null, 2));
 
             return new Response(await Deno.readTextFileSync("../../test.html"), {
                 headers: {
@@ -74,3 +63,16 @@ async function handleCookies (request) {
 
 }
 Deno.serve(handleCookies);
+
+
+// 1. loop igenom arrayen "cookies"
+
+// 2. kolla om något av objekten har användarnamnet == username
+
+// 3. om inget objekt finns med användarnamnet, 
+// skapa det som { username: ..., cookie: ... } 
+// och pusha det till cookie arrayen
+
+// 4. om det finns - då har dom loggat in igen, 
+// uppdatera cookien? dvs objektet.cookie = den nya 
+// cookien
