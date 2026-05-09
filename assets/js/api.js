@@ -19,6 +19,7 @@ class API {
     
             let data = await response.json();
             // Använd msg-argummentet för att potentiellt meddela användare specifikt om error eller success
+            return data;
         } catch(error) {}
     }
 
