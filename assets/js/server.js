@@ -1,7 +1,8 @@
 <<<<<<< Updated upstream
 =======
 import { serveFile } from "jsr:@std/http/file-server";
-
+const data = JSON.parseFloat(Deno.readTextFileSync("../data/database.js"));
+console.log(data);
 // till för att lägga till aktiva och ta bort inaktiva users
 
 // ger ut random cookie
@@ -71,12 +72,24 @@ async function handleCookies (request) {
 }
 
 async function handler(request) {
+    const url = new URL(request.url);
     // Lägger till if-satser bara för att skissa upp vad som behöver göras, kan ändras/läggas till mer senare
     
     if (request.method == "GET") {
+        
+        if (url.pathname == "/") {
+            // Kolla att det finns en aktiv cookie - annars skicka till login
+
+            let tag = url.searchParams.get("tag");
+            if (tag) playlists = filterPlaylistByTags(playlists, tags);
+
+            let likes = url.searchParams.get("likes");
+            if (likes) playlists = sortByNrLikes(playlists);
+
+        }
         // Get all playlists
-        // Get one specific playlist by id
         // Filter playlist (by tags)
+        // Get one specific playlist by id
         // Get playlists by search (through name and description)
         // Get your own user info
     }
