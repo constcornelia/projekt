@@ -1,9 +1,12 @@
-<<<<<<< Updated upstream
-=======
 import { serveFile } from "jsr:@std/http/file-server";
-const data = JSON.parseFloat(Deno.readTextFileSync("../data/database.js"));
-console.log(data);
+import { filterByTags, sortByLikes } from "./playlists.js";
+const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
+
+let headers = {}
+
 // till för att lägga till aktiva och ta bort inaktiva users
+
+// Glöm inte att lägga in user.json på gitignore
 
 // ger ut random cookie
 function createRandomCookie () {
@@ -73,24 +76,29 @@ async function handleCookies (request) {
 
 async function handler(request) {
     const url = new URL(request.url);
+
+    let playlists = data.playlists;
+    let songs = data.songs;
     // Lägger till if-satser bara för att skissa upp vad som behöver göras, kan ändras/läggas till mer senare
     
     if (request.method == "GET") {
         
-        if (url.pathname == "/") {
-            // Kolla att det finns en aktiv cookie - annars skicka till login
-
-            let tag = url.searchParams.get("tag");
-            if (tag) playlists = filterPlaylistByTags(playlists, tags);
-
-            let likes = url.searchParams.get("likes");
-            if (likes) playlists = sortByNrLikes(playlists);
-
-        }
         // Get all playlists
-        // Filter playlist (by tags)
-        // Get one specific playlist by id
+        if (url.pathname == "/") {
+            // Kolla först att det finns en aktiv cookie - annars skicka till login
+
+            // Filter playlist (by tags)
+            let tag = url.searchParams.get("tag");
+            if (tag) playlists = filterByTags(playlists, tags);
+
+            // Sort by amount of tags, descending or ascending
+            let likesDesc = url.searchParams.get("likesDesc"); 
+            if (likesDesc == true) playlists = sortByLikes(playlists, true);
+            if (likesDesc == false) playlists = sortByLikes(playlists, false);
+        }
         // Get playlists by search (through name and description)
+        // Get one specific playlist by id
+        // Get song by search (title or artist)
         // Get your own user info
     }
 
@@ -109,8 +117,8 @@ async function handler(request) {
     }
 }
 
-Deno.serve(handleCookies);
 Deno.serve(handler);
+// Deno.serve(handleCookies); Lägger denna i en kommentar temporärt
 
 // 1. loop igenom arrayen "cookies"
 
@@ -123,4 +131,3 @@ Deno.serve(handler);
 // 4. om det finns - då har dom loggat in igen, 
 // uppdatera cookien? dvs objektet.cookie = den nya 
 // cookien
->>>>>>> Stashed changes
