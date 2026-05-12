@@ -89,6 +89,18 @@ body{
 
     background-color: var(--hover-color);
 }
+
+.ActionButton-light{
+    transition: var(--transition);
+    display: inline-block;
+    background-color: var(--light-text-color);
+    color: var(--main-color);
+    border: none;
+    padding: 15px;
+    border-radius: 20px;
+    font-family: "system";
+    margin: 10px;
+}
 /*navigation*/
 nav{
     display: flex;
@@ -118,7 +130,7 @@ nav .space{
 }
 
 
-/*nav elemnts*/
+/*nav elemnets*/
 #intro{
     margin: 10% auto;
     text-align: center;
@@ -149,7 +161,19 @@ footer{
 footer p{
     margin: 0;
 }
-
+/*login*/
+#login{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--main-color);
+    border-radius: 30px;
+    color: var(--light-text-color);
+}
+#login form{
+    display: flex;
+    flex-direction: column;
+}
 /*search*/
 #filters form{
     display: flex;
@@ -209,6 +233,9 @@ footer p{
     border: solid 2px var(--main-color);
     width: 200px;
 }
+#likes label{
+    width: 100%;
+}
 
 
 /*content*/
@@ -244,7 +271,7 @@ footer p{
 }
 .actions{
     display: flex;
-    gap: 10px;
+    gap: 20px;
     opacity: 0;
 }
 .actions img{
