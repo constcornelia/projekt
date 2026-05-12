@@ -8,30 +8,33 @@
 </head>
 
 <body>
+
+
   <nav>
     <div><a href="main.html"><img src="../assets/images/icons/logo.svg"></a></div>
     <div>YourSound</div>
     <div class="space"></div>
-    <button class="ActionButton">My collection</button>
+    <a href="personal.html" class="ActionButton system-UI-accent">My collection</a>
   </nav>
 
   <section id="filters">
     <form>
       <div id="search" id="SearchSongs">
-        <input type="search" placeholder="Search song, artist, genre" id="SearchInput" class="text-UI">
+        <input type="search" placeholder="Search song, artist, genre" id="SearchInput" class="system-UI">
         <button id="ButtonSearch" type="submit"></button>
       </div>
 
       <div id="genre">
-        <select name="genre" id="SelectGenre" class="text-UI">
-          <option value="ShowAll">Show all</option>
+        <select name="genre" id="SelectGenre" class="system-UI">
+          <option value="">Select genre</option>
+          <option value="ShowAll">all</option>
         </select>
       </div>
 
       <div id="likes">
-        <label for="liked" class="text-UI">
-          <input type="radio" id="liked" name="" value="liked">
-          Most admired song today</label>
+        <label for="liked" class="system-UI">
+          <input type="checkbox" id="liked" name="liked" value="liked">
+          Show most admired song today</label>
       </div>
 
 
