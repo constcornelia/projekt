@@ -1,5 +1,6 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
+import { } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -86,9 +87,11 @@ async function handler(request) {
                 });
             }
 
+            // Skapar cookien
             let headers = {
                 "Set-Cookie": "sessionId=" + cookieId + "; Max-Age=10080" 
             };
+
             return new Response("Welcome!", { headers: headers });
         }
     }
@@ -108,9 +111,17 @@ async function handler(request) {
 
 
     if (request.method == "GET") {
-        if (url.pathname == "/") {
-            let tag = url.searchParams.get("tags");
-            if (tag) playlists = filterPlaylistsByTags(playlists, tag);
+
+        // Search for a playlist by name, description, or tags
+        if (url.pathname == "/search") {
+            let phrase = url.searchParams.get("q");
+            if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
+        }
+
+        // Search for a song by artist or title to add to a playlist
+        if (url.pathname == "/songs/search") {
+            let phrase = url.searchParams.get("q");
+            if (phrase) songs = getSongsBySearch(songs, phrase);
         }
     }
 
