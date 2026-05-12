@@ -1,6 +1,5 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
-import { } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -33,7 +32,7 @@ async function handler(request) {
 
         //  Om med finns någon kommer man till start...
         if (session) { 
-            return serveFile(request, "../../test2.html");
+            return serveFile(request, "frontend/main.html");
         }
         
         // ... annars kommer man till login
@@ -126,6 +125,7 @@ async function handler(request) {
     }
 
 
+    return serveDir(request, { fsRoot: "frontend" });
 
     // if (request.method == "OPTIONS") {
     //     return new Response(null, {
