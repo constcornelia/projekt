@@ -192,12 +192,22 @@ footer p{
 #search:focus-within>input{
     color: var(--light-text-color);
 }
-
-#SelectGenre {
+#genre{
+    padding: 10px;
     border-radius: 20px;
     border: solid 2px var(--main-color);
     width: 200px;
+}
+#SelectGenre {
+    background-color: transparent;
+    width: 100%;
+    border: navajowhite;
+}
+#likes{
     padding: 10px;
+    border-radius: 20px;
+    border: solid 2px var(--main-color);
+    width: 200px;
 }
 
 
