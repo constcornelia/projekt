@@ -45,6 +45,11 @@ body{
     font-weight: 600;
     color: var(--main-color);
 }
+.text-UI{
+    font-family: "system";
+    font-weight: 300;
+    font-size: 12px;
+}
 /*buttons*/
 .ActionButton{
     transition: var(--transition);
@@ -139,10 +144,62 @@ footer{
     font-size: 15px;
     border-top: solid 3px var(--main-color);
     padding: 20px;
+    margin-top: 10px;
 }
 footer p{
     margin: 0;
 }
+
+/*search*/
+#filters form{
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+#search {
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    border: solid 2px var(--main-color);
+    width: 300px;
+    padding: 10px;
+}
+#search>input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: var(--main-color);
+    flex: 1;
+}
+#search>button{
+    border: none;
+    background-color: transparent;
+    background-image: url("../images/icons/search.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+}
+
+#search:focus-within{
+    background-color: var(--main-color);
+    transition: var(--transition);
+}
+#search:focus-within>button{
+    background-image: url("../images/icons/seach-revert.svg");
+}
+#search:focus-within>input{
+    color: var(--light-text-color);
+}
+
+#SelectGenre {
+    border-radius: 20px;
+    border: solid 2px var(--main-color);
+    width: 200px;
+    padding: 10px;
+}
+
 
 /*content*/
 

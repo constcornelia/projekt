@@ -1,94 +1,126 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>YourSound</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="assets/css/style">
-  </head>
-  <body>
-    <nav>
-      <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
-      <div>YourSound</div>
-      <div class="space"></div>
-      <button class="ActionButton">My collection</button>
-    </nav>
 
+<head>
+  <title>YourSound</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="assets/css/style">
+</head>
 
-    <section id="SongsCollection">
+<body>
+  <nav>
+    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
+    <div>YourSound</div>
+    <div class="space"></div>
+    <button class="ActionButton">My collection</button>
+  </nav>
 
-      <div class="song-card">
-        <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-            <div><img src="assets/images/icons/like.svg" alt=""></div>
-            <div><img src="assets/images/icons/play.svg" alt=""></div>
-            <div><img src="assets/images/icons/add.svg" alt=""></div>
-        </div>
-      </div>
-      <div class="song-card">
-        <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-            <div><img src="assets/images/icons/like.svg" alt=""></div>
-            <div><img src="assets/images/icons/play.svg" alt=""></div>
-            <div><img src="assets/images/icons/add.svg" alt=""></div>
-        </div>
-      </div>
-      <div class="song-card">
-        <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-            <div><img src="assets/images/icons/like.svg" alt=""></div>
-            <div><img src="assets/images/icons/play.svg" alt=""></div>
-            <div><img src="assets/images/icons/add.svg" alt=""></div>
-        </div>
-      </div>
-      <div class="song-card">
-        <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-            <div><img src="assets/images/icons/like.svg" alt=""></div>
-            <div><img src="assets/images/icons/play.svg" alt=""></div>
-            <div><img src="assets/images/icons/add.svg" alt=""></div>
-        </div>
-      </div>
-      <div class="song-card">
-        <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-            <div><img src="assets/images/icons/like.svg" alt=""></div>
-            <div><img src="assets/images/icons/play.svg" alt=""></div>
-            <div><img src="assets/images/icons/add.svg" alt=""></div>
-        </div>
-      </div>
-      <div class="song-card">
-        <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-            <div><img src="assets/images/icons/like.svg" alt=""></div>
-            <div><img src="assets/images/icons/play.svg" alt=""></div>
-            <div><img src="assets/images/icons/add.svg" alt=""></div>
-        </div>
-      </div>
-      <div class="song-card">
-        <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-            <div><img src="assets/images/icons/like.svg" alt=""></div>
-            <div><img src="assets/images/icons/play.svg" alt=""></div>
-            <div><img src="assets/images/icons/add.svg" alt=""></div>
-        </div>
+  <section id="filters">
+    <form>
+      <div id="search" id="SearchSongs">
+        <input type="search" placeholder="Search song, artist, genre" id="SearchInput" class="text-UI">
+        <button id="ButtonSearch" type="submit"></button>
       </div>
 
-    </section>
-
-    <footer>
-      <div>
-        <p class="sub-title-bold">Digital design och utveckling III</p>
-        <p class="sub-title-bold">Projekt</p>
-        <p class="sub-title">&copy; 2026 Grupp 5</p>
+      <div id="genre">
+        <select name="genre" id="SelectGenre">
+          <option value="ShowAll">Show all</option>
+        </select>
       </div>
-      <div>
-        <p class="sub-title-bold">Developers</p>
-        <p class="sub-title">Cornelia Rönnemyr Papic</p>
-        <p class="sub-title">Dilara Kinali</p>
-        <p class="sub-title">Elena Khusanova</p>
-      </div>
-    </footer>
 
-    <script src="oo.js"></script>
-  </body>
+      <div id="likes">
+        <label for="liked">
+          <input type="radio" id="liked" name="" value="liked">
+          Most admired song today</label>
+      </div>
+
+      <div id="release">
+        <label for="release">
+          <input type="radio" id="re;ease" name="" value="new">
+          Most admired song today</label>
+      </div>
+
+    </form>
+
+  </section>
+
+
+  <section id="SongsCollection">
+
+    <div class="song-card">
+      <div class="title-UI">Bohemian Rhapsody</div>
+      <div class="actions">
+        <div><img src="assets/images/icons/like.svg" alt=""></div>
+        <div><img src="assets/images/icons/play.svg" alt=""></div>
+        <div><img src="assets/images/icons/add.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="song-card">
+      <div class="title-UI">Bohemian Rhapsody</div>
+      <div class="actions">
+        <div><img src="assets/images/icons/like.svg" alt=""></div>
+        <div><img src="assets/images/icons/play.svg" alt=""></div>
+        <div><img src="assets/images/icons/add.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="song-card">
+      <div class="title-UI">Bohemian Rhapsody</div>
+      <div class="actions">
+        <div><img src="assets/images/icons/like.svg" alt=""></div>
+        <div><img src="assets/images/icons/play.svg" alt=""></div>
+        <div><img src="assets/images/icons/add.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="song-card">
+      <div class="title-UI">Bohemian Rhapsody</div>
+      <div class="actions">
+        <div><img src="assets/images/icons/like.svg" alt=""></div>
+        <div><img src="assets/images/icons/play.svg" alt=""></div>
+        <div><img src="assets/images/icons/add.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="song-card">
+      <div class="title-UI">Bohemian Rhapsody</div>
+      <div class="actions">
+        <div><img src="assets/images/icons/like.svg" alt=""></div>
+        <div><img src="assets/images/icons/play.svg" alt=""></div>
+        <div><img src="assets/images/icons/add.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="song-card">
+      <div class="title-UI">Bohemian Rhapsody</div>
+      <div class="actions">
+        <div><img src="assets/images/icons/like.svg" alt=""></div>
+        <div><img src="assets/images/icons/play.svg" alt=""></div>
+        <div><img src="assets/images/icons/add.svg" alt=""></div>
+      </div>
+    </div>
+    <div class="song-card">
+      <div class="title-UI">Bohemian Rhapsody</div>
+      <div class="actions">
+        <div><img src="assets/images/icons/like.svg" alt=""></div>
+        <div><img src="assets/images/icons/play.svg" alt=""></div>
+        <div><img src="assets/images/icons/add.svg" alt=""></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer>
+    <div>
+      <p class="sub-title-bold">Digital design och utveckling III</p>
+      <p class="sub-title-bold">Projekt</p>
+      <p class="sub-title">&copy; 2026 Grupp 5</p>
+    </div>
+    <div>
+      <p class="sub-title-bold">Developers</p>
+      <p class="sub-title">Cornelia Rönnemyr Papic</p>
+      <p class="sub-title">Dilara Kinali</p>
+      <p class="sub-title">Elena Khusanova</p>
+    </div>
+  </footer>
+
+  <script src="oo.js"></script>
+</body>
+
 </html>
