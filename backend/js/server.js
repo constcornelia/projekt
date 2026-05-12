@@ -10,7 +10,7 @@ const cookies = []; // Alla aktiva cookies ska sparas här
 function createRandomCookie () { // Ska denna kanske flyttas till ui eller api eller något... hmmmmm
     return crypto.randomUUID(); 
 }
-
+ 
 async function handler(request) {
     let url = new URL(request.url);
 
