@@ -339,7 +339,7 @@ footer p {
 }
 
 .song-card {
-    background-image: linear-gradient(var(--shadowing-color)), url(../images/Bohemian_Rhapsody_poster.png);
+    /* background-image: linear-gradient(var(--shadowing-color)), url(../images/Bohemian_Rhapsody_poster.png); */
     background-size: cover;
     min-width: 200px;
     aspect-ratio: 1;
