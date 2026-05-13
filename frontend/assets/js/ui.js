@@ -4,24 +4,20 @@
 
 const main = document.querySelector("main");
 
+let api = new api();
+
 class UI {
    async getPlaylists() {
-    let api = new api();
-
-       let playlists = await api.getRequest("/api/playlist");
+       let playlists = await api.getRequest("/api/playlists");
        this.renderPlaylists(playlists);
    }
 
    async getSongs() {
-    let api = new api();
-
        let songs = await api.getRequest("/")
        this.renderSongs(songs);
    }
 
    async renderPlaylists (playlists) {
-    let api = new api();
-
        main.innerHTML = "";
 
        let users = await api.getRequest("/");
@@ -38,7 +34,6 @@ class UI {
                 ownerName = user.username;
             }
        }
-
            a.innerHTML = `
            <p><span>Likes</span>: ${playlist.likes}</p>
            <img src="${playlist.coverImgUrl}"></img>
@@ -53,8 +48,6 @@ class UI {
    }
 
    async renderSongs (songs) {
-    let api = new api();
-
        main.innerHTML = "";
 
        for (let song of songs) {
@@ -71,8 +64,6 @@ class UI {
    }
 
    async dropDownsPlaylist (playlistElement) {
-    let api = new api();
-
        let playlists = await api.getRequest("/")
 
        for (let playlist of playlists) {
