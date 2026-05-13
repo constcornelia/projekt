@@ -67,7 +67,9 @@ a {
     color: inherit;
 
 }
-
+.clear-link{
+    text-decoration: none;
+}
 /*buttons*/
 .ActionButton {
     transition: var(--transition);
@@ -125,7 +127,7 @@ a {
 
 }
 
-/*navigation*/
+/*nav elemnets*/
 nav {
     display: flex;
     align-items: center;
@@ -156,12 +158,19 @@ nav .space {
     flex-grow: 1;
 }
 
-nav a{
-    text-decoration: none;
+footer {
+    display: flex;
+    gap: 40px;
+    font-size: 15px;
+    border-top: solid 3px var(--main-color);
+    padding: 20px;
+    margin-top: 10px;
 }
 
-
-/*nav elemnets*/
+footer p {
+    margin: 0;
+}
+/*first page*/
 #intro {
     margin: 10% auto;
     text-align: center;
@@ -185,20 +194,7 @@ nav a{
     margin: 0;
 }
 
-footer {
-    display: flex;
-    gap: 40px;
-    font-size: 15px;
-    border-top: solid 3px var(--main-color);
-    padding: 20px;
-    margin-top: 10px;
-}
-
-footer p {
-    margin: 0;
-}
-
-/*login + register*/
+/*login && register*/
 #login {
     display: flex;
     flex-direction: column;
@@ -250,15 +246,10 @@ footer p {
 #filters{
     display: flex;
     gap: 20px;
-}
-#filters form {
-    display: flex;
-    align-items: center;
-    gap: 20px;
     margin: 10px 0;
 }
 
-#search {
+#SearchForm {
     display: flex;
     align-items: center;
     border-radius: 20px;
@@ -267,7 +258,7 @@ footer p {
     padding: 10px;
 }
 
-#search>input {
+#SearchForm>input {
     border: none;
     outline: none;
     background-color: transparent;
@@ -276,7 +267,8 @@ footer p {
 ::placeholder{
     color: var(--main-color);
 }
-#search>button {
+
+#SearchForm>button {
     border: none;
     background-color: transparent;
     background-image: url("../images/icons/search.svg");
@@ -287,46 +279,69 @@ footer p {
     height: 20px;
 }
 
-#search:focus-within {
+#SearchForm:focus-within {
     background-color: var(--main-color);
     transition: var(--transition);
 }
 
-#search:focus-within>button {
+#SearchForm:focus-within>button {
     background-image: url("../images/icons/seach-revert.svg");
 }
 
-#search:focus-within>::placeholder {
+#SearchForm:focus-within>input {
     color: var(--light-text-color);
 }
 
+#FilterForm {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 #genre {
     padding: 10px;
     border-radius: 20px;
     border: solid 2px var(--main-color);
     width: 200px;
+    cursor: pointer;
 }
-
+#genre:hover{
+    background-color: var(--main-color);
+}
+#genre:hover select{
+    color: var(--light-text-color);
+}
 #genre select {
     background-color: transparent;
     width: 100%;
-    border: navajowhite;
+    border: none;
+    cursor: pointer;
 }
+
+/*ska testa med js så att background bytas när selected
+#genre:focus-within{
+    background-color: green;
+}
+*/
+  
 
 #likes {
     padding: 10px;
     border-radius: 20px;
     border: solid 2px var(--main-color);
     width: 200px;
+    cursor: pointer;
 }
-
+#likes:hover {
+    background-color: var(--main-color);
+}
+#likes:hover label{
+    color: var(--light-text-color);
+}
 #likes input{
     display: none;
 }
 
-#filters form input:hover{
-    cursor: pointer;
-}
+
 
 /*content*/
 
@@ -338,7 +353,7 @@ footer p {
     justify-items: center;
 }
 
-.song-card {
+.playlist-card {
     background-image: linear-gradient(var(--shadowing-color)), url(../images/Bohemian_Rhapsody_poster.png);
     background-size: cover;
     min-width: 200px;
@@ -358,31 +373,53 @@ footer p {
     justify-content: center;
 
     transition: var(--transition);
-
 }
 
-.actions {
+.playlist-actions {
     display: flex;
     gap: 20px;
     opacity: 0;
 }
-
-.actions img {
-    display: block;
-}
-
-.actions img:hover {
-    cursor: pointer;
-    transform: var(--transform-hover);
-    transition: var(--transition);
-
-
-}
-
-.song-card:hover .actions {
+.playlist-card:hover .playlist-actions {
     transition: var(--transition);
     opacity: 1;
 }
+
+.playlist-actions button#LikePlaylist{
+    border: none;
+    background-color: transparent;
+    background-image: url("../images/icons/like.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 70px;
+    height: 70px;
+}
+.playlist-actions button#LikePlaylist:hover {
+    cursor: pointer;
+    transform: var(--transform-hover);
+    transition: var(--transition);
+}
+
+.playlist-actions button#Play{
+    border: none;
+    background-color: transparent;
+    background-image: url("../images/icons/play.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 70px;
+    height: 70px;
+}
+.playlist-actions button#Play:hover {
+    cursor: pointer;
+    transform: var(--transform-hover);
+    transition: var(--transition);
+}
+.playlist-actions button.StopPlaying {
+    background-image: url("../images/icons/pause.svg");
+}
+
 
 /*playlist page*/
 #songs {
