@@ -1,5 +1,3 @@
-console.log("not optimal")
-
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
 
@@ -22,7 +20,36 @@ async function handler(request) {
 
     
     if (url.pathname == "/" && request.method == "GET") {
-        const activeCookie = request.headers.get("cookie");
+        let userCookie = request.headers.get("cookie");
+        console.log(userCookie);
+
+        for (let key in cookies) {
+            console.log(cookies);
+            let cookie = cookies[key];
+            if (userCookie != null && userCookie.includes(cookie.cookie)) {
+                return serveFile(request, "../../frontend/main.html");
+            }
+        }
+
+        let options = {
+            status: 303,
+            headers: { "Location": "/welcome" }
+        };
+
+        return new Response(null, options);
+
+/*         const activeCookie = request.headers.get("cookie"); // här får vi sessionId om det finns en, annars null
+
+        // vi vill kolla om den aktiva cookien finns i arrayen "cookies"
+            // om den finns det ska vi bli omdirigerade till main.html
+            // annars ska vi komma till intro.html
+
+
+
+        for (let cookie of cookies) {
+
+        }
+
     
         // Kollar om det finns en aktiv cookie som matchar med en från minnet
         let session = null;
@@ -44,7 +71,7 @@ async function handler(request) {
             status: 303
         }
 
-        return new Response("Unauthorized", options);
+        return new Response("Unauthorized", options); */
     }
 
     if (url.pathname == "/welcome" && request.method == "GET") {
@@ -104,8 +131,6 @@ async function handler(request) {
                 "Location": "/"
             };
 
-
-
             // return serveFile(request, "../../frontend/main.html");
 
             return new Response(null, { 
@@ -151,6 +176,8 @@ async function handler(request) {
             if (phrase) songs = getSongsBySearch(songs, phrase);
         }
     }
+
+    if (request.method == "POST") {}
 
 
     return serveDir(request, { fsRoot: "../../frontend" });
