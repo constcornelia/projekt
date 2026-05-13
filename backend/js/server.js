@@ -100,7 +100,7 @@ async function handler(request) {
 
             // Skapar cookien
             let headers = {
-                "Set-Cookie": "sessionId=" + cookieId + "; Max-Age=10080",
+                "Set-Cookie": "sessionId=" + cookieId + "; Max-Age=10080; path=/",
                 "Location": "/"
             };
 
