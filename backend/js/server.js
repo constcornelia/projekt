@@ -1,3 +1,5 @@
+console.log("not optimal")
+
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
 
