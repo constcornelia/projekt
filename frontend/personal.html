@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MUsicplatform.</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../assets/css/style">
+</head>
+
+<body>
+    <nav id="navigation">
+        <div>
+            <a class="nav-item" href="">MP</a>
+        </div>
+        <div>
+            <p>My music page</p>
+        </div>
+
+    </nav>
+    <section id="content">
+        <section id="manage-playlists">
+            <form action="" class="Search" id="Search">
+                <input type="search" placeholder="Search" id="SearchInput">
+                <button id="ButtonSearch" type="submit" class="blackButton">Search</button>
+            </form>
+            <form action="" id="FilterPlaylists">
+                <button>show all playlists</button>
+                <button>show my playlist</button>
+                <div id="genre">
+                    <select name="genre" id="Selectgenre">
+                        <option value="all">Show all</option>
+                    </select>
+                </div>
+                <div id="likes">
+                    <select name="price" id="SortByLikes">
+                        <option value="best">Show most liked</option>
+                        <option value="worst">Show least liked</option>
+                    </select>
+                </div>
+            </form>
+
+            <button>create new playlist</button>
+        </section>
+        <section id="playlists">
+            <div class="playlist-card">
+                <h2>Name</h2>
+                <p>creator</p>
+                <a href="">edit</a>
+            </div>
+        </section>
+    </section>
+
+    <script src="oo.js"></script>
+</body>
+
+</html>

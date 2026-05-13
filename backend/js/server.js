@@ -1,5 +1,5 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -10,7 +10,7 @@ const cookies = []; // Alla aktiva cookies ska sparas här
 function createRandomCookie () { // Ska denna kanske flyttas till ui eller api eller något... hmmmmm
     return crypto.randomUUID(); 
 }
-
+ 
 async function handler(request) {
     let url = new URL(request.url);
 
@@ -32,7 +32,7 @@ async function handler(request) {
 
         //  Om med finns någon kommer man till start...
         if (session) { 
-            return serveFile(request, "../../test2.html");
+            return serveFile(request, "frontend/main.html");
         }
         
         // ... annars kommer man till login
@@ -86,9 +86,11 @@ async function handler(request) {
                 });
             }
 
+            // Skapar cookien
             let headers = {
                 "Set-Cookie": "sessionId=" + cookieId + "; Max-Age=10080" 
             };
+
             return new Response("Welcome!", { headers: headers });
         }
     }
@@ -108,13 +110,22 @@ async function handler(request) {
 
 
     if (request.method == "GET") {
-        if (url.pathname == "/") {
-            let tag = url.searchParams.get("tags");
-            if (tag) playlists = filterPlaylistsByTags(playlists, tag);
+
+        // Search for a playlist by name, description, or tags
+        if (url.pathname == "/search") {
+            let phrase = url.searchParams.get("q");
+            if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
+        }
+
+        // Search for a song by artist or title to add to a playlist
+        if (url.pathname == "/songs/search") {
+            let phrase = url.searchParams.get("q");
+            if (phrase) songs = getSongsBySearch(songs, phrase);
         }
     }
 
 
+    return serveDir(request, { fsRoot: "frontend" });
 
     // if (request.method == "OPTIONS") {
     //     return new Response(null, {
