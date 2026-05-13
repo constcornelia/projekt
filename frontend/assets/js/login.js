@@ -14,7 +14,14 @@ let options = {
     headers: { 
         "Content-Type": "application/json" 
     },
+    credentials: "include"
 };
 
 let response = await fetch("/login", options);
+
+if(response.status === 303 || response.ok) {
+    window.location.href = "/"
+}
+// else alert, infomera användaren 
+//hej
 });
