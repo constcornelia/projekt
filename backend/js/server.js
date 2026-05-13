@@ -32,7 +32,7 @@ async function handler(request) {
 
         //  Om med finns någon kommer man till start...
         if (session) { 
-            return serveFile(request, "frontend/main.html");
+            return serveFile(request, "../frontend/main.html");
         }
         
         // ... annars kommer man till login
@@ -47,7 +47,7 @@ async function handler(request) {
     if (url.pathname == "/login") {
 
         if (request.method == "GET") {
-            return serveFile(request, "frontend/login.html")
+            return serveFile(request, "../frontend/login.html")
         }
 
         if (request.method == "POST") {
@@ -125,7 +125,7 @@ async function handler(request) {
     }
 
 
-    return serveDir(request, { fsRoot: "../../frontend" });
+    return serveDir(request, { fsRoot: "../frontend" });
 }
 
 
