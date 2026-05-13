@@ -4,23 +4,27 @@
 
 const main = document.querySelector("main");
 
-let api = new api();
-
 class UI {
    async getPlaylists() {
-       let playlists = await api.getRequest("yoursound/playlists")
+    let api = new api();
+
+       let playlists = await api.getRequest("/")
        this.renderPlaylists(playlists);
    }
 
    async getSongs() {
-       let songs = await api.getRequest("yoursound/songs")
+    let api = new api();
+
+       let songs = await api.getRequest("/")
        this.renderSongs(songs);
    }
 
    async renderPlaylists (playlists) {
+    let api = new api();
+
        main.innerHTML = "";
 
-       let users = await api.getRequest("yoursound/users");
+       let users = await api.getRequest("/");
 
        for (let playlist of playlists) {
            let a = document.createElement("a");
@@ -49,6 +53,8 @@ class UI {
    }
 
    async renderSongs (songs) {
+    let api = new api();
+
        main.innerHTML = "";
 
        for (let song of songs) {
@@ -65,7 +71,9 @@ class UI {
    }
 
    async dropDownsPlaylist (playlistElement) {
-       let playlists = await api.getRequest("yoursound/playlists")
+    let api = new api();
+
+       let playlists = await api.getRequest("/")
 
        for (let playlist of playlists) {
            const option = document.createElement("option");
