@@ -17,8 +17,9 @@ async function handler(request) {
     let songs = data.songs;
     let playlists = data.playlists;
     const users = userData.users;
+
     
-    if (url.pathname == "/") {
+    if (url.pathname == "/" && request.method == "GET") {
         const activeCookie = request.headers.get("cookie");
     
         // Kollar om det finns en aktiv cookie som matchar med en från minnet
@@ -32,16 +33,26 @@ async function handler(request) {
 
         //  Om med finns någon kommer man till start...
         if (session) { 
+            console.log("hej");
             return serveFile(request, "../../frontend/main.html");
         }
         
         // ... annars kommer man till login
         let options = {
-            status: 303,
-            headers: { "Location": "/login" }
+            "Location": "/welcome",
+            status: 303
         }
+
         return new Response("Unauthorized", options);
     }
+
+    if (url.pathname == "/welcome" && request.method == "GET") {
+        return serveFile(request, "../../frontend/intro.html");
+    }
+
+    // if (url.pathname == "/signup") {
+    //     return serveFile(request, "../../frontend/signup.html")
+    // }
     
     // Logga in
     if (url.pathname == "/login") {
@@ -88,10 +99,18 @@ async function handler(request) {
 
             // Skapar cookien
             let headers = {
-                "Set-Cookie": "sessionId=" + cookieId + "; Max-Age=10080" 
+                "Set-Cookie": "sessionId=" + cookieId + "; Max-Age=10080",
+                "Location": "/"
             };
 
-            return new Response("Welcome!", { headers: headers });
+
+
+            // return serveFile(request, "../../frontend/main.html");
+
+            return new Response(null, { 
+                status: 303,
+                headers: headers 
+            });
         }
     }
 
@@ -99,7 +118,6 @@ async function handler(request) {
         let options = {
             status: 303,
             headers: {
-                "Location": "/login",
                 "Set-Cookie": "session_id=deleted; Max-Age=0"
             }
         };
