@@ -11,18 +11,16 @@
 
 
   <nav>
-    <div><a href="main.html"><img src="../assets/images/icons/logo.svg"></a></div>
+    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
     <div>YourSound</div>
     <div class="space"></div>
-    <a href="personal.html" class="ActionButton system-UI-accent">My collection</a>
+    <a href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
   </nav>
 
   <section id="filters">
       <form action="" id="SearchForm">
-        <div id="search" id="SearchSongs">
-          <input type="search" name="SearchInput" placeholder="Search song, artist, genre" id="SearchInput" class="system-UI">
+          <input type="search" name="SearchInput" id="SearchInput" class="system-UI" placeholder="Search song, artist, genre">
           <button id="ButtonSearch" type="submit"></button>
-        </div>
       </form>
 
       <form id="FilterForm">
@@ -38,21 +36,20 @@
           <input type="checkbox" id="liked" name="liked" value="liked">
           Show most admired song today</label>
       </div>
-
-
     </form>
 
   </section>
 
 
   <section id="PlaylistsCollection">
-
-    <a href="playlist.html">
-      <div class="song-card">
+<!--event.stopPropagation(). ska behovas eller vi byta design
+click på knappen också aktiverar länken-->
+    <a href="playlist.html" class="clear-link">
+      <div class="playlist-card">
         <div class="title-UI">Bohemian Rhapsody</div>
-        <div class="actions">
-          <button id="LikePlaylist"><img src="../assets/images/icons/like.svg" alt=""></button>
-          <button><img src="../assets/images/icons/play.svg" alt=""></button>
+        <div class="playlist-actions">
+          <button id="LikePlaylist"></button>
+          <button id="Play" class="StopPlaying"></button>
         </div>
       </div>
     </a>
