@@ -247,6 +247,10 @@ footer p {
 }
 
 /*filters*/
+#filters{
+    display: flex;
+    gap: 20px;
+}
 #filters form {
     display: flex;
     align-items: center;
@@ -326,7 +330,7 @@ footer p {
 
 /*content*/
 
-#SongsCollection {
+#PlaylistsCollection {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
@@ -378,4 +382,22 @@ footer p {
 .song-card:hover .actions {
     transition: var(--transition);
     opacity: 1;
+}
+
+/*playlist page*/
+#songs {
+    background-color: var(--main-color);
+    border-radius: 30px;
+    padding: 20px;
+    color: var(--light-text-color);
+}
+#songs li{
+    margin-top: 10px;
+}
+#songs li button{
+    display: none;
+}
+
+#songs li:hover button{
+    display: initial;
 }
