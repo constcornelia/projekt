@@ -18,7 +18,7 @@ class API {
             let request = new Request (url + endpoint, {
                 method: "GET",
                 headers: {
-                    authorization,
+                    // authorization,
                     accept
                 }
             });

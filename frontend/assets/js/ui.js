@@ -8,7 +8,7 @@ class UI {
    async getPlaylists() {
     let api = new api();
 
-       let playlists = await api.getRequest("/")
+       let playlists = await api.getRequest("/api/playlist");
        this.renderPlaylists(playlists);
    }
 
