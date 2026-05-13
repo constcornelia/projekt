@@ -14,6 +14,7 @@ let options = {
     headers: { 
         "Content-Type": "application/json" 
     },
+    credentials: "include"
 };
 
 let response = await fetch("/login", options);

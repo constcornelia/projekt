@@ -33,7 +33,6 @@ async function handler(request) {
 
         //  Om med finns någon kommer man till start...
         if (session) { 
-            console.log("hej");
             return serveFile(request, "../../frontend/main.html");
         }
         
@@ -118,7 +117,7 @@ async function handler(request) {
         let options = {
             status: 303,
             headers: {
-                "Set-Cookie": "session_id=deleted; Max-Age=0"
+                "Set-Cookie": "session_id=deleted; Max-Age=0; Path=/"
             }
         };
         return new Response(null, options);
@@ -128,6 +127,15 @@ async function handler(request) {
 
 
     if (request.method == "GET") {
+
+        if (url.pathname == "/api/playlists") {
+            playlists = JSON.stringify(playlists);
+            let headers = { "Accept": "application/json" };
+            return new Response(playlists, { 
+                status: 200, 
+                headers: headers 
+            });
+        }
 
         // Search for a playlist by name, description, or tags
         if (url.pathname == "/search") {
