@@ -1,7 +1,7 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
 
-const data = JSON.parse(Deno.readTextFileSync("database.json"));
+const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
 
 const cookies = []; // Alla aktiva cookies ska sparas här
