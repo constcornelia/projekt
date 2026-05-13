@@ -1,7 +1,7 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
 
-const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
+const data = JSON.parse(Deno.readTextFileSync("database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
 
 const cookies = []; // Alla aktiva cookies ska sparas här
@@ -32,7 +32,7 @@ async function handler(request) {
 
         //  Om med finns någon kommer man till start...
         if (session) { 
-            return serveFile(request, "../frontend/main.html");
+            return serveFile(request, "../../frontend/main.html");
         }
         
         // ... annars kommer man till login
@@ -47,7 +47,7 @@ async function handler(request) {
     if (url.pathname == "/login") {
 
         if (request.method == "GET") {
-            return serveFile(request, "../frontend/login.html")
+            return serveFile(request, "../../frontend/login.html")
         }
 
         if (request.method == "POST") {
@@ -125,7 +125,7 @@ async function handler(request) {
     }
 
 
-    return serveDir(request, { fsRoot: "../frontend" });
+    return serveDir(request, { fsRoot: "../../frontend" });
 }
 
 
