@@ -125,14 +125,7 @@ async function handler(request) {
     }
 
 
-    return serveDir(request, { fsRoot: "frontend" });
-
-    // if (request.method == "OPTIONS") {
-    //     return new Response(null, {
-    //         headers: headers
-    //     });
-    // }
-
+    return serveDir(request, { fsRoot: "../../frontend" });
 }
 
 
