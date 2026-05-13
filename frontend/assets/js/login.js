@@ -22,4 +22,5 @@ if(response.status === 303 || response.ok) {
     window.location.href = "/"
 }
 // else alert, infomera användaren 
+//hej
 });
