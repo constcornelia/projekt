@@ -2,55 +2,78 @@
 <html>
 
 <head>
-    <title>MUsicplatform.</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="../assets/css/style">
+  <title>YourSound</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
-    <nav id="navigation">
-        <div>
-            <a class="nav-item" href="">MP</a>
+
+
+  <nav>
+    <div><a href="main.html"><img src="../assets/images/icons/logo.svg"></a></div>
+    <div>My playlists</div>
+    <div class="space"></div>
+    <a href="edit-account.html" class="SecondaryButton system-UI-accent">Edit my account</a>
+  </nav>
+
+  <section id="filters">
+      <form action="" id="SearchForm">
+        <div id="search" id="SearchSongs">
+          <input type="search" name="SearchInput" placeholder="Search song, artist, genre" id="SearchInput" class="system-UI">
+          <button id="ButtonSearch" type="submit"></button>
         </div>
-        <div>
-            <p>My music page</p>
+      </form>
+
+      <form id="FilterForm">
+      <div id="genre">
+        <select name="genre" id="SelectGenre" class="system-UI">
+          <option value="">Select genre</option>
+          <option value="ShowAll">all</option>
+        </select>
+      </div>
+
+      <div id="likes">
+        <label for="liked" class="system-UI">
+          <input type="checkbox" id="liked" name="liked" value="liked">
+          Show most admired song today</label>
+      </div>
+
+
+    </form>
+
+  </section>
+
+
+  <section id="PlaylistsCollection">
+
+    <a href="playlist.html">
+      <div class="song-card">
+        <div class="title-UI">Bohemian Rhapsody</div>
+        <div class="actions">
+          <button class="liked"><img src="../assets/images/icons/like.svg" alt=""></button>
+          <button><img src="../assets/images/icons/play.svg" alt=""></button>
         </div>
+      </div>
+    </a>
+    
+  </section>
 
-    </nav>
-    <section id="content">
-        <section id="manage-playlists">
-            <form action="" class="Search" id="Search">
-                <input type="search" placeholder="Search" id="SearchInput">
-                <button id="ButtonSearch" type="submit" class="blackButton">Search</button>
-            </form>
-            <form action="" id="FilterPlaylists">
-                <button>show all playlists</button>
-                <button>show my playlist</button>
-                <div id="genre">
-                    <select name="genre" id="Selectgenre">
-                        <option value="all">Show all</option>
-                    </select>
-                </div>
-                <div id="likes">
-                    <select name="price" id="SortByLikes">
-                        <option value="best">Show most liked</option>
-                        <option value="worst">Show least liked</option>
-                    </select>
-                </div>
-            </form>
+  <footer>
+    <div>
+      <p class="sub-title-bold">Digital design och utveckling III</p>
+      <p class="sub-title-bold">Projekt</p>
+      <p class="sub-title">&copy; 2026 Grupp 5</p>
+    </div>
+    <div>
+      <p class="sub-title-bold">Developers</p>
+      <p class="sub-title">Cornelia Rönnemyr Papic</p>
+      <p class="sub-title">Dilara Kinali</p>
+      <p class="sub-title">Elena Khusanova</p>
+    </div>
+  </footer>
 
-            <button>create new playlist</button>
-        </section>
-        <section id="playlists">
-            <div class="playlist-card">
-                <h2>Name</h2>
-                <p>creator</p>
-                <a href="">edit</a>
-            </div>
-        </section>
-    </section>
-
-    <script src="oo.js"></script>
+  <script src="assets/js/ui.js"></script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
 <head>
   <title>YourSound</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="../assets/css/style">
+  <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
@@ -18,12 +18,14 @@
   </nav>
 
   <section id="filters">
-    <form>
-      <div id="search" id="SearchSongs">
-        <input type="search" placeholder="Search song, artist, genre" id="SearchInput" class="system-UI">
-        <button id="ButtonSearch" type="submit"></button>
-      </div>
+      <form action="" id="SearchForm">
+        <div id="search" id="SearchSongs">
+          <input type="search" name="SearchInput" placeholder="Search song, artist, genre" id="SearchInput" class="system-UI">
+          <button id="ButtonSearch" type="submit"></button>
+        </div>
+      </form>
 
+      <form id="FilterForm">
       <div id="genre">
         <select name="genre" id="SelectGenre" class="system-UI">
           <option value="">Select genre</option>
@@ -43,65 +45,18 @@
   </section>
 
 
-  <section id="SongsCollection">
+  <section id="PlaylistsCollection">
 
-    <div class="song-card">
-      <div class="title-UI">Bohemian Rhapsody</div>
-      <div class="actions">
-        <div><img src="../assets/images/icons/like.svg" alt=""></div>
-        <div><img src="../assets/images/icons/play.svg" alt=""></div>
-        <div><img src="../assets/images/icons/add.svg" alt=""></div>
+    <a href="playlist.html">
+      <div class="song-card">
+        <div class="title-UI">Bohemian Rhapsody</div>
+        <div class="actions">
+          <button id="LikePlaylist"><img src="../assets/images/icons/like.svg" alt=""></button>
+          <button><img src="../assets/images/icons/play.svg" alt=""></button>
+        </div>
       </div>
-    </div>
-    <div class="song-card">
-      <div class="title-UI">Bohemian Rhapsody</div>
-      <div class="actions">
-        <div><img src="../assets/images/icons/like.svg" alt=""></div>
-        <div><img src="../test.html" alt=""></div>
-        <div><img src="../assets/images/icons/add.svg" alt=""></div>
-      </div>
-    </div>
-    <div class="song-card">
-      <div class="title-UI">Bohemian Rhapsody</div>
-      <div class="actions">
-        <div><img src="../assets/images/icons/like.svg" alt=""></div>
-        <div><img src="../assets/images/icons/play.svg" alt=""></div>
-        <div><img src="../assets/images/icons/add.svg" alt=""></div>
-      </div>
-    </div>
-    <div class="song-card">
-      <div class="title-UI">Bohemian Rhapsody</div>
-      <div class="actions">
-        <div><img src="../assets/images/icons/like.svg" alt=""></div>
-        <div><img src="../assets/images/icons/play.svg" alt=""></div>
-        <div><img src="../assets/images/icons/add.svg" alt=""></div>
-      </div>
-    </div>
-    <div class="song-card">
-      <div class="title-UI">Bohemian Rhapsody</div>
-      <div class="actions">
-        <div><img src="../assets/images/icons/like.svg" alt=""></div>
-        <div><img src="../assets/images/icons/play.svg" alt=""></div>
-        <div><img src="../assets/images/icons/add.svg" alt=""></div>
-      </div>
-    </div>
-    <div class="song-card">
-      <div class="title-UI">Bohemian Rhapsody</div>
-      <div class="actions">
-        <div><img src="../assets/images/icons/like.svg" alt=""></div>
-        <div><img src="../assets/images/icons/play.svg" alt=""></div>
-        <div><img src="../assets/images/icons/add.svg" alt=""></div>
-      </div>
-    </div>
-    <div class="song-card">
-      <div class="title-UI">Bohemian Rhapsody</div>
-      <div class="actions">
-        <div><img src="../assets/images/icons/like.svg" alt=""></div>
-        <div><img src="../assets/images/icons/play.svg" alt=""></div>
-        <div><img src="../assets/images/icons/add.svg" alt=""></div>
-      </div>
-    </div>
-
+    </a>
+    
   </section>
 
   <footer>
@@ -118,7 +73,7 @@
     </div>
   </footer>
 
-  <script src="oo.js"></script>
+  <script src="assets/js/ui.js"></script>
 </body>
 
 </html>

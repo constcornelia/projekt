@@ -32,7 +32,7 @@ async function handler(request) {
 
         //  Om med finns någon kommer man till start...
         if (session) { 
-            return serveFile(request, "frontend/main.html");
+            return serveFile(request, "../../frontend/main.html");
         }
         
         // ... annars kommer man till login
@@ -47,7 +47,7 @@ async function handler(request) {
     if (url.pathname == "/login") {
 
         if (request.method == "GET") {
-            return serveFile(request, "../../test.html")
+            return serveFile(request, "../../frontend/login.html")
         }
 
         if (request.method == "POST") {
@@ -125,132 +125,9 @@ async function handler(request) {
     }
 
 
-    return serveDir(request, { fsRoot: "frontend" });
-
-    // if (request.method == "OPTIONS") {
-    //     return new Response(null, {
-    //         headers: headers
-    //     });
-    // }
-
+    return serveDir(request, { fsRoot: "../../frontend" });
 }
 
-// tar hand om cookies
-async function handleCookies (request) {
-    let url = new URL (request.url);
-    let cookies = [];
-
-    
-    // går till startsidan
-    if (request.method == "GET" && url.pathname == "/") {
-        return serveFile(request, "../../test.html");
-    }
-    
-    // går till login
-    if (request.method == "GET" && url.pathname == "/login") {
-        return serveFile(request, "../../test.html");
-    }
-
-    // loggar in 
-    if (request.method == "POST" && url.pathname == "/login") {
-
-        let body = await request.json(); // users input - funkar
-
-        let users = JSON.parse(Deno.readTextFileSync("../data/user.json")); // läser in från json - funkar
-        users = users.users;
-
-        // let loggedInUser = null;
-        for (let user of users) {
-            if (user.username == body.username && user.password == body.password) {
-                // loggedInUser = user; 
-                cookies.push(user)
-                let cookie = createRandomCookie();
-                console.log(cookies);
-                let headers = { 
-                    "Content-Type": "text/html",
-                    "Set-Cookie": "sessionId=" + cookie + "; Max-Age=10080" 
-                }
-                return new Response("Hello", headers);
-            }
-        }
-        console.log(cookies);
-
-        if (url.pathname == "/" && request.method == "GET") {
-            const activeCookie = request.headers.get("cookie");
-
-            for (let cookie of cookies) {
-
-            }
-        }
-
-
-
-        // om användaren inte är utloggad
-/*         if (loggedInUser != null) {
-
-            // loggedInUser.cookie = cookie;
-            // console.log(loggedInUser.cookie);
-
-            // Deno.writeTextFileSync("../data/users.json", JSON.stringify(users, null, 2));
-
-            return new Response(await Deno.readTextFileSync("../../test.html"), {
-                headers: { 
-                    "Content-Type": "text/html",
-                    "Set-Cookie": "sessionId=" + cookie + "; Max-Age=10080" // 7hours, rework to 1 week? in seconds.
-                }
-            });
-        }
-        cookies.push(loggedInUser);
-
-        // cookies[username] = loggedInUser.username;
-
-        return new Response("Unauhorized", { status: 401 }); */
-    }
-
-}
-
-
-
-
-//     let playlists = data.playlists;
-//     let songs = data.songs;
-    
-//     if (request.method == "GET") {
-        
-//         // Get all playlists
-//         if (url.pathname == "/") {
-//             return serveFile(request, "../../test.html");
-//             // Kolla först att det finns en aktiv cookie - annars skicka till login
-
-//             // Filter playlist (by tags)
-//             // let tag = url.searchParams.get("tag");
-//             // if (tag) playlists = filterByTags(playlists, tags);
-
-//             // Sort by amount of tags, descending or ascending
-//             // let likesDesc = url.searchParams.get("likesDesc"); 
-//             // if (likesDesc == true) playlists = sortByLikes(playlists, true);
-//             // if (likesDesc == false) playlists = sortByLikes(playlists, false);
-//         }
-//         // Get playlists by search (through name and description)
-//         // Get one specific playlist by id
-//         // Get song by search (title or artist)
-//         // Get your own user info
-//     }
-
-//     if (request.method == "POST") {
-//         // Logging in or joining
-//         // Post your own playlist
-//     }
-
-//     if (request.method == "PATCH") {
-//         // Edit your own playlist (basic info such as name, description of tags) by id
-//         // Add songs to others playlists by playlist id and song id
-//     }
-
-//     if (request.method == "DELETE") {
-//         // Delete playlist by id (detta sker från ens profil)
-//     }
-// }
 
 Deno.serve(handler);
 
