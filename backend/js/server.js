@@ -17,6 +17,7 @@ async function handler(request) {
     let songs = data.songs;
     let playlists = data.playlists;
     const users = userData.users;
+
     
     if (url.pathname == "/") {
         const activeCookie = request.headers.get("cookie");
@@ -38,9 +39,13 @@ async function handler(request) {
         // ... annars kommer man till login
         let options = {
             status: 303,
-            headers: { "Location": "/login" }
+            headers: { "Location": "/welcome" }
         }
         return new Response("Unauthorized", options);
+    }
+
+    if (url.pathname == "/welcome" && request.method == "GET") {
+        return serveFile(request, "../../frontend/intro.html");
     }
     
     // Logga in
@@ -52,6 +57,7 @@ async function handler(request) {
 
         if (request.method == "POST") {
             let loginReq = await request.json();
+            console.log(loginReq)
 
             // Kollar om den inloggade användaren finns i users.json
             let loggedInUser = null;
@@ -99,7 +105,6 @@ async function handler(request) {
         let options = {
             status: 303,
             headers: {
-                "Location": "/login",
                 "Set-Cookie": "session_id=deleted; Max-Age=0"
             }
         };
