@@ -21,19 +21,28 @@
   </nav>
 
   <section id="PersonalPlaylist" class="playlist-content">
+    
     <!--osynlig nu ska visas när edit knapp ckickad-->
     <div class="EditPlaylist edit-elements">
-      <form id="EditPlaylistForm">
+      <form id="EditPlaylistForm" class="system-UI">
         <h1 class="title">Edit playlist</h1>
+        
+        <div class="form-input-area">
+          <label for="cover" class="sub-title-bold">Playlist cover:</label>
+          <input type="file" id="cover" name="profile" >
+        </div>
+  
         <div class="form-input-area">
           <label for="playlist-name" class="sub-title-bold">Playlist name:</label>
-          <input type="text" id="playlist-name" name="playlist-name" class="system-UI-accent">
+          <input type="text" id="playlist-name" name="playlist-name">
         </div>
+
         <div class="form-input-area">
           <label for="playlist-description" class="sub-title-bold">Playlist description:</label>
           <textarea name="playlist-description" id="playlist-description"></textarea>
         </div>
-        <button type="submit" class="ActionButton-light system-UI-accent">Cofirm</button>
+        <button type="button" class="ActionButton-light system-UI-accent">Delete playlist</button>
+        <button type="submit" class="ActionButton-light system-UI-accent">Save changes</button>
       </form>
     </div>
 
@@ -42,9 +51,9 @@
       <ul>
         <!--li är bara för exempel men ska skapas med api data
         listener på remove song aktiveras AlertDeleteSong-->
-        <li>song<button class="Song-Action-Button">remove song</button> </li>
-        <li>song<button class="Song-Action-Button">remove song</button> </li>
-        <li>song<button class="Song-Action-Button">remove song</button> </li>
+        <li>song<button type="button" class="Song-Action-Button">remove song</button> </li>
+        <li>song<button type="button" class="Song-Action-Button">remove song</button> </li>
+        <li>song<button type="button" class="Song-Action-Button">remove song</button> </li>
       </ul>
     </div>
     <!--osynlig nu ska visas när add song knapp klickad-->

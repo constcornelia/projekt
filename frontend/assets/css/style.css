@@ -228,11 +228,9 @@ footer p {
     flex-direction: column;
     gap: 10px;
 }
-
 #login .form-input-area label {
     margin-left: 10px;
 }
-
 #login form input {
     outline-color: var(--hover-color);
     padding: 10px;
@@ -254,7 +252,6 @@ footer p {
     height: 50px;
     margin: 10px 0;
 }
-
 #SearchPaylistForm {
     padding: 10px;
     border-radius: 20px;
@@ -263,7 +260,6 @@ footer p {
     align-items: center;
     width: 300px;
 }
-
 #SearchPaylistForm>input {
     border: none;
     outline: none;
@@ -276,7 +272,6 @@ footer p {
     font-size: 13px;
 
 }
-
 #SearchPaylistForm>button {
     border: none;
     background-color: transparent;
@@ -288,16 +283,13 @@ footer p {
     height: 20px;
     cursor: pointer;
 }
-
 #SearchPaylistForm:focus-within {
     background-color: var(--main-color);
     transition: var(--transition);
 }
-
 #SearchPaylistForm:focus-within>button {
     background-image: url("../images/icons/seach-revert.svg");
 }
-
 #SearchPaylistForm:focus-within>input {
     color: var(--light-text-color);
 }
@@ -307,7 +299,6 @@ footer p {
     gap: 20px;
     align-items: stretch;
 }
-
 .Select {
     padding: 10px;
     border-radius: 20px;
@@ -349,7 +340,6 @@ label.Sort-Playlists:has(input:checked) {
     background-color: var(--main-color);
     color: var(--light-text-color);
 }
-
 .Sort-Playlists input{
     display: none;
 }
@@ -387,8 +377,8 @@ label.Sort-Playlists:has(input:checked) {
 
     transition: var(--transition);
 }
-
 .playlist-actions {
+    transition: var(--transition);
     display: flex;
     gap: 20px;
     opacity: 0;
@@ -397,8 +387,8 @@ label.Sort-Playlists:has(input:checked) {
     transition: var(--transition);
     opacity: 1;
 }
-
 .playlist-actions button.LikePlaylist-Button{
+    transition: var(--transition);
     border: none;
     background-color: transparent;
     background-image: url("../images/icons/like.svg");
@@ -414,7 +404,8 @@ label.Sort-Playlists:has(input:checked) {
     transition: var(--transition);
 }
 
-.playlist-actions button#Play{
+.playlist-actions button.Play{
+    transition: var(--transition);
     border: none;
     background-color: transparent;
     background-image: url("../images/icons/play.svg");
@@ -424,13 +415,45 @@ label.Sort-Playlists:has(input:checked) {
     width: 70px;
     height: 70px;
 }
-.playlist-actions button#Play:hover {
+.playlist-actions button.Play:hover {
     cursor: pointer;
     transform: var(--transform-hover);
     transition: var(--transition);
 }
 .playlist-actions button.StopPlaying {
     background-image: url("../images/icons/pause.svg");
+}
+
+.add-playlist-card {
+    min-width: 200px;
+    aspect-ratio: 1;
+    padding: 20px;
+    border-radius: 60px;
+    box-sizing: border-box;
+    text-align: center;
+    color: var(--main-color);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+.add-playlist-card button.CreatePlaylist-Button{
+    transition: var(--transition);
+    border: none;
+    background-color: transparent;
+    background-image: url("../images/icons/add.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 50%;
+    height: 50%;
+}
+.add-playlist-card button.CreatePlaylist-Button:hover {
+    cursor: pointer;
+    transform: var(--transform-hover);
+    transition: var(--transition);
 }
 
 
@@ -441,7 +464,7 @@ label.Sort-Playlists:has(input:checked) {
 }
 .songs {
     background-color: var(--main-color);
-    border-radius: 30px;
+    border-radius: 40px;
     padding: 20px;
     color: var(--light-text-color);
     flex: 1;
@@ -449,11 +472,11 @@ label.Sort-Playlists:has(input:checked) {
 .songs li{
     margin-top: 10px;
 }
-.songs li button{
+.songs li button.Song-Action-Button{
     display: none;
 }
 
-.songs li:hover button{
+.songs li:hover button.Song-Action-Button{
     display: initial;
 }
 /*adding song*
