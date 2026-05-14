@@ -383,7 +383,7 @@ footer p {
     opacity: 1;
 }
 
-.playlist-actions button#LikePlaylist-Button{
+.playlist-actions button.LikePlaylist-Button{
     border: none;
     background-color: transparent;
     background-image: url("../images/icons/like.svg");
@@ -393,7 +393,7 @@ footer p {
     width: 70px;
     height: 70px;
 }
-.playlist-actions button#LikePlaylist-Button:hover {
+.playlist-actions button.LikePlaylist-Button:hover {
     cursor: pointer;
     transform: var(--transform-hover);
     transition: var(--transition);
