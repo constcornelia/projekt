@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>YourSound</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+
+  <nav>
+    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
+    <div>Public Playlist</div>
+    <div class="space"></div>
+    <button id="LikePlaylist-Button"><img src="assets/images/icons/like.svg" alt=""></button>
+    <!--listener på LikePlaylist så AlertAddPlaylist bli synlig-->
+    <button id="AddSong-Button" class="ActionButton system-UI-accent">add song</button>
+    <!--listener på AddSongButton så AddSong div bli synlig-->
+  </nav>
+  
+  <section id="PublicPlaylist" class="playlist-content">
+    <div class="songs">
+      <h1 class="title">Songs in playlist</h1>
+      <ul>
+         <!--li är bara för exempel men ska skapas med api data-->
+          <li>song</li>
+      </ul>
+    </div>
+    <!--osynlig nu ska visas när add song knapp klickad-->
+    <div class="AddSong edit-elements">
+      <form id="AddSongForm">
+        <h1 class="title">Add song to playlist</h1>
+        <input type="search" name="SearchInput" id="SearchSongInput" class="system-UI" placeholder="Search song">
+        <button id="ButtonSearch" type="submit"></button>
+      </form>
+      <div id="SearchResultSongs">
+        <ul>
+          <!--alla li ska aderas genom search
+          sen varenda låt kan aderas med knapp vid låtnamn-->
+          <li>song<button class="Song-Action-Button">add song</button></li>
+        </ul>
+      </div>
+    </div>
+  
+  </section>
+  <!--osynlig nu ska visas när liked-->
+  <div class="AlertAddPlaylist edit-elements">
+    <h1 class="title">the playlist</h1>
+    <p class="text"> is added to your liked playlist</p>
+    <div>
+      <button id="Undo" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+      <button id="Confirm" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+    </div>
+  </div>
+  <!--osynlig nu ska visas när låt aderas 
+  listener på add song knappen-->
+  <div class="AlertAddSong edit-elements">
+    <h1 class="title">the song</h1>
+    <p class="text"> is added to your playlist</p>
+    <div>
+      <button id="Undo" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+      <button id="Confirm" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <p class="sub-title-bold">Digital design och utveckling III</p>
+      <p class="sub-title-bold">Projekt</p>
+      <p class="sub-title">&copy; 2026 Grupp 5</p>
+    </div>
+    <div>
+      <p class="sub-title-bold">Developers</p>
+      <p class="sub-title">Cornelia Rönnemyr Papic</p>
+      <p class="sub-title">Dilara Kinali</p>
+      <p class="sub-title">Elena Khusanova</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/ui.js"></script>
+</body>
+
+</html>

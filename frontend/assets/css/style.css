@@ -36,14 +36,12 @@ body {
 
 .sub-title {
     font-family: "system";
-    font-weight: 200;
-}
-
-.sub-title-bold {
-    font-family: "system";
     font-weight: 600;
 }
-
+.text{
+    font-family: "system";
+    font-weight: 300;
+}
 .title-UI {
     font-family: "Accent";
     font-weight: 500;
@@ -385,7 +383,7 @@ footer p {
     opacity: 1;
 }
 
-.playlist-actions button#LikePlaylist{
+.playlist-actions button#LikePlaylist-Button{
     border: none;
     background-color: transparent;
     background-image: url("../images/icons/like.svg");
@@ -395,7 +393,7 @@ footer p {
     width: 70px;
     height: 70px;
 }
-.playlist-actions button#LikePlaylist:hover {
+.playlist-actions button#LikePlaylist-Button:hover {
     cursor: pointer;
     transform: var(--transform-hover);
     transition: var(--transition);
@@ -422,19 +420,67 @@ footer p {
 
 
 /*playlist page*/
-#songs {
+.playlist-content{
+    display: flex;
+    gap: 20px;
+}
+.songs {
     background-color: var(--main-color);
     border-radius: 30px;
     padding: 20px;
     color: var(--light-text-color);
+    flex: 1;
 }
-#songs li{
+.songs li{
     margin-top: 10px;
 }
-#songs li button{
+.songs li button{
     display: none;
 }
 
-#songs li:hover button{
+.songs li:hover button{
     display: initial;
 }
+/*adding song*
+det verkat för komplicerad göra med popup 
+eftersom vi behöver placerasökresultat någonstans
+så gjorde jag istället extra section 
+som bli synlig på add knäpp click*/
+.AddSong{
+    flex: 1;
+    display: none;
+}
+.AlertAddSong, .AlertDeleteSong{
+    width: 200px;
+    display: none;
+}
+
+/*personal playlist*/
+.EditPlaylist{
+    display: none;
+}
+/*info pop-ups*/
+.edit-elements{
+    background-color: var(--main-color);
+    padding: 20px;
+    color: var(--light-text-color);
+
+    border-radius: 40px;
+
+}
+.AlertAddPlaylist{
+    font-size: 20px;
+    width: 300px;
+    text-align: center;
+    display: none;
+
+}
+.AlertAddPlaylist h1{
+    font-size: 25px;
+    margin: 0;
+}
+.AlertAddSong{
+    text-align: center;
+
+}
+

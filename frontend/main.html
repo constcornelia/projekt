@@ -19,7 +19,7 @@
 
   <section id="filters">
       <form action="" id="SearchForm">
-          <input type="search" name="SearchInput" id="SearchInput" class="system-UI" placeholder="Search song, artist, genre">
+          <input type="search" name="SearchInput" id="SearchInput" class="system-UI" placeholder="Search by playlist name, owner or genre">
           <button id="ButtonSearch" type="submit"></button>
       </form>
 
@@ -44,17 +44,27 @@
   <section id="PlaylistsCollection">
 <!--event.stopPropagation(). ska behovas eller vi byta design
 click på knappen också aktiverar länken-->
-    <a href="playlist.html" class="clear-link">
+    <a href="public-playlist.html" class="clear-link">
       <div class="playlist-card">
         <div class="title-UI">Bohemian Rhapsody</div>
         <div class="playlist-actions">
           <button id="LikePlaylist"></button>
+          <!--listener på LikePlaylist så AlertAddPlaylist bli synlig-->
           <button id="Play" class="StopPlaying"></button>
         </div>
       </div>
     </a>
     
   </section>
+<!--osynlig nu ska visas när liked-->
+  <div id="AlertAddPlaylist" class="edit-elements">
+    <h1 class="title">the playlist</h1>
+    <p class="text"> is added to your liked playlist</p>
+    <div>
+      <button id="Undo" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+      <button id="Confirm" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+    </div>
+  </div>
 
   <footer>
     <div>
