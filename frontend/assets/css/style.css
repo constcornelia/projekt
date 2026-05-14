@@ -2,7 +2,6 @@
     font-family: "Accent";
     src: url(../fonts/MuseoModerno-Variable.ttf);
 }
-
 @font-face {
     font-family: "system";
     src: url(../fonts/OpenSans-Variable.ttf);
@@ -19,16 +18,14 @@
 
     --light-text-color: white;
     --dark-text-color: black;
-
 }
-
 
 body {
     background-color: darksalmon;
     margin: 0 30px;
 }
 
-/*text styling*/
+/*text styles*/
 .title {
     font-family: "Accent";
     font-weight: 900;
@@ -42,11 +39,11 @@ body {
     font-family: "system";
     font-weight: 300;
 }
+
 .title-UI {
     font-family: "Accent";
     font-weight: 500;
 }
-
 .system-UI {
     font-family: "system";
     font-weight: 500;
@@ -63,7 +60,6 @@ a {
     font-family: "system";
     font-weight: 600;
     color: inherit;
-
 }
 .clear-link{
     text-decoration: none;
@@ -103,7 +99,6 @@ a {
     transform: var(--transform-hover);
     cursor: pointer;
     font-weight: 700;
-
     background-color: var(--hover-color);
 }
 .ActionButton-light {
@@ -122,36 +117,53 @@ a {
     transform: var(--transform-hover);
     cursor: pointer;
     font-weight: 700;
-
+}
+.ActionButton:hover {
+    transition: var(--transition);
+    transform: var(--transform-hover);
+    cursor: pointer;
+    font-weight: 700;
+}
+.SecondaryButton-light {
+    transition: var(--transition);
+    display: inline-block;
+    background-color: transparent;
+    color: var(--light-text-color);
+    border: none;
+    box-shadow: inset 0 0 0 2px var(--light-text-color);
+    padding: 15px;
+    border-radius: 20px;
+    font-family: "system";
+    margin: 10px;
+}
+.SecondaryButton-light:hover {
+    transition: var(--transition);
+    transform: var(--transform-hover);
+    cursor: pointer;
+    font-weight: 700;
+    background-color: var(--hover-color);
 }
 
 /*nav elemnets*/
 nav {
     display: flex;
     align-items: center;
-
     height: 70px;
     font-family: "Accent";
     font-size: 40px;
     font-weight: 900;
     color: var(--main-color);
-
 }
-
 nav img {
     height: 50px;
     display: block;
     margin: 10px;
     transition: var(--transition);
-
 }
-
 nav img:hover {
     transition: var(--transition);
     transform: var(--transform-hover);
-
 }
-
 nav .space {
     flex-grow: 1;
 }
@@ -164,10 +176,10 @@ footer {
     padding: 20px;
     margin-top: 10px;
 }
-
 footer p {
     margin: 0;
 }
+
 /*first page*/
 #intro {
     margin: 10% auto;
@@ -177,16 +189,13 @@ footer p {
     gap: 40px;
     color: var(--main-color);
 }
-
 #intro h1 {
     font-size: 100px;
     margin: 0;
 }
-
 #intro h2 {
     margin-bottom: 20px;
 }
-
 #intro p {
     font-size: 20px;
     margin: 0;
@@ -207,7 +216,6 @@ footer p {
 #login .title {
     font-size: 30px;
 }
-
 #login form {
     display: flex;
     flex-direction: column;
@@ -215,7 +223,6 @@ footer p {
     width: 300px;
     margin-bottom: 20px;
 }
-
 #login .form-input-area {
     display: flex;
     flex-direction: column;
@@ -241,22 +248,23 @@ footer p {
 }
 
 /*filters*/
-#filters{
+.filters{
     display: flex;
     gap: 20px;
+    height: 50px;
     margin: 10px 0;
 }
 
-#SearchForm {
-    display: flex;
-    align-items: center;
+#SearchPaylistForm {
+    padding: 10px;
     border-radius: 20px;
     border: solid 2px var(--main-color);
+    display: flex;
+    align-items: center;
     width: 300px;
-    padding: 10px;
 }
 
-#SearchForm>input {
+#SearchPaylistForm>input {
     border: none;
     outline: none;
     background-color: transparent;
@@ -264,9 +272,12 @@ footer p {
 }
 ::placeholder{
     color: var(--main-color);
+    font-weight: 500;
+    font-size: 13px;
+
 }
 
-#SearchForm>button {
+#SearchPaylistForm>button {
     border: none;
     background-color: transparent;
     background-image: url("../images/icons/search.svg");
@@ -275,67 +286,71 @@ footer p {
     background-size: contain;
     width: 20px;
     height: 20px;
+    cursor: pointer;
 }
 
-#SearchForm:focus-within {
+#SearchPaylistForm:focus-within {
     background-color: var(--main-color);
     transition: var(--transition);
 }
 
-#SearchForm:focus-within>button {
+#SearchPaylistForm:focus-within>button {
     background-image: url("../images/icons/seach-revert.svg");
 }
 
-#SearchForm:focus-within>input {
+#SearchPaylistForm:focus-within>input {
     color: var(--light-text-color);
 }
 
-#FilterForm {
+.FilterForm {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+}
+
+.Select {
+    padding: 10px;
+    border-radius: 20px;
+    border: solid 2px var(--main-color);
+    width: 200px;
+}
+.Select:hover{
+    background-color: var(--main-color);
+}
+.Select:hover select{
+    color: var(--light-text-color);
+    cursor: pointer;
+}
+#SelectGenre{
+    background-color: transparent;
+    border: none;
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+    font-size: 13px;
+}
+.Sort-Playlists {
+    padding: 10px;
+    border-radius: 20px;
+    border: solid 2px var(--main-color);
+    background-color: transparent;
+    width: 150px;
     display: flex;
     align-items: center;
-    gap: 20px;
-}
-#genre {
-    padding: 10px;
-    border-radius: 20px;
-    border: solid 2px var(--main-color);
-    width: 200px;
+    justify-content: center;
+
     cursor: pointer;
 }
-#genre:hover{
+.Sort-Playlists:hover{
     background-color: var(--main-color);
-}
-#genre:hover select{
     color: var(--light-text-color);
 }
-#genre select {
-    background-color: transparent;
-    width: 100%;
-    border: none;
-    cursor: pointer;
-}
-
-/*ska testa med js så att background bytas när selected
-#genre:focus-within{
-    background-color: green;
-}
-*/
-  
-
-#likes {
-    padding: 10px;
-    border-radius: 20px;
-    border: solid 2px var(--main-color);
-    width: 200px;
-    cursor: pointer;
-}
-#likes:hover {
+label.Sort-Playlists:has(input:checked) {
     background-color: var(--main-color);
-}
-#likes:hover label{
     color: var(--light-text-color);
 }
-#likes input{
+
+.Sort-Playlists input{
     display: none;
 }
 

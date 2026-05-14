@@ -12,20 +12,39 @@
 
   <nav>
     <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
-    <div>My playlists</div>
+    <div>My playlists collection</div>
     <div class="space"></div>
     <a href="edit-account.html" class="SecondaryButton system-UI-accent clear-link">Edit my account</a>
   </nav>
 
-  <section>
-    <div id="CreatePlaylist" class="ActionButton">Create new playlist</div>
+  <section class="filters">
+    <form action="" id="SearchPaylistForm" class="system-UI">
+        <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
+        <button id="ButtonSearch" type="submit"></button>
+    </form>
 
-</section>
-<section>
-  <!--ska göra pop up form for skapa playlist-->
+    <form class="FilterForm system-UI">
+      <div class="Select">
+        <select id="SelectGenre"  name="genre">
+          <option value="">Select genre</option>
+          <option value="ShowAll">all</option>
+        </select>
+      </div>
+      
+      <label class="Sort-Playlists" for="Sort-Liked-playlists">My liked playlists
+        <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
+      </label>
+      <label class="Sort-Playlists" for="All-Playlists">All my playlists
+        <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
+      </label>
+
+  </form>
+
 </section>
 
 <section id="PlaylistsCollection">
+  <div id="CreatePlaylist" class="ActionButton">Create new playlist</div>
+
   <!--event.stopPropagation(). ska behovas eller vi byta design
   click på knappen också aktiverar länken-->
       <a href="playlist.html" class="clear-link">
@@ -42,15 +61,15 @@
   
   <footer>
     <div>
-      <p class="sub-title-bold">Digital design och utveckling III</p>
-      <p class="sub-title-bold">Projekt</p>
+      <p class="sub-title">Digital design och utveckling III</p>
+      <p class="sub-title">Projekt</p>
       <p class="sub-title">&copy; 2026 Grupp 5</p>
     </div>
     <div>
-      <p class="sub-title-bold">Developers</p>
-      <p class="sub-title">Cornelia Rönnemyr Papic</p>
-      <p class="sub-title">Dilara Kinali</p>
-      <p class="sub-title">Elena Khusanova</p>
+      <p class="sub-title">Developers</p>
+      <p class="text">Cornelia Rönnemyr Papic</p>
+      <p class="text">Dilara Kinali</p>
+      <p class="text">Elena Khusanova</p>
     </div>
   </footer>
 

@@ -17,25 +17,27 @@
     <a href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
   </nav>
 
-  <section id="filters">
-      <form action="" id="SearchForm">
-          <input type="search" name="SearchInput" id="SearchInput" class="system-UI" placeholder="Search by playlist name, owner or genre">
+  <section class="filters">
+      <form action="" id="SearchPaylistForm" class="system-UI">
+          <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
           <button id="ButtonSearch" type="submit"></button>
       </form>
 
-      <form id="FilterForm">
-      <div id="genre">
-        <select name="genre" id="SelectGenre" class="system-UI">
-          <option value="">Select genre</option>
-          <option value="ShowAll">all</option>
-        </select>
-      </div>
-
-      <div id="likes">
-        <label for="liked" class="system-UI">
-          <input type="checkbox" id="liked" name="liked" value="liked">
-          Show most admired song today</label>
-      </div>
+      <form class="FilterForm system-UI">
+        <div class="Select">
+          <select id="SelectGenre"  name="genre">
+            <option value="">Select genre</option>
+            <option value="ShowAll">all</option>
+          </select>
+        </div>
+        
+        <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
+          <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
+        </label>
+        <label class="Sort-Playlists" for="All-Playlists">All playlists
+          <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
+        </label>
+  
     </form>
 
   </section>
@@ -68,15 +70,15 @@ click på knappen också aktiverar länken-->
 
   <footer>
     <div>
-      <p class="sub-title-bold">Digital design och utveckling III</p>
-      <p class="sub-title-bold">Projekt</p>
+      <p class="sub-title">Digital design och utveckling III</p>
+      <p class="sub-title">Projekt</p>
       <p class="sub-title">&copy; 2026 Grupp 5</p>
     </div>
     <div>
-      <p class="sub-title-bold">Developers</p>
-      <p class="sub-title">Cornelia Rönnemyr Papic</p>
-      <p class="sub-title">Dilara Kinali</p>
-      <p class="sub-title">Elena Khusanova</p>
+      <p class="sub-title">Developers</p>
+      <p class="text">Cornelia Rönnemyr Papic</p>
+      <p class="text">Dilara Kinali</p>
+      <p class="text">Elena Khusanova</p>
     </div>
   </footer>
 
