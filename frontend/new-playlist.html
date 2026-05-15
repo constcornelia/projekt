@@ -14,9 +14,9 @@
     <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
     <div>Personal Playlist</div>
     <div class="space"></div>
-    <button id="EditPlaylist-Button" class="ActionButton">Edit playlist details</button>
+    <button id="EditPlaylist-Button" class="ActionButton">edit playlist</button>
     <!--listener på EditPlaylistButton så EditPlaylist bli synlig-->
-    <button id="AddSong-Button" class="ActionButton system-UI-accent">Add song to playlist</button>
+    <button id="AddSong-Button" class="ActionButton system-UI-accent">add song</button>
     <!--listener på AddSongButton så AddSong div bli synlig-->
   </nav>
   <section class="hidden-elements">
@@ -25,8 +25,8 @@
       <h1 class="title">the song</h1>
       <p class="text">Delete from playlist?</p>
       <div>
-        <button id="UndoDeleteSongButton" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="ConfirmDeleteSongButton" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+        <button id="UndoDeleteSongButton" type="button" class="ActionButton-light system-UI-accent">Undo</button>
+        <button id="ConfirmDeleteSongButton" type="button" class="ActionButton-light system-UI-accent">OK</button>
       </div>
     </div>
     <!--osynlig nu ska visas när låt aderas
@@ -41,7 +41,7 @@
     </div>
   </section>
 
-  <section id="PersonalPlaylist" class="playlist-content">
+  <section id="NewPlaylist" class="playlist-content">
     
     <!--osynlig nu ska visas när edit knapp ckickad-->
     <div id="EditPlaylist" class="edit-elements">
@@ -69,14 +69,8 @@
     </div>
 
     <div class="songs">
-      <h1 class="title">Songs in playlist</h1>
-      <ul>
-        <!--li är bara för exempel men ska skapas med api data
-        listener på remove song aktiveras AlertDeleteSong-->
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-      </ul>
+      <h1 class="title">No songs yet let add them</h1>
+      <button id="AddSong-Button" class="ActionButton-light system-UI-accent">add song</button>
     </div>
     <!--osynlig nu ska visas när add song knapp klickad-->
     <div id="AddSong" class="edit-elements">
@@ -93,9 +87,8 @@
         </ul>
       </div>
     </div>
-  
-  </section>
 
+  </section>
 
   <footer>
     <div>

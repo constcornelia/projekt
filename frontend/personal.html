@@ -42,15 +42,12 @@
 
 </section>
 
-<section id="PlaylistsCollection">
-  <div class="add-playlist-card">
-    <button class="CreatePlaylist-Button"></button>
-    <div class="system-UI-accent">Create new playlist</div>
+<section id="PersonalPlaylistsCollection">
+    <div class="add-playlist-card">
+      <button class="CreatePlaylist-Button"></button>
+      <div class="system-UI-accent">Create new playlist</div>
+    </div>
 
-  </div>
-
-  <!--event.stopPropagation(). ska behovas eller vi byta design
-  click på knappen också aktiverar länken-->
       <a href="personal-playlist.html" class="clear-link">
         <div class="playlist-card">
           <div class="title-UI">Bohemian Rhapsody</div>
@@ -98,7 +95,32 @@
       </a>
       
     </section>
+    <!--osynlig nu ska visas när add playlist knapp ckickad-->
+    <div id="CreatePlaylist" class="edit-elements">
+      <form id="CreatePlaylistForm" class="system-UI">
+        <h1 class="title">Create new playlist</h1>
+        
+        <div class="form-input-area">
+          <label for="add-cover" class="sub-title-bold">Playlist cover:</label>
+          <input type="file" id="add-cover" name="add-cover" >
+        </div>
   
+        <div class="form-input-area">
+          <label for="playlist-name" class="sub-title-bold">Playlist name:</label>
+          <input type="text" id="playlist-name" name="playlist-name">
+        </div>
+
+        <div class="form-input-area">
+          <label for="playlist-description" class="sub-title-bold">Playlist description:</label>
+          <textarea id="playlist-description" name="playlist-description"></textarea>
+        </div>
+        <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel editing</button>
+        <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Save changes</button>
+        <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
+      </form>
+    </div>
+
+
   <footer>
     <div>
       <p class="sub-title">Digital design och utveckling III</p>

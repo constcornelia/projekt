@@ -8,6 +8,27 @@
 </head>
 
 <body>
+  <section class="hidden-elements">
+    <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
+    <div id="AlertDeleteSong" class="edit-elements">
+      <h1 class="title">the song</h1>
+      <p class="text">Delete from playlist?</p>
+      <div>
+        <button id="UndoDeleteSongButton" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+        <button id="ConfirmDeleteSongButton" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när låt aderas
+    listener på add song knappen-->
+    <div id="AlertAddSong" class="edit-elements">
+      <h1 class="title">the song</h1>
+      <p class="text">is added to your playlist</p>
+      <div>
+        <button id="UndoAddSongButton" type="button" class="ActionButton-light system-UI-accent">Undo</button>
+        <button id="ConfirmAddSongButton" type="button" class="ActionButton-light system-UI-accent">OK</button>
+      </div>
+    </div>
+  </section>
 
 
   <nav>
@@ -29,41 +50,22 @@
       </ul>
     </div>
     <!--osynlig nu ska visas när add song knapp klickad-->
-    <div class="AddSong edit-elements">
-      <form id="AddSongForm">
+    <div id="AddSong" class="edit-elements">
+      <form id="AddSongForm" class="system-UI">
         <h1 class="title">Add song to playlist</h1>
-        <input type="search" name="SearchInput" id="SearchSongInput" class="system-UI" placeholder="Search song">
+        <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
         <button id="ButtonSearch" type="submit"></button>
       </form>
       <div id="SearchResultSongs">
         <ul>
           <!--alla li ska aderas genom search
           sen varenda låt kan aderas med knapp vid låtnamn-->
-          <li>song<button class="Song-Action-Button">add song</button></li>
+          <li>song<button type="button" class="AddSongButton">add song</button></li>
         </ul>
       </div>
     </div>
   
   </section>
-  <!--osynlig nu ska visas när liked-->
-  <div class="AlertAddPlaylist edit-elements">
-    <h1 class="title">the playlist</h1>
-    <p class="text"> is added to your liked playlist</p>
-    <div>
-      <button id="Undo" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
-      <button id="Confirm" type="submit" class="ActionButton-light system-UI-accent">OK</button>
-    </div>
-  </div>
-  <!--osynlig nu ska visas när låt aderas 
-  listener på add song knappen-->
-  <div class="AlertAddSong edit-elements">
-    <h1 class="title">the song</h1>
-    <p class="text"> is added to your playlist</p>
-    <div>
-      <button id="Undo" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
-      <button id="Confirm" type="submit" class="ActionButton-light system-UI-accent">OK</button>
-    </div>
-  </div>
 
   <footer>
     <div>

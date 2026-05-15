@@ -348,7 +348,8 @@ label.Sort-Playlists:has(input:checked) {
 
 /*content*/
 
-#PlaylistsCollection {
+#PublicPlaylistsCollection,
+#PersonalPlaylistsCollection {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
@@ -470,55 +471,89 @@ label.Sort-Playlists:has(input:checked) {
     flex: 1;
 }
 .songs li{
-    margin-top: 10px;
+    padding: 10px;
+    list-style-type: none;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
-.songs li button.Song-Action-Button{
+button.AddSongButton, button.RemoveSongButton{
     display: none;
+    background-color: var(--light-text-color);
+    color: var(--main-color);
+    border: none;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 5px;
 }
 
-.songs li:hover button.Song-Action-Button{
+.songs li:hover button.RemoveSongButton{
+    display: initial;
+}
+#AddSong li:hover button.AddSongButton{
     display: initial;
 }
 /*adding song*
 det verkat för komplicerad göra med popup 
-eftersom vi behöver placerasökresultat någonstans
+eftersom vi behöver placera sökresultat någonstans
 så gjorde jag istället extra section 
 som bli synlig på add knäpp click*/
-.AddSong{
-    flex: 1;
-    display: none;
-}
-.AlertAddSong, .AlertDeleteSong{
-    width: 200px;
-    display: none;
-}
 
-/*personal playlist*/
-.EditPlaylist{
+
+
+/*hidden elements, synlig med event listener*/
+.hidden-elements{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#EditPlaylist{
     display: none;
 }
-/*info pop-ups*/
+#AddSong{
+    display: none;
+}
+#AlertDeleteSong{
+    display: none;
+    width: 200px;
+    position: absolute;
+    top: 30%;
+    z-index: 1;
+    margin: 50px auto;
+    border: solid saddlebrown 1px;
+
+}
+#AlertAddSong{
+    display: none;
+    width: 200px;
+    position: absolute;
+    top: 30%;
+    z-index: 1;
+    margin: 50px auto;
+    border: solid saddlebrown 1px;
+
+}
+#AlertAddPlaylist{
+    display: none;
+    width: 200px;
+    position: absolute;
+    top: 30%;
+    z-index: 1;
+    margin: 50px auto;
+    border: solid saddlebrown 1px;
+
+}
+#CreatePlaylist{
+    display: none;
+}
 .edit-elements{
     background-color: var(--main-color);
     padding: 20px;
     color: var(--light-text-color);
 
     border-radius: 40px;
-
-}
-.AlertAddPlaylist{
-    font-size: 20px;
-    width: 300px;
-    text-align: center;
-    display: none;
-
-}
-.AlertAddPlaylist h1{
-    font-size: 25px;
-    margin: 0;
-}
-.AlertAddSong{
-    text-align: center;
 
 }
 
