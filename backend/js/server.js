@@ -154,10 +154,30 @@ async function handler(request) {
 
         if (url.pathname == "/api/playlists") {
             playlists = JSON.stringify(playlists);
-            let headers = { "Accept": "application/json" };
+            let headers = { 
+                "Content-Type": "application/json" 
+            };
             return new Response(playlists, { 
                 status: 200, 
                 headers: headers 
+            });
+        }
+
+        if (url.pathname == "/api/users") {
+            return new Response(JSON.stringify(users), {
+                status: 200,
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+        }
+
+        if (url.pathname == "/api/songs") {
+            return new Response(JSON.stringify(songs), {
+                status: 200,
+                headers: {
+                    "Content-Type": "application/json"
+                }
             });
         }
 
