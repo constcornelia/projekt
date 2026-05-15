@@ -150,9 +150,6 @@ async function handler(request) {
         return new Response(null, options);
     }
 
-
-
-
     if (request.method == "GET") {
 
         if (url.pathname == "/api/playlists") {
