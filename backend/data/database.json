@@ -110,7 +110,7 @@
       "description": "Playlist for the emos",
       "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
       "likes": [],
-      "tags": ["emo"],
+      "tags": ["emo", "rock"],
       "songs": [
         { "songId": "s-1", "editorId": "u-1" }
       ]
@@ -134,7 +134,7 @@
       "description": "Energi och tempo för träningen",
       "imgUrl": "",
       "likes": [],
-      "tags": ["workout"],
+      "tags": ["workout", "hype"],
       "songs": [
         { "songId": "s-70", "editorId": "u-1" }
       ]
@@ -146,7 +146,7 @@
       "description": "Lugn start på dagen",
       "imgUrl": "",
       "likes": [],
-      "tags": ["acoustic"],
+      "tags": ["acoustic", "calm"],
       "songs": [
         { "songId": "s-15", "editorId": "u-1" }
       ]
@@ -158,7 +158,7 @@
       "description": "Musik som höjer stämningen",
       "imgUrl": "",
       "likes": [],
-      "tags": ["party"],
+      "tags": ["party", "hype"],
       "songs": [
         { "songId": "s-44", "editorId": "u-1" }
       ]
@@ -170,7 +170,7 @@
       "description": "För plugg och jobb",
       "imgUrl": "",
       "likes": [],
-      "tags": ["lofi"],
+      "tags": ["lofi", "chill"],
       "songs": [
         { "songId": "s-43", "editorId": "u-1" }
       ]
@@ -182,7 +182,7 @@
       "description": "När man vill känna allt",
       "imgUrl": "",
       "likes": [],
-      "tags": ["sad"],
+      "tags": ["sad", "ballad"],
       "songs": [
         { "songId": "s-5", "editorId": "u-1" }
       ]
@@ -194,7 +194,7 @@
       "description": "Sol, värme och semester",
       "imgUrl": "",
       "likes": [],
-      "tags": ["summer"],
+      "tags": ["summer", "electronic"],
       "songs": [
         { "songId": "s-60", "editorId": "u-1" }
       ]
