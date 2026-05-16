@@ -136,7 +136,7 @@ async function handler(request) {
 
         // Get all users
         if (url.pathname == "/api/users") {
-            let users = JSON.stringify(users);
+            users = JSON.stringify(users);
             return new Response(users, {
                 status: 200,
                 headers: headers
