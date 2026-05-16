@@ -108,11 +108,107 @@
       "ownerId": "u-1",
       "name": "My Emo Romance",
       "description": "Playlist for the emos",
-      "coverImgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
+      "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
       "likes": [],
       "tags": ["emo"],
       "songs": [
         { "songId": "s-1", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-2",
+      "ownerId": "u-1",
+      "name": "Late Night Drive",
+      "description": "Perfekt för nattliga bilturer",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["chill"],
+      "songs": [
+        { "songId": "s-52", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-3",
+      "ownerId": "u-1",
+      "name": "Gym Motivation",
+      "description": "Energi och tempo för träningen",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["workout"],
+      "songs": [
+        { "songId": "s-70", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-4",
+      "ownerId": "u-1",
+      "name": "Sunday Morning Coffee",
+      "description": "Lugn start på dagen",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["acoustic"],
+      "songs": [
+        { "songId": "s-15", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-5",
+      "ownerId": "u-1",
+      "name": "Party Bangers",
+      "description": "Musik som höjer stämningen",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["party"],
+      "songs": [
+        { "songId": "s-44", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-6",
+      "ownerId": "u-1",
+      "name": "Focus Mode",
+      "description": "För plugg och jobb",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["lofi"],
+      "songs": [
+        { "songId": "s-43", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-7",
+      "ownerId": "u-1",
+      "name": "Sad Hours",
+      "description": "När man vill känna allt",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["sad"],
+      "songs": [
+        { "songId": "s-5", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-8",
+      "ownerId": "u-1",
+      "name": "Summer Vibes",
+      "description": "Sol, värme och semester",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["summer"],
+      "songs": [
+        { "songId": "s-60", "editorId": "u-1" }
+      ]
+    },
+    {
+      "id": "p-9",
+      "ownerId": "u-1",
+      "name": "Throwback Hits",
+      "description": "Nostalgi från tidigare år",
+      "imgUrl": "",
+      "likes": [],
+      "tags": ["nostalgia"],
+      "songs": [
+        { "songId": "s-17", "editorId": "u-1" }
       ]
     }
   ]
