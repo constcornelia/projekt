@@ -17,7 +17,7 @@ class UI {
       this.renderSongs(songs);
   }
 
-  async renderPlaylists (playlists) {
+  async renderPlaylists(playlists) {
 
     section.innerHTML = "";
 
