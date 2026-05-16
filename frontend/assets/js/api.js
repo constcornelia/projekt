@@ -1,77 +1,120 @@
-const url = "http://localhost:8000/";
+const url = "http://localhost:8000"; 
 
-let accept = { "Accept": "application/json" };
-let contentType = { "Content-Type": "application/json" };
-
-// Test om det går att göra alla requests med en metod
 class API {
-    async requests(method, body, enpoint, msg) {
-        let options; 
+   async getRequest(endpoint) {
+       try {
+           let request = new Request (url + endpoint, {
+               method: "GET",
+               headers: {
+                "Accept": "application/json"
+               }
+           });
+      
+           let response = await fetch (request);
+           if (!response.ok) {
+               throw new Error (response.status);
+           }
+           let data = await response.json();
+           return data;
 
-        if (method == "GET") options = { method: method, headers: { authorization, accept }};
-        if (method == "POST" || method == "PATCH") options = { method: method, headers: { authorization, contentType }, body: JSON.stringify(body) };
-        if (method == "DELETE") options = { method: method, headers: { authorization }};
+       } catch (error) {
+        section.innerHTML = "Couldn't reach data. Please try again! " + error;
+       }
+   }
 
-        try {
-            const request = new Request(url + enpoint, { options });
-            const response = await fetch(request);
-            if (!response.ok) throw new Error(response.status);
-    
-            let data = await response.json();
-            // Använd msg-argummentet för att potentiellt meddela användare specifikt om error eller success
-            return data;
-        } catch(error) {}
-    }
+   async postRequest (endpoint, body) {
+       try {
+           let request = new Request (url + endpoint, {
+               method: "POST",
+               headers: {
+                "Authorization": "Bearer 67",
+                "Content-Type": "application/json"
 
-/*
-    // Method for all get-requests
-     async getRequest(endpoint) {
-        try {
-            const request = new Request(url + endpoint, { headers });
-            const response = await fetch(request);
-            if (!response.ok) throw new Error(response.status);
+               },
+               body: JSON.stringify(body)
+           });
 
-            let data = await response.json();
-            return data;
 
-        } catch(error) {
-            // Handle error on frontend
-        }
-    }
+           let response = await fetch (request);
 
-    // Method for all post-requests
-    async postRequest(endpoint, body) { // Get body from frontend
-        try {
-            const request = new Request(url + endpoint, {
-                method: "POST",
-                headers,
-                body: JSON.stringify(body)
-            });
-            const response = await fetch(request);
-            if (!response.ok) throw new Error(response.status);
-            // Maybe an alert message to communicate that it was successfull to user
 
-            let data = await response.json();
-            return data; // Maybe needs to me made sure if it's the right response.status
-        } catch(error) {}
-    }
+           let data = null;
 
-    // Method for all patch-requests
-    async patchRequest(endpoint, body) {
-        try {
-            const request = new Request(url + endpoint, {
-                method: "PATCH",
-                headers,
-                body: JSON.stringify(body)
-            });
-            const response = await fetch(request);
-            if (!response.ok) throw new Error(response.status);
 
-            let data = await response.json();
-            return data; // Maybe needs to me made sure if it's the right response.status
-        } catch(error) {}
-    }
+           if (response.status !== 201) {
+               data = await response.json();
+               return data;
+           }
 
-    // Method for all delete-requests
-    async deleteRequest(enpoint) {} */
+
+           alert("Successfully posted!");
+       } catch (error) {
+           section.innerHTML = "Couldn't post product " + error;
+       }
+   }
+
+   async patchRequest (endpoint, body) {
+       try {
+           let request = new Request (url + endpoint, {
+               method: "PATCH",
+               headers: {
+                 "Authorization": "Bearer 67",
+                "Content-Type": "application/json"
+               },
+               body: JSON.stringify(body)
+           });
+
+
+           let response = await fetch (request);
+
+
+           let data = null;
+
+
+           if (response.status !== 204) {
+               data = await response.json();
+               return data;
+           }
+
+
+           alert("Successfully edited!");
+
+
+       } catch (error) {
+           section.innerHTML = "Couldn't edit product " + error;
+       }
+   }
+
+   async deleteRequest (endpoint) {
+       try {
+           let request = new Request (url + endpoint, {
+               method: "DELETE",
+               headers: {
+                 "Authorization": "Bearer 67"
+               }
+           });
+
+
+           let response = await fetch (request);
+
+
+           let data = null;
+
+
+           if (response.status !== 204) {
+               data = await response.json();
+               return data;
+           }
+
+
+           alert("Successfully deleted!");
+          
+       } catch (error) {
+           section.innerHTML = "Couldn't delete product " + error;
+       }
+   }
 }
+
+
+
+

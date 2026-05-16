@@ -14,72 +14,65 @@
     <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
     <div>YourSound</div>
     <div class="space"></div>
-    <a href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
+    <a href="personal.html" class="ActionButton system-UI-accent">My collection</a>
   </nav>
-  <section class="hidden-elements">
-    <!--osynlig nu ska visas när liked-->
-    <div id="AlertAddPlaylist" class="edit-elements">
-      <h1 class="title">the playlist</h1>
-      <p class="text"> is added to your liked playlist</p>
-      <div>
-        <button id="Undo" type="button" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="Confirm" type="button" class="ActionButton-light system-UI-accent">OK</button>
-      </div>
-    </div>
-    </section>
 
-  <section class="filters">
-      <form action="" id="SearchPaylistForm" class="system-UI">
-          <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
+  <section id="filters">
+      <form action="" id="SearchForm">
+        <div id="search" id="SearchSongs">
+          <input type="search" name="SearchInput" placeholder="Search song, artist, genre" id="SearchInput" class="system-UI">
           <button id="ButtonSearch" type="submit"></button>
+        </div>
       </form>
 
-      <form class="FilterForm system-UI">
-        <div class="Select">
-          <select id="SelectGenre"  name="genre">
-            <option value="">Select genre</option>
-            <option value="ShowAll">all</option>
-          </select>
-        </div>
-        
-        <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
-          <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
-        </label>
-        <label class="Sort-Playlists" for="All-Playlists">All playlists
-          <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
-        </label>
-  
+      <form id="FilterForm">
+      <div id="genre">
+        <select name="genre" id="SelectGenre" class="system-UI">
+          <option value="">Select genre</option>
+          <option value="ShowAll">all</option>
+        </select>
+      </div>
+
+      <div id="likes">
+        <label for="liked" class="system-UI">
+          <input type="checkbox" id="liked" name="liked" value="liked">
+          Show most admired song today</label>
+      </div>
+
+
     </form>
 
   </section>
 
+  <section id="PlaylistsCollection">
 
-  <section id="PublicPlaylistsCollection">
-        <a href="public-playlist.html" class="clear-link">
-          <div class="playlist-card">
-            <div class="title-UI">Bohemian Rhapsody</div>
-            <div class="playlist-actions">
-              <button class="LikePlaylist-Button"></button>
-              <button class="Play StopPlaying"></button>
-            </div>
-          </div>
-        </a>
+    <a href="playlist.html">
+      <div class="song-card">
+        <!-- <div class="title-UI">Bohemian Rhapsody</div>
+        <div class="actions">
+          <button id="LikePlaylist"><img src="../assets/images/icons/like.svg" alt=""></button>
+          <button><img src="../assets/images/icons/play.svg" alt=""></button>
+        </div> -->
+      </div>
+    </a>
+    
   </section>
 
   <footer>
     <div>
-      <p class="sub-title">Digital design och utveckling III</p>
-      <p class="sub-title">Projekt</p>
+      <p class="sub-title-bold">Digital design och utveckling III</p>
+      <p class="sub-title-bold">Projekt</p>
       <p class="sub-title">&copy; 2026 Grupp 5</p>
     </div>
     <div>
-      <p class="sub-title">Developers</p>
-      <p class="text">Cornelia Rönnemyr Papic</p>
-      <p class="text">Dilara Kinali</p>
-      <p class="text">Elena Khusanova</p>
+      <p class="sub-title-bold">Developers</p>
+      <p class="sub-title">Cornelia Rönnemyr Papic</p>
+      <p class="sub-title">Dilara Kinali</p>
+      <p class="sub-title">Elena Khusanova</p>
     </div>
   </footer>
 
+  <script src="assets/js/api.js"></script>
   <script src="assets/js/ui.js"></script>
 </body>
 
