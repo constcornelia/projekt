@@ -11,7 +11,7 @@ class API {
            });
       
            let response = await fetch (request);
-           if(!response.ok) {
+           if (!response.ok) {
                throw new Error (response.status);
            }
            let data = await response.json();
