@@ -12,89 +12,80 @@
 
   <nav>
     <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
-    <div>Personal Playlist</div>
+    <div>My playlists collection</div>
     <div class="space"></div>
-    <button id="EditPlaylist-Button" class="ActionButton">Edit playlist details</button>
-    <!--listener på EditPlaylistButton så EditPlaylist bli synlig-->
-    <button id="AddSong-Button" class="ActionButton system-UI-accent">Add song to playlist</button>
-    <!--listener på AddSongButton så AddSong div bli synlig-->
+    <a href="edit-account.html" class="SecondaryButton system-UI-accent clear-link">Edit my account</a>
   </nav>
-  <section class="hidden-elements">
-    <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
-    <div id="AlertDeleteSong" class="edit-elements">
-      <h1 class="title">the song</h1>
-      <p class="text">Delete from playlist?</p>
-      <div>
-        <button id="UndoDeleteSongButton" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="ConfirmDeleteSongButton" type="submit" class="ActionButton-light system-UI-accent">OK</button>
-      </div>
-    </div>
-    <!--osynlig nu ska visas när låt aderas
-    listener på add song knappen-->
-    <div id="AlertAddSong" class="edit-elements">
-      <h1 class="title">the song</h1>
-      <p class="text">is added to your playlist</p>
-      <div>
-        <button id="UndoAddSongButton" type="button" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="ConfirmAddSongButton" type="button" class="ActionButton-light system-UI-accent">OK</button>
-      </div>
-    </div>
-  </section>
 
-  <section id="PersonalPlaylist" class="playlist-content">
+  <section id="filters">
+    <form action="" id="SearchPaylistForm" class="system-UI">
+        <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
+        <button id="ButtonSearch" type="submit"></button>
+    </form>
+
+    <form class="FilterForm system-UI">
+      <div class="Select">
+        <select id="SelectGenre"  name="genre">
+          <option value="">Select genre</option>
+          <option value="ShowAll">all</option>
+        </select>
+      </div>
+      
+      <label class="Sort-Playlists" for="Sort-Liked-playlists">My liked playlists
+        <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
+      </label>
+      <label class="Sort-Playlists" for="All-Playlists">All my playlists
+        <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
+      </label>
+
+  </form>
+
+</section>
+
+<section id="PersonalPlaylistsCollection">
+    <div class="add-playlist-card">
+      <button class="CreatePlaylist-Button"></button>
+      <div class="system-UI-accent">Create new playlist</div>
+    </div>
+
+    <a href="public-playlist.html" class="clear-link">
+      <div class="playlist-card">
+        <h1 class="title-UI">Bohemian Rhapsody
+        </h1>
+        <div class="playlist-actions">
+          <button class="LikePlaylist-Button system-UI"><span>ff</span></button>
+          <button class="Play StopPlaying"></button>
+        </div>
+        <p class="system-UI-accent">tags</p>
+        <img src="assets/images/Bohemian_Rhapsody_poster.png">
+      </div>
+    </a>
     
-    <!--osynlig nu ska visas när edit knapp ckickad-->
-    <div id="EditPlaylist" class="edit-elements">
-      <form id="EditPlaylistForm" class="system-UI">
-        <h1 class="title">Edit playlist</h1>
+    </section>
+    <!--osynlig nu ska visas när add playlist knapp ckickad-->
+    <div id="CreatePlaylist" class="edit-elements">
+      <form id="CreatePlaylistForm" class="system-UI">
+        <h1 class="title">Create new playlist</h1>
         
         <div class="form-input-area">
-          <label for="edit-cover" class="sub-title-bold">Playlist cover:</label>
-          <input type="file" id="edit-cover" name="edit-cover" >
+          <label for="add-cover" class="sub-title-bold">Playlist cover:</label>
+          <input type="file" id="add-cover" name="add-cover" >
         </div>
   
         <div class="form-input-area">
-          <label for="edit-playlist-name" class="sub-title-bold">Playlist name:</label>
-          <input type="text" id="edit-playlist-name" name="edit-playlist-name">
+          <label for="playlist-name" class="sub-title-bold">Playlist name:</label>
+          <input type="text" id="playlist-name" name="playlist-name">
         </div>
 
         <div class="form-input-area">
-          <label for="edit-playlist-description" class="sub-title-bold">Playlist description:</label>
-          <textarea id="edit-playlist-description" name="edit-playlist-description"></textarea>
+          <label for="playlist-description" class="sub-title-bold">Playlist description:</label>
+          <textarea id="playlist-description" name="playlist-description"></textarea>
         </div>
-        <button type="button" id="DeletePlaylistButton" class="ActionButton-light system-UI-accent">Delete playlist</button>
-        <button type="button" id="CancelEditButton" class="ActionButton-light system-UI-accent">Cancel editing</button>
+        <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel editing</button>
         <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Save changes</button>
+        <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
       </form>
     </div>
-
-    <div class="songs">
-      <h1 class="title">Songs in playlist</h1>
-      <ul>
-        <!--li är bara för exempel men ska skapas med api data
-        listener på remove song aktiveras AlertDeleteSong-->
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-      </ul>
-    </div>
-    <!--osynlig nu ska visas när add song knapp klickad-->
-    <div id="AddSong" class="edit-elements">
-      <form id="AddSongForm" class="system-UI">
-        <h1 class="title">Add song to playlist</h1>
-        <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
-        <button id="ButtonSearch" type="submit"></button>
-      </form>
-      <div id="SearchResultSongs">
-        <ul>
-          <!--alla li ska aderas genom search
-          sen varenda låt kan aderas med knapp vid låtnamn-->
-          <li>song<button type="button" class="AddSongButton">add song</button></li>
-        </ul>
-      </div>
-    </div>
-  
-  </section>
 
 
   <footer>

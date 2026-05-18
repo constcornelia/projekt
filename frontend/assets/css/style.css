@@ -26,6 +26,9 @@ body {
 }
 
 /*text styles*/
+p, h1, h2{
+    margin: 0;
+}
 .title {
     font-family: "Accent";
     font-weight: 900;
@@ -176,9 +179,7 @@ footer {
     padding: 20px;
     margin-top: 10px;
 }
-footer p {
-    margin: 0;
-}
+
 
 /*first page*/
 #intro {
@@ -191,14 +192,12 @@ footer p {
 }
 #intro h1 {
     font-size: 100px;
-    margin: 0;
 }
 #intro h2 {
     margin-bottom: 20px;
 }
 #intro p {
     font-size: 20px;
-    margin: 0;
 }
 
 /*login && register*/
@@ -246,7 +245,7 @@ footer p {
 }
 
 /*filters*/
-.filters{
+#filters{
     display: flex;
     gap: 20px;
     height: 50px;
@@ -356,48 +355,65 @@ label.Sort-Playlists:has(input:checked) {
     align-items: center;
     justify-items: center;
 }
-
 .playlist-card {
-    background-image: linear-gradient(var(--shadowing-color)), url(../images/Bohemian_Rhapsody_poster.png);
-    background-size: cover;
+    background-color: var(--shadowing-color);
     min-width: 200px;
+    max-width: 300px;
     aspect-ratio: 1;
     padding: 20px;
     border-radius: 60px;
     box-sizing: border-box;
-    box-shadow: inset 0 0 0 50em var(--shadowing-color);
     text-align: center;
     color: var(--light-text-color);
-    font-size: 25px;
 
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 40px;
     align-items: center;
-    justify-content: center;
+    justify-content: end;
+
+    position: relative;
+    overflow: hidden;
 
     transition: var(--transition);
 }
+.playlist-card h1{
+    font-size: 25px;
+
+}
+.playlist-card img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+}
 .playlist-actions {
-    transition: var(--transition);
     display: flex;
     gap: 20px;
-    opacity: 0;
+    height: 25%;
+    width: 100%;
+    justify-content: center;
 }
-.playlist-card:hover .playlist-actions {
-    transition: var(--transition);
-    opacity: 1;
-}
+
 .playlist-actions button.LikePlaylist-Button{
     transition: var(--transition);
     border: none;
     background-color: transparent;
-    background-image: url("../images/icons/like.svg");
+    background-image: url("../images/icons/like-count.svg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    width: 70px;
-    height: 70px;
+    color: var(--main-color);
+    flex: 0;
+    aspect-ratio: 2/1;
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: end;
 }
 .playlist-actions button.LikePlaylist-Button:hover {
     cursor: pointer;
@@ -413,8 +429,8 @@ label.Sort-Playlists:has(input:checked) {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    width: 70px;
-    height: 70px;
+    flex: 0;
+    aspect-ratio: 1/1;
 }
 .playlist-actions button.Play:hover {
     cursor: pointer;
