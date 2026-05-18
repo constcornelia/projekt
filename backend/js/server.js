@@ -1,5 +1,6 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById } from "./playlists.js";
+import { createUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -16,7 +17,7 @@ function handleResponse(body, options) {
         headers: options.headers
     });
 }
- 
+
 async function handler(request) {
     let url = new URL(request.url);
 
@@ -73,6 +74,17 @@ async function handler(request) {
     if (url.pathname == "/welcome" && request.method == "GET") {
         return serveFile(request, "../../frontend/intro.html");
     }
+
+    if (url.pathname == "/logout" && request.method == "GET") {
+        let options = {
+            status: 303,
+            headers: {
+                "Location": "/welcome",
+                "Set-Cookie": "session_id=deleted; Max-Age=0"
+            }
+        };
+        return new Response(null, options);
+    }
     
     // Logga in
     if (url.pathname == "/login") {
@@ -98,6 +110,8 @@ async function handler(request) {
                     };
                     // cookies[username] = user.username;
                     break;
+                } else {
+                    // Alert user that the login failed
                 }
             }
 
@@ -111,28 +125,52 @@ async function handler(request) {
         }
     }
 
-    if (url.pathname == "/logout" && request.method == "GET") {
-        let options = {
-            status: 303,
-            headers: {
-                "Set-Cookie": "session_id=deleted; Max-Age=0;",
-                "Location": "/welcome"
+    if (url.pathname == "signup") {
+        if (request.method == "GET") {
+            return serveFile(request, "../../frontend/signup.html");
+        }
+
+        if (request.method == "POST") {
+            let signupReq = await request.json();
+            for (let user of users) {
+                if (signupReq.username == user) {
+                    // Alert user that the username is taken
+                }
             }
-        };
-        return new Response(null, options);
+            createUser(users, signupReq);
+            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
+            
+            let cookieId = createRandomCookie();
+            let cookie = { username: signupReq.username, cookie: cookieId };
+            cookies.push(cookie);
+
+            headers = {
+                "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
+                "Location": "/"
+            };
+
+            return new Response(null, {
+                status: 303,
+                headers: headers
+            });
+        }
     }
 
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
 
-        // Get all playlists
+        // Get all/filtered playlists
         if (url.pathname == "/api/playlists") {
-            playlists = JSON.stringify(playlists);
-            return new Response(playlists, { 
+            let tag = url.searchParams.get("tag");
+            if (tag) playlists = filterPlaylistsByTag(playlists, tag);
+
+            let body = JSON.stringify(playlists);
+            return new Response(body, { 
                 status: 200, 
                 headers: headers 
             });
         }
+
 
         // Get all users
         if (url.pathname == "/api/users") {
@@ -196,9 +234,36 @@ async function handler(request) {
 
     }
 
+    // ha en funktion som ger true om man är ägaren kanske
     if (request.method == "POST") {}
+    
     if (request.method == "PATCH") {}
-    if (request.method == "DELETE") {}
+
+    if (request.method == "DELETE") {
+
+        // Delete playlist if owner
+        let route = new URLPattern({ pathname: "/user/playlists/:id" });
+        if (route.test(request.url)) {
+            let match = route.exec(request.url);
+            let id = pathname.groups.id
+
+            deletePlaylistById(playlists, id);
+
+            return new Response(null, {});
+        }
+
+        // Delete song from playlist if owner FRÅGA OM DETTA SKA VA I PATCH ELLER DELETE
+        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/songId" });
+        if (route.test(request.url)) {
+            let match = songRoute.exec(request.url);
+            let playlistId = pathname.groups.id;
+            let songId = pathname.groups.songId;
+
+            removeSongFromPlaylist(playlists, playlistId, songId);
+
+            return new Response(null, {});
+        }
+    }
 
     return serveDir(request, { fsRoot: "../../frontend" });
 }

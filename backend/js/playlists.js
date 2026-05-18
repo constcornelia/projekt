@@ -1,4 +1,16 @@
-export function filterPlaylistsByTag(playlists, tag) {}
+export function filterPlaylistsByTag(playlists, tag) {
+    let playlistsByByTag = [];
+
+    for (let playlist of playlists) {
+        for (let playlistTag of playlist.tags) {
+            if (playlistTag == tag) {
+                playlistsByByTag.push(playlist);
+            }
+        }
+    }
+    return playlistsByByTag;
+}
+
 export function sortPlaylistsByLikes() {}
 export function getPlaylistBySearch() {}
 
@@ -10,6 +22,7 @@ export function getPlaylistById(playlists, id) {
     }
     return null;
 }
+
 
 export function getTags(playlists) {
     const tags = [];
