@@ -67,7 +67,6 @@ class UI {
       }
   }
 
-
   async dropDownsPlaylist (playlistElement) {
     let playlists = await api.getRequest("/api/playlists");
 
@@ -76,6 +75,17 @@ class UI {
           option.value = playlist.id;
           option.textContent = playlist.name;
           playlistElement.append(option);
+      }
+  }
+  
+  async dropDownsTags (tagsElement) {
+    let tags = await api.getRequest("/api/tags");
+
+      for (let tag of tags) {
+          const option = document.createElement("option");
+          option.value = tag;
+          option.textContent = tag;
+          tagsElement.append(option);
       }
   }
 }
