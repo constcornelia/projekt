@@ -32,7 +32,6 @@ export function getPlaylistById(playlists, id) {
     return null;
 }
 
-
 export function getTags(playlists) {
     const tags = [];
     for (let playlist of playlists) {
