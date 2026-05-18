@@ -40,7 +40,7 @@ class UI {
         a.innerHTML = `
         <div class="song-card">
         <p><span>Likes</span>: ${playlist.likes.length}</p>
-        <img src="${playlist.coverImgUrl}">
+        <img src="${playlist.imgUrl}">
         <h2>${playlist.name}</h2>
         <p><span>Owner</span>: ${ownerName}</p>
         <p><span>Tags</span>: #${playlist.tags}</p>
