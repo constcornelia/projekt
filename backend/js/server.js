@@ -1,5 +1,6 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags } from "./playlists.js";
+import { createUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -16,7 +17,7 @@ function handleResponse(body, options) {
         headers: options.headers
     });
 }
- 
+
 async function handler(request) {
     let url = new URL(request.url);
 
@@ -98,6 +99,8 @@ async function handler(request) {
                     };
                     // cookies[username] = user.username;
                     break;
+                } else {
+                    // Alert user that the login failed
                 }
             }
 
@@ -108,6 +111,36 @@ async function handler(request) {
                 });
             }
             return new Response("Invalid login", { status: 401 });
+        }
+    }
+
+    if (url.pathname == "signup") {
+        if (request.method == "GET") {
+            return serveFile(request, "../../frontent/signup.html");
+        }
+
+        if (request.method == "POST") {
+            let signupReq = await request.json();
+            for (let user of users) {
+                if (signupReq.username == user) {
+                    // Alert user that the username is taken
+                }
+            }
+            createUser(signupReq);
+            
+            let cookieId = createRandomCookie();
+            let cookie = { username: signupReq.username, cookie: cookieId };
+            cookies.push(cookie);
+
+            headers = {
+                "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
+                "Location": "/"
+            };
+
+            return new Response(null, {
+                status: 303,
+                headers: headers
+            });
         }
     }
 
@@ -196,6 +229,7 @@ async function handler(request) {
 
     }
 
+    // ha en funktion som ger true om man är ägaren kanske
     if (request.method == "POST") {}
     if (request.method == "PATCH") {}
     if (request.method == "DELETE") {}
