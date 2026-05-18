@@ -1,7 +1,14 @@
-function getUserId(users) {}
+function getNewUserId(users, id) {
+    for (let user of users) {
+        if (user.id == id) {
+            return user;
+        }
+    }
+    return null;
+}
 
 export function createUser(users, signupReq) {
-    let id = getUserId(users);
+    let id = getNewUserId(users);
     
     let newUser = {
         id: id,
