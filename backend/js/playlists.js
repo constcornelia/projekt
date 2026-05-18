@@ -11,20 +11,6 @@ export function filterPlaylistsByTag(playlists, tag) {
     return playlistsByByTag;
 }
 
-export function sortPlaylistsByLikes() {}
-export function getPlaylistBySearch() {}
-export function getAllPlaylists (database) {
-    return database.playlists;
-}
-
-export function getAllSongs (database) {
-    return database.songs;
-}
-
-export function getAllUsers (database) {
-    return database.users;
-}
-
 export function getPlaylistBySearch(database, query) {
     let filteredPlaylists = [];
     let q = query.toLowerCase();
@@ -51,7 +37,11 @@ export function getTags(playlists) {
     const tags = [];
     for (let playlist of playlists) {
         for (let tag of playlist.tags) {
-            tags.push(tag);
+            if (!tags.includes(tag)) {
+                tags.push(tag);
+            } else {
+                continue;
+            }
         }
     }
     return tags;
@@ -152,10 +142,6 @@ export function editPlaylistById(database, playlistId, body) {
     Deno.writeTextFileSync("database.json", JSON.stringify(database));
 
     return true;
-}
-
-export function filterPlaylistsByTag(playlists, tag) {
-
 }
 
 export function sortPlaylistsByLikes(playlists) {
