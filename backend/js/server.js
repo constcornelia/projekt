@@ -1,3 +1,5 @@
+// HEJ
+
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags } from "./playlists.js";
 import { createUser } from "./login.js";
