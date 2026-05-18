@@ -1,7 +1,5 @@
-// HEJ
-
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById } from "./playlists.js";
 import { createUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -76,6 +74,17 @@ async function handler(request) {
     if (url.pathname == "/welcome" && request.method == "GET") {
         return serveFile(request, "../../frontend/intro.html");
     }
+
+    if (url.pathname == "/logout" && request.method == "GET") {
+        let options = {
+            status: 303,
+            headers: {
+                "Location": "/welcome",
+                "Set-Cookie": "session_id=deleted; Max-Age=0"
+            }
+        };
+        return new Response(null, options);
+    }
     
     // Logga in
     if (url.pathname == "/login") {
@@ -118,7 +127,7 @@ async function handler(request) {
 
     if (url.pathname == "signup") {
         if (request.method == "GET") {
-            return serveFile(request, "../../frontent/signup.html");
+            return serveFile(request, "../../frontend/signup.html");
         }
 
         if (request.method == "POST") {
@@ -128,7 +137,8 @@ async function handler(request) {
                     // Alert user that the username is taken
                 }
             }
-            createUser(signupReq);
+            createUser(users, signupReq);
+            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
             let cookieId = createRandomCookie();
             let cookie = { username: signupReq.username, cookie: cookieId };
@@ -146,28 +156,21 @@ async function handler(request) {
         }
     }
 
-    if (url.pathname == "/logout" && request.method == "GET") {
-        let options = {
-            status: 303,
-            headers: {
-                "Set-Cookie": "session_id=deleted; Max-Age=0;",
-                "Location": "/welcome"
-            }
-        };
-        return new Response(null, options);
-    }
-
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
 
-        // Get all playlists
+        // Get all/filtered playlists
         if (url.pathname == "/api/playlists") {
-            playlists = JSON.stringify(playlists);
-            return new Response(playlists, { 
+            let tag = url.searchParams.get("tag");
+            if (tag) playlists = filterPlaylistsByTag(playlists, tag);
+
+            let body = JSON.stringify(playlists);
+            return new Response(body, { 
                 status: 200, 
                 headers: headers 
             });
         }
+
 
         // Get all users
         if (url.pathname == "/api/users") {
@@ -233,8 +236,34 @@ async function handler(request) {
 
     // ha en funktion som ger true om man är ägaren kanske
     if (request.method == "POST") {}
+    
     if (request.method == "PATCH") {}
-    if (request.method == "DELETE") {}
+
+    if (request.method == "DELETE") {
+
+        // Delete playlist if owner
+        let route = new URLPattern({ pathname: "/user/playlists/:id" });
+        if (route.test(request.url)) {
+            let match = route.exec(request.url);
+            let id = pathname.groups.id
+
+            deletePlaylistById(playlists, id);
+
+            return new Response(null, {});
+        }
+
+        // Delete song from playlist if owner FRÅGA OM DETTA SKA VA I PATCH ELLER DELETE
+        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/songId" });
+        if (route.test(request.url)) {
+            let match = songRoute.exec(request.url);
+            let playlistId = pathname.groups.id;
+            let songId = pathname.groups.songId;
+
+            removeSongFromPlaylist(playlists, playlistId, songId);
+
+            return new Response(null, {});
+        }
+    }
 
     return serveDir(request, { fsRoot: "../../frontend" });
 }
