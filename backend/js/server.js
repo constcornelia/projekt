@@ -1,86 +1,90 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById } from "./playlists.js";
+import { createUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
 
 const cookies = []; // Alla aktiva cookies ska sparas här
 
-// Skapar ett random cookieId
-function createRandomCookie () { // Ska denna kanske flyttas till ui eller api eller något... hmmmmm
+function createRandomCookie () { 
     return crypto.randomUUID(); 
 }
- 
+
+function handleResponse(body, options) {
+    return new Response(body, {
+        status: options.status,
+        headers: options.headers
+    });
+}
+
 async function handler(request) {
     let url = new URL(request.url);
 
     let songs = data.songs;
     let playlists = data.playlists;
-    const users = userData.users;
+    let users = userData.users;
 
-    
     if (url.pathname == "/" && request.method == "GET") {
         let userCookie = request.headers.get("cookie");
-        console.log(userCookie);
+        let session = false;
 
-        for (let key in cookies) {
-            console.log(cookies);
-            let cookie = cookies[key];
-            if (userCookie != null && userCookie.includes(cookie.cookie)) {
-                return serveFile(request, "../../frontend/main.html");
+        if (userCookie != null) {
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+
+                let cookieStr = "session_id=" + cookie.cookie;
+
+                if (userCookie.includes(cookieStr)) {
+                    session = true;
+                    break;
+
+                }
             }
-        }
 
-        let options = {
-            status: 303,
-            headers: { "Location": "/welcome" }
-        };
-
-        return new Response(null, options);
-
-/*         const activeCookie = request.headers.get("cookie"); // här får vi sessionId om det finns en, annars null
-
-        // vi vill kolla om den aktiva cookien finns i arrayen "cookies"
-            // om den finns det ska vi bli omdirigerade till main.html
-            // annars ska vi komma till intro.html
-
-
-
-        for (let cookie of cookies) {
-
-        }
-
-    
-        // Kollar om det finns en aktiv cookie som matchar med en från minnet
-        let session = null;
-        for (let cookie of cookies) {
-            if (activeCookie != null && activeCookie.includes(cookie.cookie)) {
-                session = cookie;
-                break;
-            }
-        }
-
-        //  Om med finns någon kommer man till start...
-        if (session) { 
-            return serveFile(request, "../../frontend/main.html");
         }
         
-        // ... annars kommer man till login
-        let options = {
-            "Location": "/welcome",
-            status: 303
-        }
+        // Kolla om det finns en aktiv cookie, isf kommer man till start...
+        //     console.log(cookie)
+            
+        //     if (userCookie != null && userCookie.includes(cookie.cookie)) {
+        //     }
+        // }
 
-        return new Response("Unauthorized", options); */
+        if (session) {
+            return serveFile(request, "../../frontend/main.html");
+        } 
+        // else {
+        //     // ... annars kommer man till intro
+        //     if (!userCookie) {
+        //         let options = {
+        //             status: 303,
+        //             headers: { "Location": "/welcome" }
+        //         };
+        
+        //         return new Response(null, options);
+
+        return new Response(null, {
+            status: 303,
+            headers: { "Location": "/welcome"}
+        });
+
     }
 
     if (url.pathname == "/welcome" && request.method == "GET") {
         return serveFile(request, "../../frontend/intro.html");
     }
 
-    // if (url.pathname == "/signup") {
-    //     return serveFile(request, "../../frontend/signup.html")
-    // }
+    if (url.pathname == "/logout" && request.method == "GET") {
+        let options = {
+            status: 303,
+            headers: {
+                "Location": "/welcome",
+                "Set-Cookie": "session_id=deleted; Max-Age=0"
+            }
+        };
+        return new Response(null, options);
+    }
     
     // Logga in
     if (url.pathname == "/login") {
@@ -91,109 +95,177 @@ async function handler(request) {
 
         if (request.method == "POST") {
             let loginReq = await request.json();
+            let cookieId = createRandomCookie();
 
-            // Kollar om den inloggade användaren finns i users.json
-            let loggedInUser = null;
+            let headers = null;
+            // Kollar om den om det är rätt user och lösen, isf skapas en cookie
             for (let user of users) {
                 if (user.username == loginReq.username && user.password == loginReq.password) {
-                    loggedInUser = user;
+                    let cookie = { username: user.username, cookie: cookieId };
+                    cookies.push(cookie);
+
+                    headers = {
+                        "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
+                        "Location": "/"
+                    };
+                    // cookies[username] = user.username;
                     break;
+                } else {
+                    // Alert user that the login failed
                 }
             }
 
-            if (!loggedInUser) {
-                return new Response("Wrong login", { status: 401 });
-            }
-
-            // Kollar i den aktiva cookie-arrayen om usern finns det
-            let existing = null;
-            for (let cookie of cookies) {
-                if (cookie.username == loggedInUser.username) {
-                    existing = cookie;
-                    break;
-                }
-            }
-            
-            // Skapar cookie-id och lägger in den i minnet
-            let cookieId = createRandomCookie();
-            if (existing) {
-                existing.cookie = cookieId;
-            } else {
-                cookies.push({ 
-                    username: loginReq.username,
-                    cookie: cookieId
+            if (headers != null) {
+                return new Response(null, {
+                    status: 303, 
+                    headers: headers
                 });
             }
+            return new Response("Invalid login", { status: 401 });
+        }
+    }
 
-            // Skapar cookien
-            let headers = {
-                "Set-Cookie": "sessionId=" + cookieId + "; Max-Age=10080; path=/",
+    if (url.pathname == "signup") {
+        if (request.method == "GET") {
+            return serveFile(request, "../../frontend/signup.html");
+        }
+
+        if (request.method == "POST") {
+            let signupReq = await request.json();
+            for (let user of users) {
+                if (signupReq.username == user) {
+                    // Alert user that the username is taken
+                }
+            }
+            createUser(users, signupReq);
+            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
+            
+            let cookieId = createRandomCookie();
+            let cookie = { username: signupReq.username, cookie: cookieId };
+            cookies.push(cookie);
+
+            headers = {
+                "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                 "Location": "/"
             };
 
-            // return serveFile(request, "../../frontend/main.html");
-
-            return new Response(null, { 
+            return new Response(null, {
                 status: 303,
-                headers: headers 
+                headers: headers
             });
         }
     }
 
-    if (url.pathname == "/logout" && request.method == "GET") {
-        let options = {
-            status: 303,
-            headers: {
-                "Set-Cookie": "session_id=deleted; Max-Age=0; Path=/"
-            }
-        };
-        return new Response(null, options);
-    }
-
-
-
-
     if (request.method == "GET") {
+        let headers = { "Content-Type": "application/json" };
 
+        // Get all/filtered playlists
         if (url.pathname == "/api/playlists") {
-            playlists = JSON.stringify(playlists);
-            let headers = { "Accept": "application/json" };
-            return new Response(playlists, { 
+            let tag = url.searchParams.get("tag");
+            if (tag) playlists = filterPlaylistsByTag(playlists, tag);
+
+            let body = JSON.stringify(playlists);
+            return new Response(body, { 
                 status: 200, 
                 headers: headers 
             });
         }
 
-        // Search for a playlist by name, description, or tags
-        if (url.pathname == "/search") {
+
+        // Get all users
+        if (url.pathname == "/api/users") {
+            users = JSON.stringify(users);
+            return new Response(users, {
+                status: 200,
+                headers: headers
+            });
+        }
+
+        // Get all songs
+        if (url.pathname == "/api/songs") {
+            let songs = JSON.stringify(songs);
+            return new Response(songs, {
+                status: 200,
+                headers: headers
+            });
+        }
+
+        // Search for a playlist by name and description
+        if (url.pathname == "/api/playlists/search") {
             let phrase = url.searchParams.get("q");
             if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
         }
 
         // Search for a song by artist or title to add to a playlist
-        if (url.pathname == "/songs/search") {
+        if (url.pathname == "/api/songs/search") {
             let phrase = url.searchParams.get("q");
             if (phrase) songs = getSongsBySearch(songs, phrase);
         }
+
+        // Get all tags (for "select genre")
+        if (url.pathname == "/api/tags") {
+            let tags = getTags(playlists);
+            let body = JSON.stringify(tags);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
+        }
+
+
+        // Get active user
+            // Get owned playlists
+            // Get liked playlists
+
+        // Get playlist by id
+        let route = new URLPattern({ pathname: "/api/products/:id" });
+        if (route.test(request.url)) {
+            let match = route.exec(request.url);
+            let id = match.pathname.groups.id;
+
+            let playlist = getPlaylistById(playlists, id);
+
+            let body = JSON.stringify(playlist);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
+        }
+
     }
 
+    // ha en funktion som ger true om man är ägaren kanske
     if (request.method == "POST") {}
+    
+    if (request.method == "PATCH") {}
 
+    if (request.method == "DELETE") {
+
+        // Delete playlist if owner
+        let route = new URLPattern({ pathname: "/user/playlists/:id" });
+        if (route.test(request.url)) {
+            let match = route.exec(request.url);
+            let id = pathname.groups.id
+
+            deletePlaylistById(playlists, id);
+
+            return new Response(null, {});
+        }
+
+        // Delete song from playlist if owner FRÅGA OM DETTA SKA VA I PATCH ELLER DELETE
+        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/songId" });
+        if (route.test(request.url)) {
+            let match = songRoute.exec(request.url);
+            let playlistId = pathname.groups.id;
+            let songId = pathname.groups.songId;
+
+            removeSongFromPlaylist(playlists, playlistId, songId);
+
+            return new Response(null, {});
+        }
+    }
 
     return serveDir(request, { fsRoot: "../../frontend" });
 }
 
-
 Deno.serve(handler);
-
-// 1. loop igenom arrayen "cookies"
-
-// 2. kolla om något av objekten har användarnamnet == username
-
-// 3. om inget objekt finns med användarnamnet, 
-// skapa det som { username: ..., cookie: ... } 
-// och pusha det till cookie arrayen
-
-// 4. om det finns - då har dom loggat in igen, 
-// uppdatera cookien? dvs objektet.cookie = den nya 
-// cookien
