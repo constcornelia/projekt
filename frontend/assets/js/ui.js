@@ -47,6 +47,7 @@ class UI {
           let a = document.createElement("a");
 
           a.href = `personal.html?id=${playlist.id}`;
+          a.classList.add('clear-link');
 
           let ownerName;
 
