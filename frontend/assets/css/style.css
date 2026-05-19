@@ -611,7 +611,7 @@ som bli synlig på add knäpp click*/
 }
 
 #AddSong{
-    display: initial;
+    display: none;
     flex: 2;
 }
 #AddSongForm {
@@ -660,7 +660,7 @@ som bli synlig på add knäpp click*/
 
 
 #EditPlaylist{
-    display: initial;
+    display: none;
     flex: 2;
 }
 #EditPlaylistForm {
@@ -696,6 +696,4 @@ som bli synlig på add knäpp click*/
     gap: 20px;
 }
 
-#CreatePlaylist{
-    display: none;
-}
+
