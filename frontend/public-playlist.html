@@ -8,28 +8,44 @@
 </head>
 
 <body>
+<!--sektionen med osynliga elementer som ska visas efter klick-->
   <section class="hidden-elements">
     <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
-    <div id="AlertDeleteSong" class="edit-elements">
+    <div id="AlertDeleteSong" class="edit-elements pop-up">
       <h1 class="title">the song</h1>
-      <p class="text">Delete from playlist?</p>
-      <div>
-        <button id="UndoDeleteSongButton" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="ConfirmDeleteSongButton" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+      <div class="pop-up-action system-UI-accent">
+        <p class="text">Delete from playlist?</p>
+        <div>
+          <button id="UndoDeleteSong" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+          <button id="ConfirmDeleteSong" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+        </div>
       </div>
     </div>
     <!--osynlig nu ska visas när låt aderas
     listener på add song knappen-->
-    <div id="AlertAddSong" class="edit-elements">
-      <h1 class="title">the song</h1>
-      <p class="text">is added to your playlist</p>
-      <div>
-        <button id="UndoAddSongButton" type="button" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="ConfirmAddSongButton" type="button" class="ActionButton-light system-UI-accent">OK</button>
+    <div id="AlertAddSong" class="edit-elements pop-up">
+      <h1 class="title">song name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p>is added to your playlist</p>
+        <div>
+          <button id="UndoAddSong" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmAddSong" type="button" class="ActionButton-light">OK</button>
+        </div>
       </div>
     </div>
-  </section>
+    <!--osynlig nu ska visas när liked-->
+    <div id="AlertLikePlaylist" class="edit-elements pop-up">
+      <h1 class="title">playlist name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p> is added to your liked playlist</p>
+        <div>
+          <button id="UndoLike" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmLike" type="button" class="ActionButton-light">OK</button>
+        </div>
+      </div>
+    </div>
 
+  </section>
 
   <nav>
     <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
