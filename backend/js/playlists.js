@@ -60,25 +60,56 @@ export function getPlaylistBySearch(database, query) {
 }
 
 export function getPlaylistById(playlists, songs, id) {
-    let playlist;
+
+    let foundPlaylist = null;
+
     for (let playlist of playlists) {
         if (playlist.id == id) {
-            playlist = playlist;
+            foundPlaylist = playlist;
         }
     }
 
+    if (!foundPlaylist) {
+        return null;
+    }
+
     let playlistSongs = [];
+
     for (let song of songs) {
-        for (let playlistSong of playlist.songs) {
+        for (let playlistSong of foundPlaylist.songs) {
+
             if (song.id == playlistSong.songId) {
                 playlistSongs.push(song);
             }
         }
     }
 
-    let playlistData = { playlist: playlist, songs: playlistSongs};
-    return playlistData;
+    return {
+        playlist: foundPlaylist,
+        songs: playlistSongs
+    };
 }
+
+// export function getPlaylistById(playlists, songs, id) {
+//     let playlist;
+//     for (let playlist of playlists) {
+//         if (playlist.id == id) {
+//             playlist = playlist;
+//         }
+//     }
+
+//     let playlistSongs = [];
+//     for (let song of songs) {
+//         for (let playlistSong of playlist.songs) {
+//             if (song.id == playlistSong.songId) {
+//                 playlistSongs.push(song);
+//             }
+//         }
+//     }
+
+//     let playlistData = { playlist: playlist, songs: playlistSongs};
+//     return playlistData;
+// }
 
 export function getTags(playlists) {
     const tags = [];

@@ -212,8 +212,6 @@ async function handler(request) {
             });
         }
 
-
-        
         const cookie = request.headers.get("cookie");
         let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
         if (url.pathname == "/api/profile/info") {
@@ -222,7 +220,7 @@ async function handler(request) {
         }
 
         if (url.pathname == "/api/profile/playlists/owned") {
-            let ownedPlaylists = getOwnedPlaylists(user);
+            let ownedPlaylists = getOwnedPlaylists(playlists, user);
             let body = JSON.stringify(ownedPlaylists);
             return new Response(body, {
                 status: 200,
@@ -231,7 +229,7 @@ async function handler(request) {
         }
 
         if (url.pathname == "/api/profile/playlists/liked") {
-            let likedPlaylists = getLikedPlaylists(user);
+            let likedPlaylists = getLikedPlaylists(playlists, user);
             let body = JSON.stringify(likedPlaylists);
             return new Response(body, {
                 status: 200,
@@ -240,7 +238,7 @@ async function handler(request) {
         }
         
         if (url.pathname == "/api/profile/playlists/contributed") {
-            let contributedPlaylist = getContributedPlaylists(user);
+            let contributedPlaylist = getContributedPlaylists(playlists, user);
             let body = JSON.stringify(contributedPlaylist);
             return new Response(body, {
                 status: 200,
