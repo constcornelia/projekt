@@ -40,13 +40,12 @@ class UI {
     section.innerHTML = "";
 
     let users = await api.getRequest("/api/users");
-    console.log(users);
 
       for (let playlist of playlists) {
 
           let a = document.createElement("a");
 
-          a.href = `public-playlist.html?id=${playlist.id}`;
+          a.href = `/api/playlists/${playlist.id}`;
           a.classList.add('clear-link');
 
           let ownerName;
@@ -99,18 +98,24 @@ class UI {
           playlistElement.append(option);
       }
   }
-    async dropDownsTags (tagsElement) {
-    let tags = await api.getRequest("/api/tags");
+  
+  async dropDownsTags() {
+
+      const selectTag = document.querySelector("#SelectGenre");
+
+      let tags = await api.getRequest("/api/tags");
 
       for (let tag of tags) {
           const option = document.createElement("option");
+
           option.value = tag;
           option.textContent = tag;
-          tagsElement.append(option);
+
+          selectTag.append(option);
       }
   }
 }
 
 const ui = new UI();
 ui.getPlaylists();
-
+ui.dropDownsTags();

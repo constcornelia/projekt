@@ -1,5 +1,5 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist } from "./playlists.js";
 import { createUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -125,7 +125,7 @@ async function handler(request) {
         }
     }
 
-    if (url.pathname == "signup") {
+    if (url.pathname == "/signup") {
         if (request.method == "GET") {
             return serveFile(request, "../../frontend/signup.html");
         }
@@ -218,7 +218,7 @@ async function handler(request) {
             // Get liked playlists
 
         // Get playlist by id
-        let route = new URLPattern({ pathname: "/api/products/:id" });
+        let route = new URLPattern({ pathname: "/api/playlists/:id" });
         if (route.test(request.url)) {
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
@@ -253,7 +253,7 @@ async function handler(request) {
         }
 
         // Delete song from playlist if owner FRÅGA OM DETTA SKA VA I PATCH ELLER DELETE
-        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/songId" });
+        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/:songId" });
         if (route.test(request.url)) {
             let match = songRoute.exec(request.url);
             let playlistId = pathname.groups.id;
