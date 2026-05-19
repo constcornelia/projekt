@@ -1,5 +1,5 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, deleteSongFromPlaylist } from "./playlists.js";
 import { createUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -224,11 +224,12 @@ async function handler(request) {
             let id = match.pathname.groups.id;
 
             let playlist = getPlaylistById(playlists, id);
+            if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
 
             let body = JSON.stringify(playlist);
             return new Response(body, {
                 status: 200,
-                headers: headers
+                headers: headers,
             });
         }
 
