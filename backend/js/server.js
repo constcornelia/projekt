@@ -125,7 +125,7 @@ async function handler(request) {
         }
     }
 
-    if (url.pathname == "signup") {
+    if (url.pathname == "/signup") {
         if (request.method == "GET") {
             return serveFile(request, "../../frontend/signup.html");
         }
