@@ -1,6 +1,6 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist } from "./playlists.js";
-import { createUser } from "./login.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, deleteSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -111,7 +111,8 @@ async function handler(request) {
                     // cookies[username] = user.username;
                     break;
                 } else {
-                    // Alert user that the login failed
+                    alertUser("Wrong username or password");
+                    break;
                 }
             }
 
@@ -131,12 +132,11 @@ async function handler(request) {
         }
 
         if (request.method == "POST") {
-            console.log("hej")
             let signupReq = await request.json();
-            console.log(signupReq);
             for (let user of users) {
                 if (signupReq.username == user.username) {
                     // Alert user that the username is taken
+                    break;
                 }
             }
             createUser(users, signupReq);
@@ -146,7 +146,6 @@ async function handler(request) {
             let cookie = { username: signupReq.username, cookie: cookieId };
             cookies.push(cookie);
 
-            let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                 "Location": "/"
             };
@@ -172,7 +171,6 @@ async function handler(request) {
                 headers: headers 
             });
         }
-
 
         // Get all users
         if (url.pathname == "/api/users") {
@@ -215,22 +213,44 @@ async function handler(request) {
         }
 
 
+        
+        const cookie = request.headers.get("cookie");
+        let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        if (url.pathname == "/api/profile/info") {
+            let body = JSON.stringify(user);
+            // Get users name + pfp
+        }
+
+        if (url.pathname == "/api/profile/playlists/owned") {
+            let ownedPlaylists = getOwnedPlaylists(user);
+        }
+
+        if (url.pathname == "/api/profile/playlists/liked") {
+            let likedPlaylists = getLikedPlaylists(user);
+        }
+        
+        if (url.pathname == "/api/profile/playlists/contributed") {
+            let contributedPlaylist = getContributedPlaylists(user);
+        }
+
+
         // Get active user
             // Get owned playlists
             // Get liked playlists
 
         // Get playlist by id
-        let route = new URLPattern({ pathname: "/api/products/:id" });
+        let route = new URLPattern({ pathname: "/api/playlists/:id" });
         if (route.test(request.url)) {
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
-            let playlist = getPlaylistById(playlists, id);
+            let playlist = getPlaylistById(playlists, songs, id);
+            if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
 
             let body = JSON.stringify(playlist);
             return new Response(body, {
                 status: 200,
-                headers: headers
+                headers: headers,
             });
         }
 
@@ -255,7 +275,7 @@ async function handler(request) {
         }
 
         // Delete song from playlist if owner FRÅGA OM DETTA SKA VA I PATCH ELLER DELETE
-        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/songId" });
+        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/:songId" });
         if (route.test(request.url)) {
             let match = songRoute.exec(request.url);
             let playlistId = pathname.groups.id;

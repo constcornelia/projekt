@@ -1,3 +1,8 @@
+export function getOwnedPlaylists(playlists, user) {}
+export function getLikedPlaylists(playlists, user) {}
+export function getContributedPlaylists(playlists, user) {}
+
+
 export function filterPlaylistsByTag(playlists, tag) {
     let playlistsByByTag = [];
 
@@ -13,13 +18,25 @@ export function filterPlaylistsByTag(playlists, tag) {
 
 export function getPlaylistBySearch() {}
 
-export function getPlaylistById(playlists, id) {
+export function getPlaylistById(playlists, songs, id) {
+    let playlist;
     for (let playlist of playlists) {
         if (playlist.id == id) {
-            return playlist;
+            playlist = playlist;
         }
     }
-    return null;
+
+    let playlistSongs = [];
+    for (let song of songs) {
+        for (let playlistSong of playlist.songs) {
+            if (song.id == playlistSong.songId) {
+                playlistSongs.push(song);
+            }
+        }
+    }
+
+    let playlistData = { playlist: playlist, songs: playlistSongs};
+    return playlistData;
 }
 
 
