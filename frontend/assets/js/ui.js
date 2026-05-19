@@ -88,6 +88,7 @@ class UI {
       }
   }
 
+
   async dropDownsPlaylist (playlistElement) {
     let playlists = await api.getRequest("/api/playlists");
 
@@ -98,8 +99,7 @@ class UI {
           playlistElement.append(option);
       }
   }
-  
-  async dropDownsTags (tagsElement) {
+    async dropDownsTags (tagsElement) {
     let tags = await api.getRequest("/api/tags");
 
       for (let tag of tags) {
@@ -110,3 +110,8 @@ class UI {
       }
   }
 }
+
+
+const ui = new UI();
+ui.getPlaylists();
+
