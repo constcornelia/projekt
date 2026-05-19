@@ -1,7 +1,38 @@
-export function getOwnedPlaylists(playlists, user) {}
-export function getLikedPlaylists(playlists, user) {}
-export function getContributedPlaylists(playlists, user) {}
+export function getOwnedPlaylists(playlists, user) {
+    let ownedPlaylists = [];
 
+    for (let playlist of playlists) {
+        if(playlist.ownerId == user.id) {
+            ownedPlaylists.push(playlist)
+        }
+    }
+    return ownedPlaylists;
+}
+
+export function getLikedPlaylists(playlists, user) {
+    let likedPlaylists = [];
+
+    for (let playlist of playlists) {
+        if(playlist.likes.includes(user.id)) {
+            likedPlaylists.push(playlist);
+        }
+    }
+    return likedPlaylists;
+}
+
+export function getContributedPlaylists(playlists, user) {
+    let contributedPlaylists = [];
+
+    for (let playlist of playlists) {
+        for (let song of playlist.songs) {
+            if (song.editorId == user.id) {
+                contributedPlaylists.push(playlist);
+                break;
+            }
+        }
+    }
+    return contributedPlaylists;
+}
 
 export function filterPlaylistsByTag(playlists, tag) {
     let playlistsByByTag = [];
