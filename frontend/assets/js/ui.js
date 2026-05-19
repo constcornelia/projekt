@@ -36,6 +36,8 @@ class UI {
   async renderPlaylists(playlists) {
     const section = document.querySelector("#PublicPlaylistsCollection");
 
+    if (!section) return;
+
     section.innerHTML = "";
 
     let users = await api.getRequest("/api/users");
@@ -71,20 +73,21 @@ class UI {
   }
 
   async renderSongs (songs) {
-      const section = document.querySelector("#PublicPlaylist");
+      const songList = document.querySelector(".song ul");
+
+      if (!songList) return;
 
       section.innerHTML = "";
 
       for (let song of songs) {
-          let div = document.createElement("div");
+          let li = document.createElement("li");
 
-        div.innerHTML = `
-        //   <img src="${song.coverImgUrl}"></img>
-          <p>${song.name}</p>
-          <p>${song.artist}</p>
-          `;
+        li.innerHTML = `
+            ${song.name} - ${song.artist}
+            <button class="Play StopPlaying"></button>
+        `;
 
-          section.appendChild(div);
+          songList.appendChild(li);
       }
   }
 
@@ -103,6 +106,8 @@ class UI {
   async dropDownsTags() {
 
       const selectTag = document.querySelector("#SelectGenre");
+
+      if (!selectTag) return;
 
       let tags = await api.getRequest("/api/tags");
 
