@@ -11,21 +11,44 @@
 
 
   <nav>
-    <div><a href="/"><img src="assets/images/icons/logo.svg"></a></div>
-    <div><a href="/"><img src="../assets/images/icons/logo.svg"></a></div>
+    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
     <div>YourSound</div>
     <div class="space"></div>
-    <a href="personal.html" class="ActionButton system-UI-accent">My collection</a>
+    <a href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
   </nav>
+  <section class="hidden-elements">
+    <!--osynlig nu ska visas när liked-->
+    <div id="AlertAddPlaylist" class="edit-elements">
+      <h1 class="title">the playlist</h1>
+      <p class="text"> is added to your liked playlist</p>
+      <div>
+        <button id="Undo" type="button" class="ActionButton-light system-UI-accent">Undo</button>
+        <button id="Confirm" type="button" class="ActionButton-light system-UI-accent">OK</button>
+      </div>
+    </div>
+    </section>
 
   <section id="filters">
-      <form action="" id="SearchForm">
-        <div id="search" id="SearchSongs">
-          <input type="search" name="SearchInput" placeholder="Search song, artist, genre" id="SearchInput" class="system-UI">
+      <form action="" id="SearchPaylistForm" class="system-UI">
+          <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
           <button id="ButtonSearch" type="submit"></button>
-        </div>
       </form>
 
+      <form class="FilterForm system-UI">
+        <div class="Select">
+          <select id="SelectGenre"  name="genre">
+            <option value="">Select genre</option>
+            <option value="ShowAll">all</option>
+          </select>
+        </div>
+        
+        <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
+          <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
+        </label>
+        <label class="Sort-Playlists" for="All-Playlists">All playlists
+          <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
+        </label>
+  
       <form id="FilterForm">
       <div id="genre">
         <select name="genre" id="SelectGenre" class="system-UI">
@@ -45,7 +68,21 @@
 
   </section>
 
-  <section id="PlaylistsCollection">
+
+  <section id="PublicPlaylistsCollection">
+
+      <a href="public-playlist.html" class="clear-link">
+        <div class="playlist-card">
+          <h1 class="title-UI">Bohemian Rhapsody
+          </h1>
+          <div class="playlist-actions">
+            <button class="LikePlaylist-Button system-UI"><span>ff</span></button>
+            <button class="Play StopPlaying"></button>
+          </div>
+          <p class="system-UI-accent">tags</p>
+          <img src="assets/images/Bohemian_Rhapsody_poster.png">
+        </div>
+      </a>
 
     <a href="/playlist">
       <div class="song-card">
@@ -61,15 +98,15 @@
 
   <footer>
     <div>
-      <p class="sub-title-bold">Digital design och utveckling III</p>
-      <p class="sub-title-bold">Projekt</p>
+      <p class="sub-title">Digital design och utveckling III</p>
+      <p class="sub-title">Projekt</p>
       <p class="sub-title">&copy; 2026 Grupp 5</p>
     </div>
     <div>
-      <p class="sub-title-bold">Developers</p>
-      <p class="sub-title">Cornelia Rönnemyr Papic</p>
-      <p class="sub-title">Dilara Kinali</p>
-      <p class="sub-title">Elena Khusanova</p>
+      <p class="sub-title">Developers</p>
+      <p class="text">Cornelia Rönnemyr Papic</p>
+      <p class="text">Dilara Kinali</p>
+      <p class="text">Elena Khusanova</p>
     </div>
   </footer>
 

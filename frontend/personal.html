@@ -17,7 +17,7 @@
     <a href="edit-account.html" class="SecondaryButton system-UI-accent clear-link">Edit my account</a>
   </nav>
 
-  <section class="filters">
+  <section id="filters">
     <form action="" id="SearchPaylistForm" class="system-UI">
         <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
         <button id="ButtonSearch" type="submit"></button>
@@ -48,57 +48,24 @@
       <div class="system-UI-accent">Create new playlist</div>
     </div>
 
-      <a href="personal-playlist.html" class="clear-link">
-        <div class="playlist-card">
-          <div class="title-UI">Bohemian Rhapsody</div>
-          <div class="playlist-actions">
-            <button class="LikePlaylist-Button"></button>
-            <button class="Play StopPlaying"></button>
-          </div>
+    <a href="public-playlist.html" class="clear-link">
+      <div class="playlist-card">
+        <h1 class="title-UI">Bohemian Rhapsody
+        </h1>
+        <div class="playlist-actions">
+          <button class="LikePlaylist-Button system-UI"><span>ff</span></button>
+          <button class="Play StopPlaying"></button>
         </div>
-      </a>
-      <a href="personal-playlist.html" class="clear-link">
-        <div class="playlist-card">
-          <div class="title-UI">Bohemian Rhapsody</div>
-          <div class="playlist-actions">
-            <button class="LikePlaylist-Button"></button>
-            <button class="Play StopPlaying"></button>
-          </div>
-        </div>
-      </a>
-      <a href="personal-playlist.html" class="clear-link">
-        <div class="playlist-card">
-          <div class="title-UI">Bohemian Rhapsody</div>
-          <div class="playlist-actions">
-            <button class="LikePlaylist-Button"></button>
-            <button class="Play StopPlaying"></button>
-          </div>
-        </div>
-      </a>
-      <a href="personal-playlist.html" class="clear-link">
-        <div class="playlist-card">
-          <div class="title-UI">Bohemian Rhapsody</div>
-          <div class="playlist-actions">
-            <button class="LikePlaylist-Button"></button>
-            <button class="Play StopPlaying"></button>
-          </div>
-        </div>
-      </a>
-      <a href="personal-playlist.html" class="clear-link">
-        <div class="playlist-card">
-          <div class="title-UI">Bohemian Rhapsody</div>
-          <div class="playlist-actions">
-            <button class="LikePlaylist-Button"></button>
-            <button class="Play StopPlaying"></button>
-          </div>
-        </div>
-      </a>
-      
+        <p class="system-UI-accent">tags</p>
+        <img src="assets/images/Bohemian_Rhapsody_poster.png">
+      </div>
+    </a>
+    
     </section>
     <!--osynlig nu ska visas när add playlist knapp ckickad-->
     <div id="CreatePlaylist" class="edit-elements">
+      <h1 class="title">Create new playlist</h1>
       <form id="CreatePlaylistForm" class="system-UI">
-        <h1 class="title">Create new playlist</h1>
         
         <div class="form-input-area">
           <label for="add-cover" class="sub-title-bold">Playlist cover:</label>
@@ -135,6 +102,7 @@
     </div>
   </footer>
 
+  <script src="assets/js/api.js"></script>
   <script src="assets/js/ui.js"></script>
 </body>
 

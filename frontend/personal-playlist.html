@@ -8,17 +8,6 @@
 </head>
 
 <body>
-
-
-  <nav>
-    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
-    <div>Personal Playlist</div>
-    <div class="space"></div>
-    <button id="EditPlaylist-Button" class="ActionButton">Edit playlist details</button>
-    <!--listener på EditPlaylistButton så EditPlaylist bli synlig-->
-    <button id="AddSong-Button" class="ActionButton system-UI-accent">Add song to playlist</button>
-    <!--listener på AddSongButton så AddSong div bli synlig-->
-  </nav>
   <section class="hidden-elements">
     <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
     <div id="AlertDeleteSong" class="edit-elements">
@@ -41,13 +30,23 @@
     </div>
   </section>
 
+
+  <nav>
+    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
+    <div>Personal Playlist</div>
+    <div class="space"></div>
+    <button id="EditPlaylist-Button" class="ActionButton">Edit playlist details</button>
+    <!--listener på EditPlaylistButton så EditPlaylist bli synlig-->
+    <button id="AddSong-Button" class="ActionButton system-UI-accent">Add song to playlist</button>
+    <!--listener på AddSongButton så AddSong div bli synlig-->
+  </nav>
+
   <section id="PersonalPlaylist" class="playlist-content">
     
     <!--osynlig nu ska visas när edit knapp ckickad-->
     <div id="EditPlaylist" class="edit-elements">
+      <h1 class="title">Edit playlist</h1>
       <form id="EditPlaylistForm" class="system-UI">
-        <h1 class="title">Edit playlist</h1>
-        
         <div class="form-input-area">
           <label for="edit-cover" class="sub-title-bold">Playlist cover:</label>
           <input type="file" id="edit-cover" name="edit-cover" >
@@ -62,26 +61,28 @@
           <label for="edit-playlist-description" class="sub-title-bold">Playlist description:</label>
           <textarea id="edit-playlist-description" name="edit-playlist-description"></textarea>
         </div>
-        <button type="button" id="DeletePlaylistButton" class="ActionButton-light system-UI-accent">Delete playlist</button>
-        <button type="button" id="CancelEditButton" class="ActionButton-light system-UI-accent">Cancel editing</button>
-        <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Save changes</button>
+        <div class="edit-actions">
+          <button type="button" id="DeletePlaylistButton" class="ActionButton-light">Delete playlist</button>
+          <button type="button" id="CancelEditButton" class="ActionButton-light">Cancel editing</button>
+          <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light">Save changes</button>
+        </div>
       </form>
     </div>
 
     <div class="songs">
       <h1 class="title">Songs in playlist</h1>
-      <ul>
+      <ul class="system-UI">
         <!--li är bara för exempel men ska skapas med api data
         listener på remove song aktiveras AlertDeleteSong-->
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
-        <li>song<button type="button" class="RemoveSongButton system-UI">remove song</button> </li>
+        <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
+        <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
+        <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
       </ul>
     </div>
     <!--osynlig nu ska visas när add song knapp klickad-->
     <div id="AddSong" class="edit-elements">
+      <h1 class="title">Add song to playlist</h1>
       <form id="AddSongForm" class="system-UI">
-        <h1 class="title">Add song to playlist</h1>
         <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
         <button id="ButtonSearch" type="submit"></button>
       </form>

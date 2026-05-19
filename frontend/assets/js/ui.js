@@ -1,7 +1,25 @@
+//det verkar att search funkar inte utan submit
+// så  gjorde jag två former for search och sortering
+//for main.html
+/*
+let FilterForm = document.getElementById("FilterForm");
+FilterForm.addEventListener("change", function (event) {
+    console.log("new value!", event.target);
+
+})
+
+let AddSongForm = document.getElementById("AddSongForm");
+AddSongForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    let SearchInput = SearchForm.SearchInput.value;
+    console.log("new value!", SearchForm.SearchInput);
+
+})*/
+
 // Product   =   Playlist
 // Brand     =   Song
 // Category  =   Tags
-const section = document.querySelector("#PlaylistsCollection");
+const section = document.querySelector("#PublicPlaylistsCollection");
 
 let api = new API();
 
@@ -29,6 +47,7 @@ class UI {
           let a = document.createElement("a");
 
           a.href = `personal.html?id=${playlist.id}`;
+          a.classList.add('clear-link');
 
           let ownerName;
 
@@ -38,13 +57,15 @@ class UI {
             }
         }
         a.innerHTML = `
-        <div class="song-card">
-        <p><span>Likes</span>: ${playlist.likes.length}</p>
-        <img src="${playlist.imgUrl}">
-        <h2>${playlist.name}</h2>
-        <p><span>Owner</span>: ${ownerName}</p>
-        <p><span>Tags</span>: #${playlist.tags}</p>
-        <p>${playlist.description}</p>
+        <div class="playlist-card">
+          <h1 class="title-UI">${playlist.name}
+          </h1>
+          <div class="playlist-actions">
+            <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
+            <button class="Play StopPlaying"></button>
+          </div>
+          <p class="system-UI-accent"><span>Tags</span>:#${playlist.tags}</p>
+          <img src="${playlist.imgUrl}">
         </div>
         `;
           section.appendChild(a);
