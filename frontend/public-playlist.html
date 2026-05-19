@@ -35,28 +35,29 @@
     <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
     <div>Public Playlist</div>
     <div class="space"></div>
-    <button class="LikePlaylist-Button"><img src="assets/images/icons/like.svg" alt=""></button>
-    <!--listener på LikePlaylist så AlertAddPlaylist bli synlig-->
-    <button id="AddSong-Button" class="ActionButton system-UI-accent">add song</button>
-    <!--listener på AddSongButton så AddSong div bli synlig-->
+      <button class="LikePlaylist-Button system-UI-accent"><span>ff</span></button>
+      <!--listener på LikePlaylist så AlertAddPlaylist bli synlig-->
+      <button class="SongToPlaylist-Button system-UI-accent"><span>add song</span></button>
+      <!--listener på AddSongButton så AddSong div bli synlig-->
   </nav>
   
   <section id="PublicPlaylist" class="playlist-content">
     <div class="songs">
       <h1 class="title">Songs in playlist</h1>
-      <ul>
+      <ul class="system-UI">
          <!--li är bara för exempel men ska skapas med api data-->
-          <li>song</li>
+         <li>song<button class="Play StopPlaying"></button></li>
+
       </ul>
     </div>
     <!--osynlig nu ska visas när add song knapp klickad-->
     <div id="AddSong" class="edit-elements">
+      <h1 class="title">Add song to playlist</h1>
       <form id="AddSongForm" class="system-UI">
-        <h1 class="title">Add song to playlist</h1>
         <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
         <button id="ButtonSearch" type="submit"></button>
       </form>
-      <div id="SearchResultSongs">
+      <div id="SearchResultSongs" class="system-UI">
         <ul>
           <!--alla li ska aderas genom search
           sen varenda låt kan aderas med knapp vid låtnamn-->

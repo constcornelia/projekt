@@ -201,7 +201,7 @@ footer {
 }
 
 /*login && register*/
-#login {
+.Welcome {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -212,25 +212,25 @@ footer {
     color: var(--light-text-color);
 }
 
-#login .title {
+.Welcome .title {
     font-size: 30px;
 }
-#login form {
+.Welcome form {
     display: flex;
     flex-direction: column;
     gap: 20px;
     width: 300px;
     margin-bottom: 20px;
 }
-#login .form-input-area {
+.Welcome .form-input-area {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-#login .form-input-area label {
+.Welcome .form-input-area label {
     margin-left: 10px;
 }
-#login form input {
+.Welcome form input {
     outline-color: var(--hover-color);
     padding: 10px;
     border: solid 2px var(--secondary-color);
@@ -240,7 +240,7 @@ footer {
     color: var(--light-text-color);
 }
 
-#login form input:focus-visible {
+.Welcome form input:focus-visible {
     border: solid 2px var(--light-text-color);
 }
 
@@ -265,7 +265,7 @@ footer {
     background-color: transparent;
     flex: 1;
 }
-::placeholder{
+#SearchPaylistForm ::placeholder{
     color: var(--main-color);
     font-weight: 500;
     font-size: 13px;
@@ -345,21 +345,20 @@ label.Sort-Playlists:has(input:checked) {
 
 
 
-/*content*/
+/*playlist collection*/
 
 #PublicPlaylistsCollection,
 #PersonalPlaylistsCollection {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
     align-items: center;
     justify-items: center;
 }
 .playlist-card {
     background-color: var(--shadowing-color);
-    min-width: 200px;
-    max-width: 300px;
-    aspect-ratio: 1;
+    width: 250px;
+    height: 250px;
     padding: 20px;
     border-radius: 60px;
     box-sizing: border-box;
@@ -368,7 +367,6 @@ label.Sort-Playlists:has(input:checked) {
 
     display: flex;
     flex-direction: column;
-    gap: 10%;
     align-items: center;
     justify-content: space-between;
 
@@ -378,9 +376,9 @@ label.Sort-Playlists:has(input:checked) {
     transition: var(--transition);
 }
 .playlist-card h1{
-    font-size: clamp(20px, 22px, 25px);
-
+    font-size: 25px;
 }
+
 .playlist-card img{
     width: 100%;
     height: 100%;
@@ -393,12 +391,10 @@ label.Sort-Playlists:has(input:checked) {
 .playlist-actions {
     display: flex;
     gap: 20px;
-    height: 25%;
-    width: 100%;
     justify-content: center;
 }
 
-.playlist-actions button.LikePlaylist-Button{
+button.LikePlaylist-Button{
     transition: var(--transition);
     border: none;
     background-color: transparent;
@@ -407,7 +403,7 @@ label.Sort-Playlists:has(input:checked) {
     background-position: center;
     background-size: contain;
     color: var(--main-color);
-    flex: 0;
+    height: 100%;
     aspect-ratio: 2/1;
     padding: 20px;
 
@@ -415,13 +411,13 @@ label.Sort-Playlists:has(input:checked) {
     align-items: center;
     justify-content: end;
 }
-.playlist-actions button.LikePlaylist-Button:hover {
+button.LikePlaylist-Button:hover {
     cursor: pointer;
     transform: var(--transform-hover);
     transition: var(--transition);
 }
 
-.playlist-actions button.Play{
+button.Play{
     transition: var(--transition);
     border: none;
     background-color: transparent;
@@ -429,17 +425,18 @@ label.Sort-Playlists:has(input:checked) {
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    flex: 0;
+    height: 100%;
     aspect-ratio: 1/1;
 }
-.playlist-actions button.Play:hover {
+button.Play:hover {
     cursor: pointer;
     transform: var(--transform-hover);
     transition: var(--transition);
 }
+/*
 .playlist-actions button.StopPlaying {
     background-image: url("../images/icons/pause.svg");
-}
+}*/
 
 .add-playlist-card {
     min-width: 200px;
@@ -475,10 +472,50 @@ label.Sort-Playlists:has(input:checked) {
 
 
 /*playlist page*/
+nav button.LikePlaylist-Button{
+    transition: var(--transition);
+    border: none;
+    background-color: transparent;
+    background-image: url("../images/icons/like-count-dark.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    color: var(--light-text-color);
+    height: 50px;
+    aspect-ratio: 2/1;
+    padding: 20px;
+    margin: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+nav button.LikePlaylist-Button:hover {
+    cursor: pointer;
+    transform: var(--transform-hover);
+    transition: var(--transition);
+}
+.SongToPlaylist-Button{
+    transition: var(--transition);
+    background-color: var(--main-color);
+    color: var(--light-text-color);
+    border: none;
+    padding: 0 20px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 10px;
+
+}
+.SongToPlaylist-Button:hover {
+    cursor: pointer;
+    transform: var(--transform-hover);
+    transition: var(--transition);
+}
 .playlist-content{
     display: flex;
     gap: 20px;
 }
+
 .songs {
     background-color: var(--main-color);
     border-radius: 40px;
@@ -486,30 +523,41 @@ label.Sort-Playlists:has(input:checked) {
     color: var(--light-text-color);
     flex: 1;
 }
-.songs li{
-    padding: 10px;
+ul{
+    margin: 30px 0;
+    padding: 0;
+}
+li{
+    padding: 0;
     list-style-type: none;
-    height: 30px;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
+    height: 40px;
+}
+li:hover{
+    font-size: larger;
+}
+li button{
+    display: none;
 }
 button.AddSongButton, button.RemoveSongButton{
-    display: none;
+    transition: var(--transition);
     background-color: var(--light-text-color);
     color: var(--main-color);
     border: none;
-    border-radius: 10px;
-    margin: 5px;
-    padding: 5px;
+    height: 40px;
+    border-radius: 20px;
+    padding: 5px 10px;
 }
 
-.songs li:hover button.RemoveSongButton{
+li:hover button{
     display: initial;
+    cursor: pointer;
+    transition: var(--transition);
+
 }
-#AddSong li:hover button.AddSongButton{
-    display: initial;
-}
+
 /*adding song*
 det verkat för komplicerad göra med popup 
 eftersom vi behöver placera sökresultat någonstans
@@ -524,12 +572,6 @@ som bli synlig på add knäpp click*/
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-#EditPlaylist{
-    display: none;
-}
-#AddSong{
-    display: none;
 }
 #AlertDeleteSong{
     display: none;
@@ -561,15 +603,99 @@ som bli synlig på add knäpp click*/
     border: solid saddlebrown 1px;
 
 }
+.edit-elements{
+    background-color: var(--main-color);
+    border-radius: 40px;
+    padding: 20px;
+    color: var(--light-text-color);
+}
+
+#AddSong{
+    display: initial;
+    flex: 2;
+}
+#AddSongForm {
+    padding: 10px;
+    border-radius: 20px;
+    border: solid 1px var(--light-text-color);
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
+
+}
+#AddSongForm>input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    flex: 1;
+}
+#AddSongForm ::placeholder{
+    color: var(--light-text-color);
+    font-weight: 500;
+    font-size: 13px;
+
+}
+#AddSongForm>button {
+    border: none;
+    background-color: transparent;
+    background-image: url("../images/icons/seach-revert.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+#AddSongForm:focus-within {
+    background-color: var(--light-text-color);
+    transition: var(--transition);
+}
+#AddSongForm:focus-within>button {
+    background-image: url("../images/icons/search.svg");
+}
+#AddSongForm:focus-within>input {
+    color: var(--main-color);
+}
+
+
+
+#EditPlaylist{
+    display: initial;
+    flex: 2;
+}
+#EditPlaylistForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 30px 0;
+
+}
+#EditPlaylistForm .form-input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#EditPlaylistForm .form-input-area label {
+    margin-left: 10px;
+}
+#EditPlaylistForm input, #EditPlaylistForm textarea {
+    outline-color: var(--hover-color);
+    padding: 10px;
+    border: solid 2px var(--secondary-color);
+    border-radius: 15px;
+    background-color: transparent;
+    outline: none;
+    color: var(--light-text-color);
+}
+
+#EditPlaylistForm input:focus-visible {
+    border: solid 2px var(--light-text-color);
+}
+.edit-actions{
+    display: flex;
+    gap: 20px;
+}
+
 #CreatePlaylist{
     display: none;
 }
-.edit-elements{
-    background-color: var(--main-color);
-    padding: 20px;
-    color: var(--light-text-color);
-
-    border-radius: 40px;
-
-}
-
