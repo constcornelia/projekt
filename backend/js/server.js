@@ -1,5 +1,5 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist } from "./playlists.js";
 import { createUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -125,7 +125,7 @@ async function handler(request) {
         }
     }
 
-    if (url.pathname == "signup") {
+    if (url.pathname == "/signup") {
         if (request.method == "GET") {
             return serveFile(request, "../../frontend/signup.html");
         }
