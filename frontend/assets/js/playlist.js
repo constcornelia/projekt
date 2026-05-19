@@ -1,4 +1,4 @@
-const songList = document.querySelector(".song ul");
+import { getSongsByPlaylist } from "./songs.js";
 
 async function loadPlaylist() {
 
@@ -12,6 +12,8 @@ async function loadPlaylist() {
     let playlist = await api.getRequest(`/api/playlists/${playlistId}`);
 
     let songs = await api.getRequest("/api/songs");
+
+    let playlistSongs = getSongsByPlaylist(playlist, songs);
 
     ui.renderSongs(playlistSongs);
 }

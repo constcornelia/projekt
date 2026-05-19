@@ -72,20 +72,22 @@ class UI {
       }
   }
 
-  async renderSongs (songs) {
-      const songList = document.querySelector(".song ul");
+  renderSongs(songs) {
+
+      const songList = document.querySelector(".songs ul");
 
       if (!songList) return;
 
-      section.innerHTML = "";
+      songList.innerHTML = "";
 
       for (let song of songs) {
+
           let li = document.createElement("li");
 
-        li.innerHTML = `
-            ${song.name} - ${song.artist}
-            <button class="Play StopPlaying"></button>
-        `;
+          li.innerHTML = `
+              ${song.name} - ${song.artist}
+              <button class="Play StopPlaying"></button>
+          `;
 
           songList.appendChild(li);
       }

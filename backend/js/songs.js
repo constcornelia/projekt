@@ -1,5 +1,5 @@
 export function getSongsByPlaylist(playlists, songs) {
-    let playlistSongs = [];
+    let playlistSongs = getSongsByPlaylist(playlist, songs);
 
     for (let playlistSong of playlists.songs) {
 
