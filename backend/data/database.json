@@ -120,7 +120,7 @@
       "ownerId": "u-1",
       "name": "Late Night Drive",
       "description": "Perfekt för nattliga bilturer",
-      "imgUrl": "",
+      "imgUrl": "https://i.pinimg.com/736x/27/20/45/272045dccb59100f1fdc575bad67350f.jpg",
       "likes": [],
       "tags": ["chill"],
       "songs": [
@@ -132,7 +132,7 @@
       "ownerId": "u-1",
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
-      "imgUrl": "",
+      "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
       "likes": [],
       "tags": ["workout", "hype"],
       "songs": [

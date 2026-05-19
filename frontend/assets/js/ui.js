@@ -17,10 +17,8 @@ AddSongForm.addEventListener("submit", function (event) {
 })*/
 
 // Product   =   Playlist
-// Brand     =   Song
+// Brand     =   Song 
 // Category  =   Tags
-const section = document.querySelector("#PublicPlaylistsCollection");
-
 let api = new API();
 
 class UI {
@@ -36,6 +34,9 @@ class UI {
   }
 
   async renderPlaylists(playlists) {
+    const section = document.querySelector("#PublicPlaylistsCollection");
+
+    if (!section) return;
 
     section.innerHTML = "";
 
@@ -72,6 +73,10 @@ class UI {
   }
 
   async renderSongs (songs) {
+      const section = document.querySelector("#PublicPlaylist");
+
+      if (!section) return;
+
       section.innerHTML = "";
 
       for (let song of songs) {
@@ -102,6 +107,8 @@ class UI {
   async dropDownsTags() {
 
       const selectTag = document.querySelector("#SelectGenre");
+
+      if (!selectTag) return;
 
       let tags = await api.getRequest("/api/tags");
 

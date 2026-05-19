@@ -1,4 +1,4 @@
-const main = document.querySelector("main");
+const songs = document.querySelector(".songs");
 
 async function loadPlaylist() {
     const api = new API();
