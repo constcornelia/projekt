@@ -1,22 +1,26 @@
 const form = document.querySelector("#FilterForm");
 const searchBar = document.querySelector("#filters");
-const selectGenre = document.querySelector("#SelectGenre");
 
 let api = new API();
 let ui = new UI();
 
 ui.getPlaylists();
-ui.dropDownsTags(SelectGenre);
 
 async function showPlaylists() {
     let playlists = await api.getRequest("/api/playlists");
     ui.renderPlaylists(playlists);
 }
 
-form.addEvenetListener("submit", async function onSubmit(event) {
+async function showDropDowns () {
+    let tags = await api.getRequest("/api/tags");
+    console.log(tags);
+    ui.dropDownsTags(tags);
+}
+
+form.addEventListener("submit", async function onSubmit(event) {
     event.preventDefault();
 
-    const main = document.querySelector("#PlaylistsCollection");
+    const main = document.querySelector("#PublicPlaylistsCollection");
 
     let tag = form.elements.genre.value;
 
@@ -25,7 +29,7 @@ form.addEvenetListener("submit", async function onSubmit(event) {
     const params = new URLSearchParams();
 
     if (tag && tag !== "all") {
-        params.append("tag", genre);
+        params.append("tag", tag);
     }
 
     let finalPoint = endpoint;
@@ -49,9 +53,9 @@ form.addEvenetListener("submit", async function onSubmit(event) {
 searchBar.addEventListener("submit", async function searchSubmit(event) {
     event.preventDefault();
 
-    let searchInput = searchBar.elements.search.value;
+    let searchInput = searchBar.elements.searchInput.value;
 
-    let playlists = await api.getReuqest("/api/playlists/search?q=" + searchInput);
+    let playlists = await api.getRequest("/api/playlists/search?q=" + searchInput);
 
     if (playlists && playlists.length > 0) {
         ui.renderPlaylists(playlists);
@@ -59,3 +63,5 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
         main.innerHTML = `<p>No playlists matched your search on: <span>${searchInput}</span></p>`;
     }
 });
+
+showDropDowns();

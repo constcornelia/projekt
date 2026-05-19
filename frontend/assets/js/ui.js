@@ -99,18 +99,18 @@ class UI {
           playlistElement.append(option);
       }
   }
-    async dropDownsTags (tagsElement) {
-    let tags = await api.getRequest("/api/tags");
+    async dropDownsTags (tags) {
+      const selectTag = document.querySelector(".FilterForm .Select #SelectGenre");
 
       for (let tag of tags) {
           const option = document.createElement("option");
           option.value = tag;
           option.textContent = tag;
-          tagsElement.append(option);
+          selectTag.append(option);
       }
   }
 }
 
 const ui = new UI();
 ui.getPlaylists();
-
+ui.dropDownsTags();
