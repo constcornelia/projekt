@@ -104,6 +104,25 @@ export function deletePlaylistById(database, playlistId) {
     return true;
 }
 
+export function deleteSongFromPlaylist (playlists, playlistId, songId) {
+    for (let playlist of playlists) {
+
+        if (playlist.id === playlistId) {
+            let updatedSongs = [];
+
+            for (let song of playlist.songs) {
+
+                if (song.songId !== songId) {
+                    updatedSongs.push(song);
+                }
+
+            }
+            playlist.songs = updatedSongs;
+        }
+    }
+    return playlists;
+}
+
 export function editPlaylistById(database, playlistId, body) {
     let found = false;
 
