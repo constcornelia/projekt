@@ -16,6 +16,32 @@
     <div class="space"></div>
     <a href="edit-account.html" class="SecondaryButton system-UI-accent clear-link">Edit my account</a>
   </nav>
+    <section class="hidden-elements">
+      <!--osynlig nu ska visas när add playlist knapp ckickad-->
+      <div id="CreatePlaylist" class="edit-elements pop-up">
+        <h1 class="title">Create new playlist</h1>
+        <form id="CreatePlaylistForm" class="system-UI">
+      
+          <div class="form-input-area">
+            <label for="add-cover" class="sub-title-bold">Playlist cover:</label>
+            <input type="file" id="add-cover" name="add-cover" >
+          </div>
+          <div class="form-input-area">
+            <label for="playlist-name" class="sub-title-bold">Playlist name:</label>
+            <input type="text" id="playlist-name" name="playlist-name">
+          </div>
+          <div class="form-input-area">
+            <label for="playlist-description" class="sub-title-bold">Playlist description:</label>
+            <textarea id="playlist-description" name="playlist-description"></textarea>
+          </div>
+          <div class="edit-actions">
+            <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel</button>
+            <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Create playlist</button>
+            <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
+          </div>
+        </form>
+      </div>
+    </section>  
 
   <section id="filters">
     <form action="" id="SearchPaylistForm" class="system-UI">
@@ -62,30 +88,7 @@
     </a>
     
     </section>
-    <!--osynlig nu ska visas när add playlist knapp ckickad-->
-    <div id="CreatePlaylist" class="edit-elements">
-      <h1 class="title">Create new playlist</h1>
-      <form id="CreatePlaylistForm" class="system-UI">
-        
-        <div class="form-input-area">
-          <label for="add-cover" class="sub-title-bold">Playlist cover:</label>
-          <input type="file" id="add-cover" name="add-cover" >
-        </div>
-  
-        <div class="form-input-area">
-          <label for="playlist-name" class="sub-title-bold">Playlist name:</label>
-          <input type="text" id="playlist-name" name="playlist-name">
-        </div>
 
-        <div class="form-input-area">
-          <label for="playlist-description" class="sub-title-bold">Playlist description:</label>
-          <textarea id="playlist-description" name="playlist-description"></textarea>
-        </div>
-        <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel editing</button>
-        <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Save changes</button>
-        <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
-      </form>
-    </div>
 
 
   <footer>
