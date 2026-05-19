@@ -8,7 +8,7 @@ async function loadPlaylist() {
     const playlistId = params.get("id");
 
     let playlist = await api.getRequest(`api/playlists/${playlistId}`);
-
+    
     main.innerHTML = `
      <a href="/">← Go back</a>
     <div class="playlist">
@@ -24,3 +24,4 @@ async function loadPlaylist() {
     </div>
     `;
 }
+loadPlaylist();
