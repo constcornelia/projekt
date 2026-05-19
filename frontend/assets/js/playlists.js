@@ -1,5 +1,6 @@
 const form = document.querySelector("#FilterForm");
 const searchBar = document.querySelector("#filters");
+const selectGenre = document.querySelector("#SelectGenre");
 
 let api = new API();
 let ui = new UI();
