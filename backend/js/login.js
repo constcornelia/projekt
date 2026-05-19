@@ -9,6 +9,7 @@ export function createUser(users, signupReq) {
         password: signupReq.password,
         profilePicUrl: signupReq.profilePicUrl
     };
+    console.log(newUser)
 
     users.push(newUser);
     return newUser;

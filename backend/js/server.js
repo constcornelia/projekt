@@ -131,9 +131,11 @@ async function handler(request) {
         }
 
         if (request.method == "POST") {
+            console.log("hej")
             let signupReq = await request.json();
+            console.log(signupReq);
             for (let user of users) {
-                if (signupReq.username == user) {
+                if (signupReq.username == user.username) {
                     // Alert user that the username is taken
                 }
             }
@@ -144,7 +146,7 @@ async function handler(request) {
             let cookie = { username: signupReq.username, cookie: cookieId };
             cookies.push(cookie);
 
-            headers = {
+            let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                 "Location": "/"
             };
