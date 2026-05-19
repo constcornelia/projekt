@@ -1,6 +1,6 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, deleteSongFromPlaylist } from "./playlists.js";
-import { createUser } from "./login.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, deleteSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
+import { createUser, alertUser, getUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -111,7 +111,8 @@ async function handler(request) {
                     // cookies[username] = user.username;
                     break;
                 } else {
-                    // Alert user that the login failed
+                    alertUser("Wrong username or password");
+                    break;
                 }
             }
 
@@ -133,8 +134,8 @@ async function handler(request) {
         if (request.method == "POST") {
             let signupReq = await request.json();
             for (let user of users) {
-                if (signupReq.username == user) {
-                    // Alert user that the username is taken
+                if (signupReq.username == user.username) {
+                    break;
                 }
             }
             createUser(users, signupReq);
@@ -170,7 +171,6 @@ async function handler(request) {
                 headers: headers 
             });
         }
-
 
         // Get all users
         if (url.pathname == "/api/users") {
@@ -213,6 +213,27 @@ async function handler(request) {
         }
 
 
+        
+        const cookie = request.headers.get("cookie");
+        let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        if (url.pathname == "/api/profile/info") {
+            let body = JSON.stringify(user);
+            // Get users name + pfp
+        }
+
+        if (url.pathname == "/api/profile/playlists/owned") {
+            let ownedPlaylists = getOwnedPlaylists(user);
+        }
+
+        if (url.pathname == "/api/profile/playlists/liked") {
+            let likedPlaylists = getLikedPlaylists(user);
+        }
+        
+        if (url.pathname == "/api/profile/playlists/contributed") {
+            let contributedPlaylist = getContributedPlaylists(user);
+        }
+
+
         // Get active user
             // Get owned playlists
             // Get liked playlists
@@ -223,7 +244,7 @@ async function handler(request) {
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
-            let playlist = getPlaylistById(playlists, id);
+            let playlist = getPlaylistById(playlists, songs, id);
             if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
 
             let body = JSON.stringify(playlist);
