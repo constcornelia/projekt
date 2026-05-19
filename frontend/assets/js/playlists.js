@@ -4,8 +4,8 @@ const searchBar = document.querySelector("#filters");
 let api = new API();
 let ui = new UI();
 
-getPlaylists();
-dropDownsTags(SelectGenre);
+ui.getPlaylists();
+ui.dropDownsTags(SelectGenre);
 
 async function showPlaylists() {
     let playlists = await api.getRequest("/api/playlists");

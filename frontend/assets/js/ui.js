@@ -90,5 +90,15 @@ class UI {
   }
 }
 
-const ui = new UI();
-ui.getPlaylists();
+  async dropDownsTags (tagsElement) {
+    let tags = await api.getRequest("/api/tags");
+
+    for (let tag of tags) {
+        const option = document.createElement("option");
+        option.value = tag.tags;
+        option.textContent = tag.tags;
+        tagsElement.append(option);
+    }
+  }
+
+}
