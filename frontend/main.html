@@ -50,32 +50,42 @@
 
 
   <nav>
-    <div><a href="main.html"><img src="/assets/images/icons/logo.svg"></a></div>
-    <div>YourSound</div>
-    <div class="space"></div>
+    <a href="main.html" class="home clear-link">
+      <img src="/assets/images/icons/logo.svg">
+        <div>YourSound</div>
+    </a>
+    <div class="space">
+      <form action="" id="SearchPaylistForm" class="system-UI">
+        <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
+        <button id="ButtonSearch" type="submit"></button>
+      </form>
+    </div>
     <a href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
   </nav>
 
   <section id="filters">
-      <form action="" id="SearchPaylistForm" class="system-UI">
-          <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
-          <button id="ButtonSearch" type="submit"></button>
-      </form>
+    <h1 class="title-UI">Find your best playlist</h1>
 
       <form class="FilterForm system-UI">
-        <div class="Select">
-          <select id="SelectGenre"  name="genre">
-            <option value="">Select tag</option>
-            <option value="ShowAll">all</option>
-          </select>
+        <div>
+          <div class="Select">
+            <select id="SelectGenre"  name="genre">
+              <option value="">Select tag</option>
+              <option value="ShowAll">all</option>
+            </select>
+          </div>
+          <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
+            <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
+          </label>
+          <label class="Sort-Playlists" for="All-Playlists">All playlists
+            <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
+          </label>
         </div>
-        
-        <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
-          <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
-        </label>
-        <label class="Sort-Playlists" for="All-Playlists">All playlists
-          <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
-        </label>
+        <div>
+          <button id="FiltersSubmit" type="submit" class="system-UI">Sort playlists</button>
+          <button id="FiltersReset" type="reset" class="system-UI">Clear filters</button>
+        </div>
+
   
     </form>
 
@@ -102,8 +112,8 @@
   <footer>
     <div>
       <p class="sub-title">Digital design och utveckling III</p>
-      <p class="sub-title">Projekt</p>
-      <p class="sub-title">&copy; 2026 Grupp 5</p>
+      <p class="sub-title">Projekt, Grupp 5</p>
+      <p class="sub-title">&copy; 2026</p>
     </div>
     <div>
       <p class="sub-title">Developers</p>

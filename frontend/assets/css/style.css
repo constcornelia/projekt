@@ -9,11 +9,12 @@
 
 :root {
     --transition: all 300ms linear;
-    --transform-hover: scale(1.2);
+    --transform-hover: scale(1.1);
 
     --main-color: black;
+    --main-color-light:white;
     --secondary-color: rgb(65, 65, 65);
-    --hover-color: rgba(0, 0, 0, 0.20);
+    --hover-color: rgba(255, 255, 255, 0.3);
     --shadowing-color: rgba(0, 0, 0, 0.40);
 
     --light-text-color: white;
@@ -45,7 +46,7 @@ p, h1, h2{
 
 .title-UI {
     font-family: "Accent";
-    font-weight: 500;
+    font-weight: 600;
 }
 .system-UI {
     font-family: "system";
@@ -89,7 +90,7 @@ a {
     transition: var(--transition);
     display: inline-block;
     background-color: transparent;
-    color: var(--secondary-text-color);
+    color: var(--dark-text-color);
     border: none;
     box-shadow: inset 0 0 0 2px var(--main-color);
     padding: 15px;
@@ -107,7 +108,7 @@ a {
 .ActionButton-light {
     transition: var(--transition);
     display: inline-block;
-    background-color: var(--light-text-color);
+    background-color: var(--main-color-light);
     color: var(--main-color);
     border: none;
     padding: 15px;
@@ -121,19 +122,14 @@ a {
     cursor: pointer;
     font-weight: 700;
 }
-.ActionButton:hover {
-    transition: var(--transition);
-    transform: var(--transform-hover);
-    cursor: pointer;
-    font-weight: 700;
-}
+
 .SecondaryButton-light {
     transition: var(--transition);
     display: inline-block;
     background-color: transparent;
     color: var(--light-text-color);
     border: none;
-    box-shadow: inset 0 0 0 2px var(--light-text-color);
+    box-shadow: inset 0 0 0 2px var(--main-color-light);
     padding: 15px;
     border-radius: 20px;
     font-family: "system";
@@ -152,23 +148,29 @@ nav {
     display: flex;
     align-items: center;
     height: 70px;
+}
+nav .home{
     font-family: "Accent";
     font-size: 40px;
     font-weight: 900;
     color: var(--main-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
 }
 nav img {
     height: 50px;
-    display: block;
-    margin: 10px;
     transition: var(--transition);
 }
-nav img:hover {
+nav .home:hover {
     transition: var(--transition);
-    transform: var(--transform-hover);
+    transform: scale(1.05);;
 }
+
 nav .space {
     flex-grow: 1;
+    padding: 0 5%;
 }
 
 footer {
@@ -232,7 +234,7 @@ footer {
 }
 .Welcome form input {
     padding: 10px;
-    border: solid 2px var(--secondary-color);
+    border: solid 2px var(--hover-color);
     border-radius: 15px;
     background-color: transparent;
     outline: none;
@@ -240,24 +242,17 @@ footer {
 }
 
 .Welcome form input:focus-visible {
-    border: solid 2px var(--light-text-color);
+    border: solid 2px var(--main-color-light);
 }
 
-
-/*filters*/
-#filters{
-    display: flex;
-    gap: 20px;
-    height: 50px;
-    margin: 10px 0;
-}
+/*search*/
 #SearchPaylistForm {
     padding: 10px;
-    border-radius: 20px;
+    border-radius: 25px;
     border: solid 2px var(--main-color);
     display: flex;
     align-items: center;
-    width: 300px;
+    max-width: 400px;
 }
 #SearchPaylistForm>input {
     border: none;
@@ -293,16 +288,32 @@ footer {
     color: var(--light-text-color);
 }
 
-.FilterForm {
+/*filters*/
+#filters{
+    box-sizing: border-box;
+    padding: 15px;
+    border-radius: 35px;
+    background-color: var(--main-color-light);
+    margin-bottom: 20px;
+    gap: 10px;
+}
+#filters h1{
+    margin-bottom: 10px;
+    font-size: 25px;
+
+}
+.FilterForm,
+.FilterForm>div {
     display: flex;
-    gap: 20px;
     align-items: stretch;
+    justify-content: space-between;
+    gap: 10px;
 }
 .Select {
     padding: 10px;
-    border-radius: 20px;
+    border-radius: 25px;
     border: solid 2px var(--main-color);
-    width: 200px;
+    width: 120px;
 }
 .Select:hover{
     background-color: var(--main-color);
@@ -321,13 +332,14 @@ footer {
 }
 .Sort-Playlists {
     padding: 10px;
-    border-radius: 20px;
+    border-radius: 25px;
     border: solid 2px var(--main-color);
     background-color: transparent;
-    width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    width: 150px;
 
     cursor: pointer;
 }
@@ -343,6 +355,20 @@ label.Sort-Playlists:has(input:checked) {
     display: none;
 }
 
+.FilterForm button{
+    transition: var(--transition);
+    background-color: darksalmon;
+    color: var(--light-text-color);
+    border: none;
+    border-radius: 25px;
+    width: 120px;
+}
+.FilterForm button:hover {
+    transition: var(--transition);
+    transform: var(--transform-hover);
+    cursor: pointer;
+    font-weight: bolder;
+}
 
 
 /*playlist collection*/
@@ -680,7 +706,7 @@ som bli synlig på add knäpp click*/
 #CreatePlaylistForm input, #CreatePlaylist textarea {
     outline-color: var(--hover-color);
     padding: 10px;
-    border: solid 2px var(--secondary-color);
+    border: solid 2px var(--hover-color);
     border-radius: 15px;
     background-color: transparent;
     outline: none;
