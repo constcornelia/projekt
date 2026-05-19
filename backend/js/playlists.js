@@ -63,39 +63,39 @@ export function getTags(playlists) {
     return tags;
 }
 
-export function createPlaylistId (database) {
-    let highestId = 0;
+// export function createPlaylistId (database) {
+//     let highestId = 0;
 
-    for (let playlist of database.playlists) {
-        let id = parseInt(playlist.id.split("-")[1]);
+//     for (let playlist of database.playlists) {
+//         let id = parseInt(playlist.id.split("-")[1]);
 
-        if (id > highestId) {
-            highestId = id;
-        }
-    }
-    return `p-${highestId + 1}`;
-}
+//         if (id > highestId) {
+//             highestId = id;
+//         }
+//     }
+//     return `p-${highestId + 1}`;
+// }
 
-export function createPlaylistById (database, body) {
-    let playlists = database.playlists;
+// export function createPlaylistById (database, body) {
+//     let playlists = database.playlists;
 
-    let newId = createPlaylistId(database);
+//     let newId = createPlaylistId(database);
 
-    let newPlaylist = {
-        id: newId,
-        // ownerId: "u-1", måste fixa getUser??
-        name: body.name,
-        description: body.description,
-        imgUrl: body.imgUrl,
-        tags: body.tags,
-        songs: body.songs
-    };
-    playlists.push(newPlaylist);
+//     let newPlaylist = {
+//         id: newId,
+//         // ownerId: "u-1", måste fixa getUser??
+//         name: body.name,
+//         description: body.description,
+//         imgUrl: body.imgUrl,
+//         tags: body.tags,
+//         songs: body.songs
+//     };
+//     playlists.push(newPlaylist);
 
-    Deno.writeTextFileSync("database.json", JSON.stringify(database));
+//     Deno.writeTextFileSync("database.json", JSON.stringify(database));
 
-    return newPlaylist;
-}
+//     return newPlaylist;
+// }
 
 export function deletePlaylistById(database, playlistId) {
     let updatedPlaylists = [];
