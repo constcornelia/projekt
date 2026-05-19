@@ -1,6 +1,6 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist } from "./playlists.js";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, deleteSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
+import { createUser, alertUser, getUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -135,7 +135,6 @@ async function handler(request) {
             let signupReq = await request.json();
             for (let user of users) {
                 if (signupReq.username == user.username) {
-                    // Alert user that the username is taken
                     break;
                 }
             }
@@ -146,6 +145,7 @@ async function handler(request) {
             let cookie = { username: signupReq.username, cookie: cookieId };
             cookies.push(cookie);
 
+            headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                 "Location": "/"
             };
