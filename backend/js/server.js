@@ -252,21 +252,46 @@ async function handler(request) {
             // Get liked playlists
 
         // Get playlist by id
+
+        let playlistPageRoute = new URLPattern({
+            pathname: "/playlists/:id"
+        });
+
+        if (playlistPageRoute.test(request.url)) {
+            return serveFile(request, "../../frontend/public-playlist.html");
+        }
+
         let route = new URLPattern({ pathname: "/api/playlists/:id" });
+
         if (route.test(request.url)) {
+
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
             let playlist = getPlaylistById(playlists, songs, id);
-            if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
 
             let body = JSON.stringify(playlist);
+
             return new Response(body, {
                 status: 200,
                 headers: headers,
             });
         }
+        // PROBELM: Du försökte använda samma route för HTML och JSON API
+        // let route = new URLPattern({ pathname: "/api/playlists/:id" });
+        // if (route.test(request.url)) {
+        //     let match = route.exec(request.url);
+        //     let id = match.pathname.groups.id;
 
+        //     let playlist = getPlaylistById(playlists, songs, id);
+        //     if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
+
+        //     let body = JSON.stringify(playlist);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers,
+        //     });
+        // }
     }
 
     // ha en funktion som ger true om man är ägaren kanske

@@ -1,21 +1,16 @@
-import { getSongsByPlaylist } from "./songs.js";
-
 async function loadPlaylist() {
 
     const api = new API();
     const ui = new UI();
 
-    const params = new URLSearchParams(window.location.search);
+    // Hämtar playlist id från URL:en
+    const playlistId = window.location.pathname.split("/")[2];
 
-    const playlistId = params.get("id");
+    // hämtar playlistens data från API:t
+    let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
 
-    let playlist = await api.getRequest(`/api/playlists/${playlistId}`);
-
-    let songs = await api.getRequest("/api/songs");
-
-    let playlistSongs = getSongsByPlaylist(playlist, songs);
-
-    ui.renderSongs(playlistSongs);
+    // och renderar alla songs på sidan
+    ui.renderSongs(playlistData.songs);
 }
 
 loadPlaylist();
