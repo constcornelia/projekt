@@ -17,10 +17,8 @@ AddSongForm.addEventListener("submit", function (event) {
 })*/
 
 // Product   =   Playlist
-// Brand     =   Song
+// Brand     =   Song 
 // Category  =   Tags
-const section = document.querySelector("#PublicPlaylistsCollection");
-
 let api = new API();
 
 class UI {
@@ -36,6 +34,9 @@ class UI {
   }
 
   async renderPlaylists(playlists) {
+    const section = document.querySelector("#PublicPlaylistsCollection");
+
+    if (!section) return;
 
     section.innerHTML = "";
 
@@ -71,19 +72,24 @@ class UI {
       }
   }
 
-  async renderSongs (songs) {
-      section.innerHTML = "";
+  renderSongs(songs) {
+
+      const songList = document.querySelector(".songs ul");
+
+      if (!songList) return;
+
+      songList.innerHTML = "";
 
       for (let song of songs) {
-          let div = document.createElement("div");
 
-        div.innerHTML = `
-        //   <img src="${song.coverImgUrl}"></img>
-          <p>${song.name}</p>
-          <p>${song.artist}</p>
+          let li = document.createElement("li");
+
+          li.innerHTML = `
+              ${song.name} - ${song.artist}
+              <button class="Play StopPlaying"></button>
           `;
 
-          section.appendChild(div);
+          songList.appendChild(li);
       }
   }
 
@@ -102,6 +108,8 @@ class UI {
   async dropDownsTags() {
 
       const selectTag = document.querySelector("#SelectGenre");
+
+      if (!selectTag) return;
 
       let tags = await api.getRequest("/api/tags");
 

@@ -1,27 +1,21 @@
-const main = document.querySelector("main");
+import { getSongsByPlaylist } from "./songs.js";
 
 async function loadPlaylist() {
+
     const api = new API();
+    const ui = new UI();
 
     const params = new URLSearchParams(window.location.search);
 
     const playlistId = params.get("id");
 
-    let playlist = await api.getRequest(`api/playlists/${playlistId}`);
-    
-    main.innerHTML = `
-     <a href="/">← Go back</a>
-    <div class="playlist">
-        <img src="${playlist.imgUrl}">
-        <div id="playlist-info">
-        <h2>${playlist.name}</h1>
-        <p>${playlist.owenrId}</p>
-        <p>${playlist.description}</p>
-        <p>${playlist.tags}</p>
-        <p>${playlist.songs}</p>
-        <p>${playlist.likes}</p>
-        </div>
-    </div>
-    `;
+    let playlist = await api.getRequest(`/api/playlists/${playlistId}`);
+
+    let songs = await api.getRequest("/api/songs");
+
+    let playlistSongs = getSongsByPlaylist(playlist, songs);
+
+    ui.renderSongs(playlistSongs);
 }
+
 loadPlaylist();
