@@ -40,7 +40,6 @@ class UI {
     section.innerHTML = "";
 
     let users = await api.getRequest("/api/users");
-    console.log(users);
 
       for (let playlist of playlists) {
 
