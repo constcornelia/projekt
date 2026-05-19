@@ -13,24 +13,6 @@ async function loadPlaylist() {
 
     let songs = await api.getRequest("/api/songs");
 
-    let playlistSongs = [];
-
-    for (let playlistSong of playlist.songs) {
-
-        let foundSong = null;
-
-        for (let song of songs) {
-
-            if (song.id == playlistSong.songId) {
-                foundSong = song;
-            }
-        }
-
-        if (foundSong) {
-            playlistSongs.push(foundSong);
-        }
-    }
-
     ui.renderSongs(playlistSongs);
 }
 
