@@ -572,32 +572,19 @@ som bli synlig på add knäpp click*/
     flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-#AlertDeleteSong{
-    display: none;
-    width: 200px;
-    position: absolute;
-    top: 30%;
-    z-index: 1;
-    margin: 50px auto;
-    border: solid saddlebrown 1px;
 
 }
-#AlertAddSong{
-    display: none;
-    width: 200px;
-    position: absolute;
-    top: 30%;
-    z-index: 1;
-    margin: 50px auto;
-    border: solid saddlebrown 1px;
+.pop-up{
+    box-shadow: 0 0 0 20px 200px var(--main-color);
 
 }
+#AlertDeleteSong,
+#AlertAddSong,
 #AlertAddPlaylist{
     display: none;
     width: 200px;
     position: absolute;
-    top: 30%;
+    top: 30px;
     z-index: 1;
     margin: 50px auto;
     border: solid saddlebrown 1px;
@@ -663,22 +650,26 @@ som bli synlig på add knäpp click*/
     display: none;
     flex: 2;
 }
-#EditPlaylistForm {
+#EditPlaylistForm,
+#CreatePlaylistForm {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin: 30px 0;
 
 }
-#EditPlaylistForm .form-input-area {
+#EditPlaylistForm .form-input-area,
+#CreatePlaylistForm .form-input-area {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-#EditPlaylistForm .form-input-area label {
+#EditPlaylistForm .form-input-area label,
+#CreatePlaylistForm .form-input-area label {
     margin-left: 10px;
 }
-#EditPlaylistForm input, #EditPlaylistForm textarea {
+#EditPlaylistForm input, #EditPlaylistForm textarea,
+#CreatePlaylistForm input, #CreatePlaylist textarea {
     outline-color: var(--hover-color);
     padding: 10px;
     border: solid 2px var(--secondary-color);
@@ -688,12 +679,21 @@ som bli synlig på add knäpp click*/
     color: var(--light-text-color);
 }
 
-#EditPlaylistForm input:focus-visible {
+#EditPlaylistForm input:focus-visible,
+#CreatePlaylistForm input:focus-visible {
     border: solid 2px var(--light-text-color);
 }
 .edit-actions{
     display: flex;
-    gap: 20px;
+    justify-content: space-between;
 }
 
+#CreatePlaylist{
+    display: initial;
+    position: absolute;
+    top: 30px;
+    z-index: 1;
+    margin: 50px auto;
+
+}
 
