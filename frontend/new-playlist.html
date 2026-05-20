@@ -4,42 +4,61 @@
 <head>
   <title>YourSound</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body>
+<!--sektionen med osynliga elementer som ska visas efter klick-->
+  <section class="hidden-elements">
+    <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
+    <div id="AlertDeleteSong" class="edit-elements pop-up">
+      <h1 class="title">the song</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p class="text">Delete from playlist?</p>
+        <div>
+          <button id="UndoDeleteSong" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+          <button id="ConfirmDeleteSong" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+        </div>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när låt aderas
+    listener på add song knappen-->
+    <div id="AlertAddSong" class="edit-elements pop-up">
+      <h1 class="title">song name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p>is added to your playlist</p>
+        <div>
+          <button id="UndoAddSong" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmAddSong" type="button" class="ActionButton-light">OK</button>
+        </div>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när liked-->
+    <div id="AlertLikePlaylist" class="edit-elements pop-up">
+      <h1 class="title">playlist name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p> is added to your liked playlist</p>
+        <div>
+          <button id="UndoLike" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmLike" type="button" class="ActionButton-light">OK</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
 
 
   <nav>
-    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
-    <div>New Playlist</div>
+    <a href="main.html" class="home clear-link">
+      <img src="/assets/images/icons/logo.svg">
+        <div>YourSound</div>
+    </a>
     <div class="space"></div>
     <button id="EditPlaylist-Button" class="ActionButton">edit playlist</button>
     <!--listener på EditPlaylistButton så EditPlaylist bli synlig-->
     <button id="AddSong-Button" class="ActionButton system-UI-accent">add song</button>
     <!--listener på AddSongButton så AddSong div bli synlig-->
   </nav>
-  <section class="hidden-elements">
-    <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
-    <div id="AlertDeleteSong" class="edit-elements">
-      <h1 class="title">the song</h1>
-      <p class="text">Delete from playlist?</p>
-      <div>
-        <button id="UndoDeleteSongButton" type="button" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="ConfirmDeleteSongButton" type="button" class="ActionButton-light system-UI-accent">OK</button>
-      </div>
-    </div>
-    <!--osynlig nu ska visas när låt aderas
-    listener på add song knappen-->
-    <div id="AlertAddSong" class="edit-elements">
-      <h1 class="title">the song</h1>
-      <p class="text">is added to your playlist</p>
-      <div>
-        <button id="UndoAddSongButton" type="button" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="ConfirmAddSongButton" type="button" class="ActionButton-light system-UI-accent">OK</button>
-      </div>
-    </div>
-  </section>
 
   <section id="NewPlaylist" class="playlist-content">
     
@@ -93,8 +112,8 @@
   <footer>
     <div>
       <p class="sub-title">Digital design och utveckling III</p>
-      <p class="sub-title">Projekt</p>
-      <p class="sub-title">&copy; 2026 Grupp 5</p>
+      <p class="sub-title">Projekt, Grupp 5</p>
+      <p class="sub-title">&copy; 2026</p>
     </div>
     <div>
       <p class="sub-title">Developers</p>
@@ -104,7 +123,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/ui.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/ui.js"></script>
 </body>
 
 </html>

@@ -4,50 +4,88 @@
 <head>
   <title>YourSound</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body>
+<!--sektionen med osynliga elementer som ska visas efter klick-->
+  <section class="hidden-elements">
+    <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
+    <div id="AlertDeleteSong" class="edit-elements pop-up">
+      <h1 class="title">the song</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p class="text">Delete from playlist?</p>
+        <div>
+          <button id="UndoDeleteSong" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+          <button id="ConfirmDeleteSong" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+        </div>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när låt aderas
+    listener på add song knappen-->
+    <div id="AlertAddSong" class="edit-elements pop-up">
+      <h1 class="title">song name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p>is added to your playlist</p>
+        <div>
+          <button id="UndoAddSong" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmAddSong" type="button" class="ActionButton-light">OK</button>
+        </div>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när liked-->
+    <div id="AlertLikePlaylist" class="edit-elements pop-up">
+      <h1 class="title">playlist name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p> is added to your liked playlist</p>
+        <div>
+          <button id="UndoLike" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmLike" type="button" class="ActionButton-light">OK</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
 
 
   <nav>
-    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
-    <div>YourSound</div>
-    <div class="space"></div>
+    <a href="main.html" class="home clear-link">
+      <img src="/assets/images/icons/logo.svg">
+        <div>YourSound</div>
+    </a>
+    <div class="space">
+      <form action="" id="SearchPaylistForm" class="system-UI">
+        <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
+        <button id="ButtonSearch" type="submit"></button>
+      </form>
+    </div>
     <a href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
   </nav>
-  <section class="hidden-elements">
-    <!--osynlig nu ska visas när liked-->
-    <div id="AlertAddPlaylist" class="edit-elements">
-      <h1 class="title">the playlist</h1>
-      <p class="text"> is added to your liked playlist</p>
-      <div>
-        <button id="Undo" type="button" class="ActionButton-light system-UI-accent">Undo</button>
-        <button id="Confirm" type="button" class="ActionButton-light system-UI-accent">OK</button>
-      </div>
-    </div>
-    </section>
 
   <section id="filters">
-      <form action="" id="SearchPaylistForm" class="system-UI">
-          <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
-          <button id="ButtonSearch" type="submit"></button>
-      </form>
+    <h1 class="title-UI">Find your best playlist</h1>
 
       <form class="FilterForm system-UI">
-        <div class="Select">
-          <select id="SelectGenre"  name="genre">
-            <option value="">Select tag</option>
-            <option value="ShowAll">all</option>
-          </select>
+        <div>
+          <div class="Select">
+            <select id="SelectGenre"  name="genre">
+              <option value="">Select tag</option>
+              <option value="ShowAll">all</option>
+            </select>
+          </div>
+          <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
+            <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
+          </label>
+          <label class="Sort-Playlists" for="All-Playlists">All playlists
+            <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
+          </label>
         </div>
-        
-        <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
-          <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
-        </label>
-        <label class="Sort-Playlists" for="All-Playlists">All playlists
-          <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
-        </label>
+        <div>
+          <button id="FiltersSubmit" type="submit" class="system-UI">Sort playlists</button>
+          <button id="FiltersReset" type="reset" class="system-UI">Clear filters</button>
+        </div>
+
   
     </form>
 
@@ -65,7 +103,7 @@
             <button class="Play StopPlaying"></button>
           </div>
           <p class="system-UI-accent">tags</p>
-          <img src="assets/images/Bohemian_Rhapsody_poster.png">
+          <img src="/assets/images/Bohemian_Rhapsody_poster.png">
         </div>
       </a>
 
@@ -74,8 +112,8 @@
   <footer>
     <div>
       <p class="sub-title">Digital design och utveckling III</p>
-      <p class="sub-title">Projekt</p>
-      <p class="sub-title">&copy; 2026 Grupp 5</p>
+      <p class="sub-title">Projekt, Grupp 5</p>
+      <p class="sub-title">&copy; 2026</p>
     </div>
     <div>
       <p class="sub-title">Developers</p>
@@ -85,8 +123,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/api.js"></script>
-  <script src="assets/js/ui.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/ui.js"></script>
 </body>
 
 </html>

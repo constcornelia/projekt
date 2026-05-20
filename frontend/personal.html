@@ -4,18 +4,11 @@
 <head>
   <title>YourSound</title>
   <meta charset="utf-8">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 
 <body>
-
-
-  <nav>
-    <div><a href="main.html"><img src="assets/images/icons/logo.svg"></a></div>
-    <div>My playlists collection</div>
-    <div class="space"></div>
-    <a href="edit-account.html" class="SecondaryButton system-UI-accent clear-link">Edit my account</a>
-  </nav>
+  <!--osynlig form for skapa playlist-->
     <section class="hidden-elements">
       <!--osynlig nu ska visas när add playlist knapp ckickad-->
       <div id="CreatePlaylist" class="edit-elements pop-up">
@@ -23,15 +16,15 @@
         <form id="CreatePlaylistForm" class="system-UI">
       
           <div class="form-input-area">
-            <label for="add-cover" class="sub-title-bold">Playlist cover:</label>
+            <label for="add-cover" class="sub-title">Playlist cover:</label>
             <input type="file" id="add-cover" name="add-cover" >
           </div>
           <div class="form-input-area">
-            <label for="playlist-name" class="sub-title-bold">Playlist name:</label>
+            <label for="playlist-name" class="sub-title">Playlist name:</label>
             <input type="text" id="playlist-name" name="playlist-name">
           </div>
           <div class="form-input-area">
-            <label for="playlist-description" class="sub-title-bold">Playlist description:</label>
+            <label for="playlist-description" class="sub-title">Playlist description:</label>
             <textarea id="playlist-description" name="playlist-description"></textarea>
           </div>
           <div class="edit-actions">
@@ -43,31 +36,48 @@
       </div>
     </section>  
 
-  <section id="filters">
-    <form action="" id="SearchPaylistForm" class="system-UI">
-        <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
-        <button id="ButtonSearch" type="submit"></button>
-    </form>
-
-    <form class="FilterForm system-UI">
-      <div class="Select">
-        <select id="SelectGenre"  name="genre">
-          <option value="">Select genre</option>
-          <option value="ShowAll">all</option>
-        </select>
+    <nav>
+      <a href="main.html" class="home clear-link">
+        <img src="/assets/images/icons/logo.svg">
+          <div>YourSound</div>
+      </a>
+      <div class="space">
+        <form action="" id="SearchPaylistForm" class="system-UI">
+          <input type="search" name="SearchInput" id="SearchInput" placeholder="Search by playlist name, owner or genre">
+          <button id="ButtonSearch" type="submit"></button>
+        </form>
       </div>
-      
-      <label class="Sort-Playlists" for="Sort-Liked-playlists">My liked playlists
-        <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
-      </label>
-      <label class="Sort-Playlists" for="All-Playlists">All my playlists
-        <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
-      </label>
-
-  </form>
-
-</section>
-
+      <a href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
+    </nav>
+  
+    <section id="filters">
+      <h1 class="title-UI">Find your best playlist</h1>
+  
+        <form class="FilterForm system-UI">
+          <div>
+            <div class="Select">
+              <select id="SelectGenre"  name="genre">
+                <option value="">Select tag</option>
+                <option value="ShowAll">all</option>
+              </select>
+            </div>
+            <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
+              <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
+            </label>
+            <label class="Sort-Playlists" for="All-Playlists">All playlists
+              <input type="radio" id="All-Playlists" name="All-Playlists"  value="All-Playlists">
+            </label>
+          </div>
+          <div>
+            <button id="FiltersSubmit" type="submit" class="system-UI">Sort playlists</button>
+            <button id="FiltersReset" type="reset" class="system-UI">Clear filters</button>
+          </div>
+  
+    
+      </form>
+  
+    </section>
+  
 <section id="PersonalPlaylistsCollection">
     <div class="add-playlist-card">
       <button class="CreatePlaylist-Button"></button>
@@ -83,7 +93,7 @@
           <button class="Play StopPlaying"></button>
         </div>
         <p class="system-UI-accent">tags</p>
-        <img src="assets/images/Bohemian_Rhapsody_poster.png">
+        <img src="/assets/images/Bohemian_Rhapsody_poster.png">
       </div>
     </a>
     
@@ -94,8 +104,8 @@
   <footer>
     <div>
       <p class="sub-title">Digital design och utveckling III</p>
-      <p class="sub-title">Projekt</p>
-      <p class="sub-title">&copy; 2026 Grupp 5</p>
+      <p class="sub-title">Projekt, Grupp 5</p>
+      <p class="sub-title">&copy; 2026</p>
     </div>
     <div>
       <p class="sub-title">Developers</p>
@@ -105,8 +115,8 @@
     </div>
   </footer>
 
-  <script src="assets/js/api.js"></script>
-  <script src="assets/js/ui.js"></script>
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/ui.js"></script>
 </body>
 
 </html>

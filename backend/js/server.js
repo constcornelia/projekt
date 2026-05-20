@@ -212,8 +212,6 @@ async function handler(request) {
             });
         }
 
-
-        
         const cookie = request.headers.get("cookie");
         let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
         if (url.pathname == "/api/profile/info") {
@@ -222,15 +220,30 @@ async function handler(request) {
         }
 
         if (url.pathname == "/api/profile/playlists/owned") {
-            let ownedPlaylists = getOwnedPlaylists(user);
+            let ownedPlaylists = getOwnedPlaylists(playlists, user);
+            let body = JSON.stringify(ownedPlaylists);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
         }
 
         if (url.pathname == "/api/profile/playlists/liked") {
-            let likedPlaylists = getLikedPlaylists(user);
+            let likedPlaylists = getLikedPlaylists(playlists, user);
+            let body = JSON.stringify(likedPlaylists);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
         }
         
         if (url.pathname == "/api/profile/playlists/contributed") {
-            let contributedPlaylist = getContributedPlaylists(user);
+            let contributedPlaylist = getContributedPlaylists(playlists, user);
+            let body = JSON.stringify(contributedPlaylist);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
         }
 
 
@@ -239,21 +252,46 @@ async function handler(request) {
             // Get liked playlists
 
         // Get playlist by id
+
+        let playlistPageRoute = new URLPattern({
+            pathname: "/playlists/:id"
+        });
+
+        if (playlistPageRoute.test(request.url)) {
+            return serveFile(request, "../../frontend/public-playlist.html");
+        }
+
         let route = new URLPattern({ pathname: "/api/playlists/:id" });
+
         if (route.test(request.url)) {
+
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
             let playlist = getPlaylistById(playlists, songs, id);
-            if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
 
             let body = JSON.stringify(playlist);
+
             return new Response(body, {
                 status: 200,
                 headers: headers,
             });
         }
+        // PROBELM: Du försökte använda samma route för HTML och JSON API
+        // let route = new URLPattern({ pathname: "/api/playlists/:id" });
+        // if (route.test(request.url)) {
+        //     let match = route.exec(request.url);
+        //     let id = match.pathname.groups.id;
 
+        //     let playlist = getPlaylistById(playlists, songs, id);
+        //     if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
+
+        //     let body = JSON.stringify(playlist);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers,
+        //     });
+        // }
     }
 
     // ha en funktion som ger true om man är ägaren kanske

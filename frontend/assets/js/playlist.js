@@ -1,27 +1,16 @@
-const main = document.querySelector("main");
-
 async function loadPlaylist() {
+
     const api = new API();
+    const ui = new UI();
 
-    const params = new URLSearchParams(window.location.search);
+    // Hämtar playlist id från URL:en
+    const playlistId = window.location.pathname.split("/")[2];
 
-    const playlistId = params.get("id");
+    // hämtar playlistens data från API:t
+    let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
 
-    let playlist = await api.getRequest(`api/playlists/${playlistId}`);
-    
-    main.innerHTML = `
-     <a href="/">← Go back</a>
-    <div class="playlist">
-        <img src="${playlist.imgUrl}">
-        <div id="playlist-info">
-        <h2>${playlist.name}</h1>
-        <p>${playlist.owenrId}</p>
-        <p>${playlist.description}</p>
-        <p>${playlist.tags}</p>
-        <p>${playlist.songs}</p>
-        <p>${playlist.likes}</p>
-        </div>
-    </div>
-    `;
+    // och renderar alla songs på sidan
+    ui.renderSongs(playlistData.songs);
 }
+
 loadPlaylist();
