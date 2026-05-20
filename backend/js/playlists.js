@@ -29,12 +29,16 @@ export function getPlaylistBySearch(database, query) {
 }
 
 export function getPlaylistById(playlists, songs, id) {
+    console.log(songs);
+    console.log(playlists);
     let playlist;
     for (let playlist of playlists) {
         if (playlist.id == id) {
             playlist = playlist;
         }
     }
+
+    console.log(playlist);
 
     let playlistSongs = [];
     for (let song of songs) {
@@ -121,57 +125,57 @@ export function deletePlaylistById(database, playlistId) {
     return true;
 }
 
-export function deleteSongFromPlaylist (playlists, playlistId, songId) {
-    for (let playlist of playlists) {
+// export function deleteSongFromPlaylist (playlists, playlistId, songId) {
+//     for (let playlist of playlists) {
 
-        if (playlist.id === playlistId) {
-            let updatedSongs = [];
+//         if (playlist.id === playlistId) {
+//             let updatedSongs = [];
 
-            for (let song of playlist.songs) {
+//             for (let song of playlist.songs) {
 
-                if (song.songId !== songId) {
-                    updatedSongs.push(song);
-                }
+//                 if (song.songId !== songId) {
+//                     updatedSongs.push(song);
+//                 }
 
-            }
-            playlist.songs = updatedSongs;
-        }
-    }
-    return playlists;
-}
+//             }
+//             playlist.songs = updatedSongs;
+//         }
+//     }
+//     return playlists;
+// }
 
-export function editPlaylistById(database, playlistId, body) {
-    let found = false;
+// export function editPlaylistById(database, playlistId, body) {
+//     let found = false;
 
-    for (let playlist of database.playlists) {
-        if (playlist.id === playlistId) {
+//     for (let playlist of database.playlists) {
+//         if (playlist.id === playlistId) {
 
-            found = true;
+//             found = true;
 
-            if (body.name) {
-                playlist.name = body.name;
-            }
+//             if (body.name) {
+//                 playlist.name = body.name;
+//             }
 
-            if (body.tags) {
-                playlist.tags = body.tags;
-            }
+//             if (body.tags) {
+//                 playlist.tags = body.tags;
+//             }
 
-            if (body.songs) {
-                playlist.songs = body.songs;
-            }
+//             if (body.songs) {
+//                 playlist.songs = body.songs;
+//             }
 
-            if (body.imgUrl) {
-                playlist.imgUrl = body.imgUrl;
-            }
+//             if (body.imgUrl) {
+//                 playlist.imgUrl = body.imgUrl;
+//             }
 
-            if (body.description) {
-                playlist.description = body.description;
-            }
-        }
-    }
+//             if (body.description) {
+//                 playlist.description = body.description;
+//             }
+//         }
+//     }
 
-    return tags;
-}
+//     return tags;
+// }
 
 export function createPlaylistId (database) {
     let highestId = 0;
@@ -207,29 +211,29 @@ export function createPlaylistById (database, body) {
     return newPlaylist;
 }
 
-export function deletePlaylistById(database, playlistId) {
-    let updatedPlaylists = [];
+// export function deletePlaylistById(database, playlistId) {
+//     let updatedPlaylists = [];
 
-    let found = false;
+//     let found = false;
 
-    for (let playlist of database.playlists) {
-        if (playlist.id === playlistId) {
-            found = true;
-        } else {
-            updatedPlaylists.push(playlist);
-        }
-    } 
+//     for (let playlist of database.playlists) {
+//         if (playlist.id === playlistId) {
+//             found = true;
+//         } else {
+//             updatedPlaylists.push(playlist);
+//         }
+//     } 
 
-    if (!found) {
-        return false;
-    }
+//     if (!found) {
+//         return false;
+//     }
 
-    database.playlists = updatedPlaylists;
+//     database.playlists = updatedPlaylists;
 
-    Deno.writeTextFileSync("database.json", JSON.stringify(database));
+//     Deno.writeTextFileSync("database.json", JSON.stringify(database));
 
-    return true;
-}
+//     return true;
+// }
 
 export function deleteSongFromPlaylist (playlists, playlistId, songId) {
     for (let playlist of playlists) {
