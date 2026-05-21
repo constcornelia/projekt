@@ -116,12 +116,12 @@ class UI {
 
   async showProfile() {
     const toProfile = document.querySelector("#toPersonal");
-    if (!toProfile) return;
+    if (!toProfile) return; //undvika andra sidor att få error 
 
     let user = await api.getRequest("/api/profile/info");
     console.log(user);
 
-    if (!user) return;
+    if (!user) return; //om server inte gav en user så stoppas funktionen och ändrar inte länken
 
     // Om user finns så ändrar länken till profile/username
     toProfile.href = `/profile/${user.username}`;
