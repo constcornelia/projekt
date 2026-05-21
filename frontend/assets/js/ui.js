@@ -119,12 +119,10 @@ class UI {
     if (!toProfile) return;
 
     let user = await api.getRequest("/api/profile/info");
+    console.log(user);
 
-    // Om ingen användare finns så stoppar funktionen
-    if (!user) {
-        return;
-    }
-    
+    if (!user) return;
+
     // Om user finns så ändrar länken till profile/username
     toProfile.href = `/profile/${user.username}`;
   }

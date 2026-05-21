@@ -3,11 +3,6 @@ const searchBar = document.querySelector("#SearchPaylistForm");
 const clear = document.querySelector("#FiltersReset");
 const like = document.querySelector(".LikePlaylist-Button.system-UI");
 
-const api = new API();
-const ui = new UI();
-ui.getPlaylists();
-ui.dropDownsTags(SelectGenre);
-
 form.addEventListener("submit", async function onSubmit(event) {
     event.preventDefault();
 
@@ -68,3 +63,9 @@ clear.addEventListener("click", async function clearFilters(event) {
     form.reset();
     searchBar.reset();
 });
+const api = new API();
+const ui = new UI();
+
+ui.getPlaylists();
+ui.dropDownsTags(SelectGenre);
+ui.showProfile();

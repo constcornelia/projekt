@@ -99,7 +99,7 @@ async function handler(request) {
             createUser(users, file, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
-            let cookieId = createRandomCookie();
+            let cookieId = createRandomString();
             let cookie = { username: username, cookie: cookieId };
             cookies.push(cookie);
         
@@ -181,16 +181,16 @@ async function handler(request) {
             });
         }
 
-        const cookie = request.headers.get("cookie");
-        let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
-        if (url.pathname == "/api/profile/info") {
-            let body = JSON.stringify(user);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
-            // Get users name + pfp
-        }
+        // const cookie = request.headers.get("cookie");
+        // let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        // if (url.pathname == "/api/profile/info") {
+        //     let body = JSON.stringify(user);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers
+        //     });
+        //     // Get users name + pfp
+        // }
 
         if (url.pathname == "/api/profile/info") {
 
