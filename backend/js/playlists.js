@@ -52,7 +52,7 @@ export function getPlaylistBySearch(playlists, query) {
 
     let q = query.toLowerCase();
 
-    for (let playlist of playlists.database) {
+    for (let playlist of playlists) {
         if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
             filteredPlaylists.push(playlist);
         }

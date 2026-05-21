@@ -1,5 +1,4 @@
 const url = "http://localhost:8000"; 
-const section = document.querySelector("#PublicPlaylistsCollection");
 
 class API {
    async getRequest(endpoint) {
@@ -115,7 +114,3 @@ class API {
        }
    }
 }
-
-
-
-

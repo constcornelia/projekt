@@ -19,7 +19,7 @@ AddSongForm.addEventListener("submit", function (event) {
 // Product   =   Playlist
 // Brand     =   Song 
 // Category  =   Tags
-const api = new API();
+const section = document.querySelector("#PublicPlaylistsCollection");
 
 class UI {
 
@@ -34,12 +34,10 @@ class UI {
   }
 
   async renderPlaylists(playlists) {
-    const section = document.querySelector("#PublicPlaylistsCollection");
-
     if (!section) return;
 
     section.innerHTML = "";
-
+    
     let users = await api.getRequest("/api/users");
 
       for (let playlist of playlists) {
@@ -56,6 +54,7 @@ class UI {
                 ownerName = user.username;
             }
         }
+
         a.innerHTML = `
         <div class="playlist-card">
           <h1 class="title-UI">${playlist.name} </h1>
@@ -68,7 +67,7 @@ class UI {
           <img src="${playlist.imgUrl}">
         </div>
         `;
-          section.appendChild(a);
+        section.appendChild(a);
       }
   }
 
@@ -105,25 +104,14 @@ class UI {
       }
   }
   
-  async dropDownsTags() {
-
-      const selectTag = document.querySelector("#SelectGenre");
-
-      if (!selectTag) return;
-
+  async dropDownsTags(tagElement) {
       let tags = await api.getRequest("/api/tags");
    
       for (let tag of tags) {
           const option = document.createElement("option");
-
           option.value = tag;
           option.textContent = tag;
-
-          selectTag.append(option);
+          tagElement.append(option);
       }
   }
 }
-
-const ui = new UI();
-ui.getPlaylists();
-ui.dropDownsTags();
