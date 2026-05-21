@@ -216,15 +216,53 @@ async function handler(request) {
             });
         }
 
-        const cookie = request.headers.get("cookie");
-        let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        // const cookie = request.headers.get("cookie");
+        // let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        // if (url.pathname == "/api/profile/info") {
+        //     let body = JSON.stringify(user);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers
+        //     });
+        //     // Get users name + pfp
+        // }
+
         if (url.pathname == "/api/profile/info") {
-            let body = JSON.stringify(user);
-            return new Response(body, {
+
+            // Exempel: "session_id=abc123"
+            let cookie = request.headers.get("cookie");
+
+            // Om ingen cookie finns så är användaren är inte inloggad
+            if (!cookie) {
+                return new Response(null, { status: 401 });
+            }
+
+            // Delar upp texten vid "="
+            // Exempel: ["session_id", "abc123"]
+            let parts = cookie.split("=");
+
+            let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
+
+            // Sparar användaren om det hittar rätt cookie
+            let user = null;
+
+            for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
+                if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
+                    user = { // Sparar användarens username
+                        username: cookies[i].username
+                    };
+                    break; // Stoppar loopen när rätt user hittats
+                }
+            }
+
+            if (!user) { // Om ingen användare
+                return new Response(null, { status: 404 });
+            }
+
+            return new Response(JSON.stringify(user), {
                 status: 200,
-                headers: headers
+                headers: { "Content-Type": "application/json" }
             });
-            // Get users name + pfp
         }
 
         if (url.pathname == "/api/profile/playlists/owned") {
@@ -259,7 +297,7 @@ async function handler(request) {
 
 
         let profileApiRoute = new URLPattern({ pathname: "/api/profile/:username" });
-        if (profileRoute.test(request.url)) {
+        if (profileApiRoute.test(request.url)) {
             let match = profileApiRoute.exec(request.url);
             let username = match.pathname.groups.username;
 

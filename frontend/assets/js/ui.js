@@ -19,6 +19,8 @@ AddSongForm.addEventListener("submit", function (event) {
 // Product   =   Playlist
 // Brand     =   Song 
 // Category  =   Tags
+const section = document.querySelector("#PublicPlaylistsCollection");
+
 let api = new API();
 
 class UI {
@@ -34,8 +36,6 @@ class UI {
   }
 
   async renderPlaylists(playlists) {
-    const section = document.querySelector("#PublicPlaylistsCollection");
-
     if (!section) return;
 
     section.innerHTML = "";
@@ -129,6 +129,12 @@ class UI {
 
     let user = await api.getRequest("/api/profile/info");
 
+    // Om ingen användare finns så stoppar funktionen
+    if (!user) {
+        return;
+    }
+    
+    // Om user finns så ändrar länken till profile/username
     toProfile.href = `/profile/${user.username}`;
   }
 }
