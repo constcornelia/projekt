@@ -114,4 +114,24 @@ class UI {
           tagElement.append(option);
       }
   }
+
+  async showProfile() {
+    const toProfile = document.querySelector("#toPersonal");
+    if (!toProfile) return;
+
+    let user = await api.getRequest("/api/profile/info");
+
+    // Om ingen användare finns så stoppar funktionen
+    if (!user) {
+        return;
+    }
+    
+    // Om user finns så ändrar länken till profile/username
+    toProfile.href = `/profile/${user.username}`;
+  }
 }
+
+const ui = new UI();
+ui.getPlaylists();
+ui.dropDownsTags();
+ui.showProfile();

@@ -3,8 +3,14 @@
     {
       "id": "u-1",
       "username": "yourtomboi",
-      "password": "yaoi",
+      "password": "moni",
       "profilePicUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBfRaIl1GKY743VUdBOrL04K4gbgqvDZp3iw&s"
+    },
+    {
+      "id": "u-2",
+      "username": "cornelia",
+      "password": "lucy",
+      "profilePicUrl": "1d2a07a31f9e44e63b7f40b1adaa4d54.jpg"
     }
   ]
 }

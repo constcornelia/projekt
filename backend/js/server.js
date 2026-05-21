@@ -41,15 +41,7 @@ async function handler(request) {
 
                 }
             }
-
         }
-        
-        // Kolla om det finns en aktiv cookie, isf kommer man till start...
-        //     console.log(cookie)
-            
-        //     if (userCookie != null && userCookie.includes(cookie.cookie)) {
-        //     }
-        // }
 
         if (session) {
             return serveFile(request, "../../frontend/main.html");
@@ -80,7 +72,7 @@ async function handler(request) {
             status: 303,
             headers: {
                 "Location": "/welcome",
-                "Set-Cookie": "session_id=deleted; Max-Age=0"
+                "Set-Cookie": "session_id=deleted; Max-Age=0; Path=/"
             }
         };
         return new Response(null, options);
@@ -92,35 +84,28 @@ async function handler(request) {
         if (request.method == "GET") {
             return serveFile(request, "../../frontend/login.html")
         }
-
+        
         if (request.method == "POST") {
             let loginReq = await request.json();
             let cookieId = createRandomCookie();
 
-            let headers = null;
             // Kollar om den om det är rätt user och lösen, isf skapas en cookie
             for (let user of users) {
                 if (user.username == loginReq.username && user.password == loginReq.password) {
                     let cookie = { username: user.username, cookie: cookieId };
                     cookies.push(cookie);
 
-                    headers = {
+                    let headers = {
                         "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                         "Location": "/"
                     };
-                    // cookies[username] = user.username;
-                    break;
-                } else {
-                    alertUser("Wrong username or password");
-                    break;
-                }
-            }
 
-            if (headers != null) {
-                return new Response(null, {
-                    status: 303, 
-                    headers: headers
-                });
+                    return new Response(null, {
+                        status: 303, 
+                        headers: headers
+                    });
+    
+                } 
             }
             return new Response("Invalid login", { status: 401 });
         }
@@ -132,21 +117,39 @@ async function handler(request) {
         }
 
         if (request.method == "POST") {
-            let signupReq = await request.json();
+            let signupReq = await request.formData();
+
+            const file = signupReq.get("profile");
+            const username = signupReq.get("username");
+            const password = signupReq.get("password");
+            
+            const fileStr = crypto.randomUUID;
+            const extension = extname(file.name);
+            const filename = fileStr + extension;
+
+            const bytes = await file.bytes();
+            if (bytes > 100000) return new Response("File is too large", { status: 400 });
+            Deno.writeFileSync(`../uploads/${filename}`, bytes);
+
             for (let user of users) {
-                if (signupReq.username == user.username) {
-                    break;
+                if (username == user.username) {
+                    return new Response("Username is already taken", { status: 401 });
                 }
             }
-            createUser(users, signupReq);
+            
+            if (!username || !password) {
+                return new Response("Input data missing", { status: 400 });
+            }
+
+            createUser(users, file, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
             let cookieId = createRandomCookie();
-            let cookie = { username: signupReq.username, cookie: cookieId };
+            let cookie = { username: username, cookie: cookieId };
             cookies.push(cookie);
 
-            headers = {
-                "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
+            let headers = {
+                "Set-Cookie": "session_id=" + cookieId + "; Max-Age=86400; Path=/",
                 "Location": "/"
             };
 
@@ -227,11 +230,53 @@ async function handler(request) {
             });
         }
 
-        const cookie = request.headers.get("cookie");
-        let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        // const cookie = request.headers.get("cookie");
+        // let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        // if (url.pathname == "/api/profile/info") {
+        //     let body = JSON.stringify(user);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers
+        //     });
+        //     // Get users name + pfp
+        // }
+
         if (url.pathname == "/api/profile/info") {
-            let body = JSON.stringify(user);
-            // Get users name + pfp
+
+            // Exempel: "session_id=abc123"
+            let cookie = request.headers.get("cookie");
+
+            // Om ingen cookie finns så är användaren är inte inloggad
+            if (!cookie) {
+                return new Response(null, { status: 401 });
+            }
+
+            // Delar upp texten vid "="
+            // Exempel: ["session_id", "abc123"]
+            let parts = cookie.split("=");
+
+            let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
+
+            // Sparar användaren om det hittar rätt cookie
+            let user = null;
+
+            for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
+                if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
+                    user = { // Sparar användarens username
+                        username: cookies[i].username
+                    };
+                    break; // Stoppar loopen när rätt user hittats
+                }
+            }
+
+            if (!user) { // Om ingen användare
+                return new Response(null, { status: 404 });
+            }
+
+            return new Response(JSON.stringify(user), {
+                status: 200,
+                headers: { "Content-Type": "application/json" }
+            });
         }
 
         if (url.pathname == "/api/profile/playlists/owned") {
@@ -260,6 +305,27 @@ async function handler(request) {
                 headers: headers
             });
         }
+        
+        let profileRoute = new URLPattern({ pathname: "/profile/:username" }); 
+        if (profileRoute.test(request.url)) return serveFile(request, "../../frontend/personal.html");
+
+
+        let profileApiRoute = new URLPattern({ pathname: "/api/profile/:username" });
+        if (profileApiRoute.test(request.url)) {
+            let match = profileApiRoute.exec(request.url);
+            let username = match.pathname.groups.username;
+
+            let user = getUserByUsername(users, username);
+            console.log(user);
+
+            let body = JSON.stringify(user);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
+        }
+
+
 
 
         // Get active user
@@ -268,23 +334,17 @@ async function handler(request) {
 
         // Get playlist by id
 
-        let playlistPageRoute = new URLPattern({
-            pathname: "/playlists/:id"
-        });
-
+        let playlistPageRoute = new URLPattern({ pathname: "/playlists/:id" });
         if (playlistPageRoute.test(request.url)) {
             return serveFile(request, "../../frontend/public-playlist.html");
-        }
+        };
 
         let route = new URLPattern({ pathname: "/api/playlists/:id" });
-
         if (route.test(request.url)) {
-
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
             let playlist = getPlaylistById(playlists, songs, id);
-
             let body = JSON.stringify(playlist);
 
             return new Response(body, {
@@ -309,8 +369,9 @@ async function handler(request) {
         // }
     }
 
-    // ha en funktion som ger true om man är ägaren kanske
-    if (request.method == "POST") {}
+    if (request.method == "POST") {
+
+    }
     
     if (request.method == "PATCH") {}
 
