@@ -99,7 +99,7 @@ async function handler(request) {
             createUser(users, file, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
-            let cookieId = createRandomCookie();
+            let cookieId = createRandomString();
             let cookie = { username: username, cookie: cookieId };
             cookies.push(cookie);
         

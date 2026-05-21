@@ -13,4 +13,9 @@ async function loadPlaylist() {
     ui.renderSongs(playlistData.songs);
 }
 
+const addSong = document.querySelector(".SongToPlaylist-Button");
+addSong.addEventListener("click", function onClick() {
+    addSong.style.display = "block";
+});
+
 loadPlaylist();

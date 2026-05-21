@@ -11,6 +11,24 @@
       "username": "cornelia",
       "password": "lucy",
       "profilePicUrl": "1d2a07a31f9e44e63b7f40b1adaa4d54.jpg"
+    },
+    {
+      "id": "u-3",
+      "username": "dilara",
+      "password": "moni",
+      "profilePicUrl": "msp.png"
+    },
+    {
+      "id": "u-4",
+      "username": "hej",
+      "password": "hej",
+      "profilePicUrl": "soda.jpg"
+    },
+    {
+      "id": "u-5",
+      "username": "piplup",
+      "password": "uwu",
+      "profilePicUrl": "393.png"
     }
   ]
 }
