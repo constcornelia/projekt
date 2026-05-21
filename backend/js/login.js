@@ -29,13 +29,7 @@ export function createUser(users, signupReq) {
         password: signupReq.password,
         profilePicUrl: signupReq.profilePicUrl
     };
-    console.log(newUser)
 
     users.push(newUser);
     return newUser;
-}
-
-export function alertUser(msg) {
-    const errorAlert = document.querySelector("error-note");
-    errorAlert.innerHTML = msg;
 }

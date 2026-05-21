@@ -1,6 +1,5 @@
-let form = document.querySelector("form");
+let form = document.querySelector("#signup");
 form.addEventListener("submit", async function (event) {
-
     event.preventDefault();
 
     let data = JSON.stringify({
@@ -17,4 +16,13 @@ form.addEventListener("submit", async function (event) {
     };
 
     let response = await fetch("/signup", options);
+});
+
+const upload = document.querySelector("#image-upload");
+upload.addEventListener("submit", async function onSubmit(event) {
+    event.preventDefault();
+
+    const data = new FormData(upload);
+    const options = { method: "POST", body: data };
+    const response = await fetch("/upload", options);
 });

@@ -1,6 +1,7 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
-import { createUser, alertUser, getUser } from "./login.js";
+import { createUser, getUser } from "./login.js";
+import { extname } from "jsr:@std/path";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -111,8 +112,7 @@ async function handler(request) {
                     // cookies[username] = user.username;
                     break;
                 } else {
-                    alertUser("Wrong username or password");
-                    break;
+                    return new Response("Invalid login", { status: 401 });
                 }
             }
 
@@ -126,6 +126,20 @@ async function handler(request) {
         }
     }
 
+    if (url.pathname == "/upload" && request.method == "POST") {
+        let fileReq = await request.formData();
+        const file = fileReq.get("profile");
+
+        const fileStr = crypto.randomUUID;
+        const extension = extname(file.name);
+        const filename = fileStr + extension;
+
+        const bytes = await file.bytes();
+        Deno.writeFileSync(`../uploads/${filename}`, bytes);
+
+        return new Response("Upload recieved!");
+    }
+
     if (url.pathname == "/signup") {
         if (request.method == "GET") {
             return serveFile(request, "../../frontend/signup.html");
@@ -133,11 +147,18 @@ async function handler(request) {
 
         if (request.method == "POST") {
             let signupReq = await request.json();
+
+
             for (let user of users) {
                 if (signupReq.username == user.username) {
-                    break;
+                    return new Response("Username is already taken", { status: 401 });
                 }
             }
+
+            if (!signupReq.username || !signupReq.password) {
+                return new Response("Input data missing", { status: 400 });
+            }
+
             createUser(users, signupReq);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
@@ -145,7 +166,7 @@ async function handler(request) {
             let cookie = { username: signupReq.username, cookie: cookieId };
             cookies.push(cookie);
 
-            headers = {
+            let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                 "Location": "/"
             };
@@ -294,8 +315,9 @@ async function handler(request) {
         // }
     }
 
-    // ha en funktion som ger true om man är ägaren kanske
-    if (request.method == "POST") {}
+    if (request.method == "POST") {
+
+    }
     
     if (request.method == "PATCH") {}
 
