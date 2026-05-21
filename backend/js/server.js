@@ -1,7 +1,7 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
+import { extname } from "jsr:@std/path";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
 import { createUser, getUser } from "./login.js";
-import { extname } from "jsr:@std/path";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
