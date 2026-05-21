@@ -46,7 +46,7 @@ class UI {
 
           let a = document.createElement("a");
 
-            a.href = `/playlists/${playlist.id}`;
+          a.href = `/playlists/${playlist.id}`;
           a.classList.add('clear-link');
 
           let ownerName;
@@ -58,13 +58,13 @@ class UI {
         }
         a.innerHTML = `
         <div class="playlist-card">
-          <h1 class="title-UI">${playlist.name}
-          </h1>
+          <h1 class="title-UI">${playlist.name} </h1>
+          <p>${ownerName}</p>
           <div class="playlist-actions">
             <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
             <button class="Play StopPlaying"></button>
           </div>
-          <p class="system-UI-accent"><span>Tags</span>:#${playlist.tags}</p>
+          <p class="system-UI-accent">#${playlist.tags}</p>
           <img src="${playlist.imgUrl}">
         </div>
         `;
@@ -122,8 +122,26 @@ class UI {
           selectTag.append(option);
       }
   }
+
+  async showProfile() {
+    const toProfile = document.querySelector("#toPersonal");
+    const users = await api.getRequest("/api/users");
+    console.log(users);
+    let user = await api.getRequest("/api/profile/info");
+    console.log(user);
+    
+    let username;
+    for (let u of users) {
+        username = api.getRequest(`/profile/${u.username}`);
+        if (username == user.username) {
+            toProfile.href = `/profile/${username}`;
+        }
+    }
+  }
 }
+
 
 const ui = new UI();
 ui.getPlaylists();
 ui.dropDownsTags();
+ui.showProfile();
