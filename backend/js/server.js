@@ -126,19 +126,19 @@ async function handler(request) {
         }
     }
 
-    if (url.pathname == "/upload" && request.method == "POST") {
-        let fileReq = await request.formData();
-        const file = fileReq.get("profile");
+    // if (url.pathname == "/upload" && request.method == "POST") {
+    //     let fileReq = await request.formData();
+    //     const file = fileReq.get("profile");
 
-        const fileStr = crypto.randomUUID;
-        const extension = extname(file.name);
-        const filename = fileStr + extension;
+    //     const fileStr = crypto.randomUUID;
+    //     const extension = extname(file.name);
+    //     const filename = fileStr + extension;
 
-        const bytes = await file.bytes();
-        Deno.writeFileSync(`../uploads/${filename}`, bytes);
+    //     const bytes = await file.bytes();
+    //     Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
-        return new Response("Upload recieved!");
-    }
+    //     return new Response("Upload recieved!");
+    // }
 
     if (url.pathname == "/signup") {
         if (request.method == "GET") {
@@ -146,25 +146,40 @@ async function handler(request) {
         }
 
         if (request.method == "POST") {
-            let signupReq = await request.json();
+            let signupReq = await request.formData();
 
+            const file = signupReq.get("profile");
+            const username = signupReq.get("username");
+            const password = signupReq.get("password");
+            
+            const fileStr = crypto.randomUUID;
+            const extension = extname(file.name);
+            const filename = fileStr + extension;
+
+            const bytes = await file.bytes();
+            if (bytes > 100000) return new Response("File is too large", { status: 400 });
+            Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             for (let user of users) {
-                if (signupReq.username == user.username) {
+                if (username == user.username) {
                     return new Response("Username is already taken", { status: 401 });
                 }
             }
 
-            if (!signupReq.username || !signupReq.password) {
+            if (!username || !password) {
                 return new Response("Input data missing", { status: 400 });
             }
 
-            createUser(users, signupReq);
-            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
+            console.log(username);
+            console.log(file);
+            console.log(password);
+
+            createUser(users, file, username, password);
+            // Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
-            let cookieId = createRandomCookie();
-            let cookie = { username: signupReq.username, cookie: cookieId };
-            cookies.push(cookie);
+            // let cookieId = createRandomCookie();
+            // let cookie = { username: username, cookie: cookieId };
+            // cookies.push(cookie);
 
             let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
