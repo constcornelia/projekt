@@ -133,7 +133,7 @@
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
       "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
-      "likes": ["yourtomboi", "cornelina"],
+      "likes": [],
       "tags": ["workout", "hype"],
       "songs": [
         { "songId": "s-70", "editorId": "u-1" }
@@ -145,7 +145,7 @@
       "name": "Sunday Morning Coffee",
       "description": "Lugn start på dagen",
       "imgUrl": "https://i.pinimg.com/736x/c2/4b/d7/c24bd7863e87ffc89b596618cfcde852.jpg",
-      "likes": ["yourtomboi"],
+      "likes": [],
       "tags": ["acoustic", "calm"],
       "songs": [
         { "songId": "s-15", "editorId": "u-1" }

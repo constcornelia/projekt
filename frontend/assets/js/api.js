@@ -64,21 +64,16 @@ class API {
                body: JSON.stringify(body)
            });
 
-
            let response = await fetch (request);
 
-
            let data = null;
-
 
            if (response.status !== 204) {
                data = await response.json();
                return data;
            }
 
-
            alert("Successfully edited!");
-
 
        } catch (error) {
            section.innerHTML = "Couldn't edit product " + error;

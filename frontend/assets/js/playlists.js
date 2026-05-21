@@ -15,7 +15,6 @@ form.addEventListener("submit", async function onSubmit(event) {
 
     let sort = form.elements["Sort-Liked-playlists"].value;
 
-
     let endpoint = "/api/playlists";
 
     const params = new URLSearchParams();

@@ -236,7 +236,7 @@ export function createPlaylistById (database, body) {
     return newPlaylist;
 }
 
-export function sortPlaylistsByLikes(playlists, filters) {
+export function sortPlaylistsByLikes(playlists) {
     let sortedPlaylists = [];
 
     for (let playlist of playlists) {
