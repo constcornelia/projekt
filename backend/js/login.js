@@ -1,3 +1,59 @@
+export function checkSession(cookie, cookies) {
+    if (cookie != null) {
+        for (let i = 0; i < cookies.length; i++) {
+            let cookieStr = "session_id=" + cookies[i].cookie;
+            if (cookie.includes(cookieStr)) return true;
+        }
+    }
+    return false;
+}
+
+export function createRandomString() {
+    return crypto.randomUUID(); 
+}
+
+export function checkLogin(users, req, cookieId, cookies) {
+    for (let user of users) {
+        if (user.username == req.username && user.password == req.password) {
+            let cookie = { username: user.username, cookie: cookieId };
+            cookies.push(cookie);
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+/* 
+            for (let user of users) {
+                if (username == user.username) {
+                    return new Response("Username is already taken", { status: 401 });
+                }
+            }
+            
+            if (!username || !password) {
+                return new Response("Input data missing", { status: 400 });
+            }
+        
+            createUser(users, file, username, password);
+            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
+            
+            let cookieId = createRandomCookie();
+            let cookie = { username: username, cookie: cookieId };
+            cookies.push(cookie);
+        
+            let headers = {
+                "Set-Cookie": "session_id=" + cookieId + "; Max-Age=86400; Path=/",
+                "Location": "/"
+            };
+        
+            return new Response(null, {
+                status: 303,
+                headers: headers
+            });
+*/
+
 function getNewUserId(users) {
     let highest = 0;
 
