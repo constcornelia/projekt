@@ -138,7 +138,7 @@ async function handler(request) {
                     return new Response("Username is already taken", { status: 401 });
                 }
             }
-
+            
             if (!username || !password) {
                 return new Response("Input data missing", { status: 400 });
             }
