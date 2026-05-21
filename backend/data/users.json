@@ -17,6 +17,12 @@
       "username": "dilara",
       "password": "moni",
       "profilePicUrl": "msp.png"
+    },
+    {
+      "id": "u-4",
+      "username": "hej",
+      "password": "hej",
+      "profilePicUrl": "soda.jpg"
     }
   ]
 }
