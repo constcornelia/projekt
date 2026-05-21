@@ -1,6 +1,6 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
-import { createUser, getUser } from "./login.js";
+import { createUser, getUser, getUserByUsername } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -251,6 +251,20 @@ async function handler(request) {
             });
         }
 
+        let profileRoute = new URLPattern({ pathname: "/profile/:username " });
+        if (profileRoute.test(request.url)) {
+            let match = profileRoute.exec(request.url);
+            let username = match.pathname.groups.username;
+
+            let user = getUserByUsername(users, username);
+
+            let body = JSON.stringify(user);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
+        }
+
 
         // Get active user
             // Get owned playlists
@@ -267,9 +281,7 @@ async function handler(request) {
         }
 
         let route = new URLPattern({ pathname: "/api/playlists/:id" });
-
         if (route.test(request.url)) {
-
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 

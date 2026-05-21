@@ -41,3 +41,12 @@ export function createUser(users, signupReq) {
     users.push(newUser);
     return newUser;
 }
+
+export function getUserByUsername(users, username) {
+    for (let user of users) {
+        if (user.username == username) {
+            return user;
+        }
+    }
+    return null;
+}
