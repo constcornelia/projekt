@@ -1,18 +1,12 @@
-let form = document.querySelector("#signup");
-form.addEventListener("submit", async function (event) {
+const form = document.querySelector("#signup");
+form.addEventListener("submit", async function(event) {
     event.preventDefault();
-
-    let data = JSON.stringify({
-        username: form.elements.username.value,
-        password: form.elements.password.value
-    });
+    
+    const data = new FormData(form);
 
     let options = {
         method: "POST",
-        body: body, 
-        headers: { 
-            "Content-Type": "application/json" 
-        },
+        body: data, 
     };
 
     let response = await fetch("/signup", options);

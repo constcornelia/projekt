@@ -1,4 +1,5 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
+import { extname } from "jsr:@std/path";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
 import { createUser, getUser, getUserByUsername } from "./login.js";
 
@@ -90,28 +91,23 @@ async function handler(request) {
             let loginReq = await request.json();
             let cookieId = createRandomCookie();
 
-            let headers = null;
             // Kollar om den om det är rätt user och lösen, isf skapas en cookie
             for (let user of users) {
                 if (user.username == loginReq.username && user.password == loginReq.password) {
                     let cookie = { username: user.username, cookie: cookieId };
                     cookies.push(cookie);
 
-                    headers = {
-                        "Set-Cookie": "session_id=" + cookieId + "; Max-Age=86400; Path=/",
+                    let headers = {
+                        "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                         "Location": "/"
                     };
-                    break;
-                } else {
-                    return new Response("Invalid login", { status: 401 });
-                }
-            }
 
-            if (headers != null) {
-                return new Response(null, {
-                    status: 303, 
-                    headers: headers
-                });
+                    return new Response(null, {
+                        status: 303, 
+                        headers: headers
+                    });
+    
+                } 
             }
             return new Response("Invalid login", { status: 401 });
         }
@@ -123,23 +119,35 @@ async function handler(request) {
         }
 
         if (request.method == "POST") {
-            let signupReq = await request.json();
+            let signupReq = await request.formData();
+
+            const file = signupReq.get("profile");
+            const username = signupReq.get("username");
+            const password = signupReq.get("password");
+            
+            const fileStr = crypto.randomUUID;
+            const extension = extname(file.name);
+            const filename = fileStr + extension;
+
+            const bytes = await file.bytes();
+            if (bytes > 100000) return new Response("File is too large", { status: 400 });
+            Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             for (let user of users) {
-                if (signupReq.username == user.username) {
+                if (username == user.username) {
                     return new Response("Username is already taken", { status: 401 });
                 }
             }
 
-            if (!signupReq.username || !signupReq.password) {
+            if (!username || !password) {
                 return new Response("Input data missing", { status: 400 });
             }
 
-            createUser(users, signupReq);
+            createUser(users, file, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
             let cookieId = createRandomCookie();
-            let cookie = { username: signupReq.username, cookie: cookieId };
+            let cookie = { username: username, cookie: cookieId };
             cookies.push(cookie);
 
             let headers = {
@@ -269,13 +277,10 @@ async function handler(request) {
 
         // Get playlist by id
 
-        let playlistPageRoute = new URLPattern({
-            pathname: "/playlists/:id"
-        });
-
+        let playlistPageRoute = new URLPattern({ pathname: "/playlists/:id" });
         if (playlistPageRoute.test(request.url)) {
             return serveFile(request, "../../frontend/public-playlist.html");
-        }
+        };
 
         let route = new URLPattern({ pathname: "/api/playlists/:id" });
         if (route.test(request.url)) {
@@ -283,7 +288,6 @@ async function handler(request) {
             let id = match.pathname.groups.id;
 
             let playlist = getPlaylistById(playlists, songs, id);
-
             let body = JSON.stringify(playlist);
 
             return new Response(body, {
@@ -308,7 +312,9 @@ async function handler(request) {
         // }
     }
 
-    if (request.method == "POST") {}
+    if (request.method == "POST") {
+
+    }
     
     if (request.method == "PATCH") {}
 

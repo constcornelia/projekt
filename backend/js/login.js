@@ -27,16 +27,17 @@ export function getUser(users, cookies, activeCookie) {
     return null;
 }
 
-export function createUser(users, signupReq) {
+export function createUser(users, file, username, password) {
     let id = getNewUserId(users);
     
     let newUser = {
         id: id,
-        username: signupReq.username,
-        password: signupReq.password,
-        profilePicUrl: signupReq.profilePicUrl
+        username: username,
+        password: password,
+        profilePicUrl: file.name
     };
-    console.log(newUser)
+
+    console.log(newUser);
 
     users.push(newUser);
     return newUser;
