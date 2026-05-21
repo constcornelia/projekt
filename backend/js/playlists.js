@@ -237,6 +237,7 @@ export function createPlaylistById (database, body) {
 }
 
 export function sortPlaylistsByLikes(playlists) {
+    let copy = 
     return playlists.sort(function (a,b) {
         return b.likes.length - a.likes.length;
     });

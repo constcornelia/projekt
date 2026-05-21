@@ -1,6 +1,8 @@
 const form = document.querySelector(".FilterForm");
 const searchBar = document.querySelector("#SearchPaylistForm");
 const clear = document.querySelector("#FiltersReset");
+const sortLikes = document.querySelector(".Sort-Playlists");
+const like = document.querySelector(".LikePlaylist-Button system-UI");
 
 const api = new API();
 const ui = new UI();
@@ -49,8 +51,29 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
     }
 });
 
+sortLikes.addEventListener("submit", async function mostPopularPlaylists(event) {
+    event.preventDefault();
+
+
+}
+
+
+});
+
+// like.addEventListener("click", async function likePlaylist(event) {
+//     event.preventDefault();
+
+
+// });
+
 clear.addEventListener("click", async function clearFilters(event) {
     event.preventDefault();
+
+    let endpoint = "/api/playlists";
+
+    let playlists = await api.getRequest(endpoint);
+
+    ui.renderPlaylists(playlists); 
 
     form.reset();
     searchBar.reset();
