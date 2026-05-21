@@ -22,7 +22,6 @@ AddSongForm.addEventListener("submit", function (event) {
 const section = document.querySelector("#PublicPlaylistsCollection");
 
 class UI {
-
   async getPlaylists() {
       let playlists = await api.getRequest("/api/playlists");
       this.renderPlaylists(playlists);
@@ -130,8 +129,3 @@ class UI {
     toProfile.href = `/profile/${user.username}`;
   }
 }
-
-const ui = new UI();
-ui.getPlaylists();
-ui.dropDownsTags();
-ui.showProfile();
