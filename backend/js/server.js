@@ -278,6 +278,8 @@ async function handler(request) {
             });
         }
 
+        if (url.pathname == "/profile")
+
 
         // Get active user
             // Get owned playlists
@@ -285,10 +287,7 @@ async function handler(request) {
 
         // Get playlist by id
 
-        let playlistPageRoute = new URLPattern({
-            pathname: "/playlists/:id"
-        });
-
+        let playlistPageRoute = new URLPattern({ pathname: "/playlists/:id" });
         if (playlistPageRoute.test(request.url)) {
             return serveFile(request, "../../frontend/public-playlist.html");
         }
