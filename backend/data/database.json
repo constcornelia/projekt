@@ -145,7 +145,7 @@
       "name": "Sunday Morning Coffee",
       "description": "Lugn start på dagen",
       "imgUrl": "https://i.pinimg.com/736x/c2/4b/d7/c24bd7863e87ffc89b596618cfcde852.jpg",
-      "likes": [],
+      "likes": ["yourtomboi"],
       "tags": ["acoustic", "calm"],
       "songs": [
         { "songId": "s-15", "editorId": "u-1" }
