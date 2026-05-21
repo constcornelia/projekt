@@ -1,3 +1,20 @@
+export function checkSession(cookie, cookies) {
+    if (cookie != null) {
+        for (let i = 0; i < cookies.length; i++) {
+            let cookieStr = "session_id=" + cookies[i].cookie;
+            if (cookie.includes(cookieStr)) return true;
+        }
+    }
+    return false;
+}
+
+export function checkLogin() {}
+
+export function createRandomString() {
+    return crypto.randomUUID(); 
+}
+
+
 function getNewUserId(users) {
     let highest = 0;
 

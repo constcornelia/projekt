@@ -1,22 +1,29 @@
-import { serveFile, serveDir } from "jsr:@std/http/file-server";
+import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
+import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername } from "./login.js";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
-import { createUser, getUser, getUserByUsername } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
 
-const cookies = []; // Alla aktiva cookies ska sparas här
+const cookies = [];
 
-function createRandomCookie () { 
-    return crypto.randomUUID(); 
+function handleResponse(body, status, headers) {
+    return new Response(body, {
+        status: status,
+        headers: headers
+    });
 }
 
-function handleResponse(body, options) {
-    return new Response(body, {
-        status: options.status,
-        headers: options.headers
-    });
+function showPage(request, url, pathname, path) {
+    const cookie = request.headers.get("cookie");
+    let session = checkSession(cookie);
+    if (session) {
+        if (request.method == "GET" && url.pathname == pathname) {
+            return serveFile(request, path);
+        }
+    }
+    return handleResponse("Unauthorized", 401, null);
 }
 
 async function handler(request) {
@@ -27,41 +34,12 @@ async function handler(request) {
     let users = userData.users;
 
     if (url.pathname == "/" && request.method == "GET") {
-        let userCookie = request.headers.get("cookie");
-        let session = false;
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (session) return showPage();
 
-        if (userCookie != null) {
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i];
-
-                let cookieStr = "session_id=" + cookie.cookie;
-
-                if (userCookie.includes(cookieStr)) {
-                    session = true;
-                    break;
-
-                }
-            }
-        }
-
-        if (session) {
-            return serveFile(request, "../../frontend/main.html");
-        } 
-        // else {
-        //     // ... annars kommer man till intro
-        //     if (!userCookie) {
-        //         let options = {
-        //             status: 303,
-        //             headers: { "Location": "/welcome" }
-        //         };
-        
-        //         return new Response(null, options);
-
-        return new Response(null, {
-            status: 303,
-            headers: { "Location": "/welcome"}
-        });
-
+        let headers = { "Location": "/welcome" };
+        return handleResponse(null, 303, headers);
     }
 
     if (url.pathname == "/welcome" && request.method == "GET") {
@@ -69,14 +47,11 @@ async function handler(request) {
     }
 
     if (url.pathname == "/logout" && request.method == "GET") {
-        let options = {
-            status: 303,
-            headers: {
-                "Location": "/welcome",
-                "Set-Cookie": "session_id=deleted; Max-Age=0; Path=/"
-            }
-        };
-        return new Response(null, options);
+        let headers = {
+            "Location": "/welcome",
+            "Set-Cookie": "session_id=deleted; Max-Age=0; Path=/"
+        }
+        return handleResponse(null, 303, headers);
     }
     
     // Logga in
@@ -137,7 +112,7 @@ async function handler(request) {
                     return new Response("Username is already taken", { status: 401 });
                 }
             }
-
+            
             if (!username || !password) {
                 return new Response("Input data missing", { status: 400 });
             }
@@ -273,9 +248,6 @@ async function handler(request) {
             });
         }
 
-
-
-
         // Get active user
             // Get owned playlists
             // Get liked playlists
@@ -318,6 +290,10 @@ async function handler(request) {
     }
 
     if (request.method == "POST") {
+
+        if (url.pathname == "/profile/new-playlist") {
+            let playlistReq = await request.json();
+        }
 
     }
     
