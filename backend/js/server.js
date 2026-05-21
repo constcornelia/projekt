@@ -83,7 +83,6 @@ async function handler(request) {
     if (url.pathname == "/login") {
 
         if (request.method == "GET") {
-            console.log(users);
             return serveFile(request, "../../frontend/login.html")
         }
         
@@ -164,7 +163,6 @@ async function handler(request) {
 
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
-        console.log(cookies);
 
         // Get all/filtered playlists
         if (url.pathname == "/api/playlists") {
@@ -255,13 +253,18 @@ async function handler(request) {
                 headers: headers
             });
         }
+        
+        let profileRoute = new URLPattern({ pathname: "/profile/:username" }); 
+        if (profileRoute.test(request.url)) return serveFile(request, "../../frontend/personal.html");
 
-        let profileRoute = new URLPattern({ pathname: "/profile/:username" });
+
+        let profileApiRoute = new URLPattern({ pathname: "/api/profile/:username" });
         if (profileRoute.test(request.url)) {
-            let match = profileRoute.exec(request.url);
+            let match = profileApiRoute.exec(request.url);
             let username = match.pathname.groups.username;
 
             let user = getUserByUsername(users, username);
+            console.log(user);
 
             let body = JSON.stringify(user);
             return new Response(body, {
@@ -269,6 +272,8 @@ async function handler(request) {
                 headers: headers
             });
         }
+
+
 
 
         // Get active user

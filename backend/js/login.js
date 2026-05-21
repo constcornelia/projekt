@@ -46,6 +46,7 @@ export function createUser(users, file, username, password) {
 export function getUserByUsername(users, username) {
     for (let user of users) {
         if (user.username == username) {
+            console.log(user);
             return user;
         }
     }
