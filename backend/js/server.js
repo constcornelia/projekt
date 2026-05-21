@@ -81,14 +81,16 @@ async function handler(request) {
             const fileStr = createRandomString();
             const extension = extname(file.name);
             const filename = fileStr + extension;
+
+            if (!file) return handleResponse("Profile picture is missing", 400);
             
             const bytes = await file.bytes();
-            if (bytes > 100000) return handleResponse("File is too large", 400, null);
+            if (bytes > 100000) return handleResponse("File is too large", 400);
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             for (let user of users) {
                 if (username == user.username) {
-                    return handleResponse("Username is already taken", 401, null);
+                    return handleResponse("Username is already taken", 401);
                 }
             }
             
