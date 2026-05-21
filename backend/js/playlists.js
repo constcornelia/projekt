@@ -236,11 +236,29 @@ export function createPlaylistById (database, body) {
     return newPlaylist;
 }
 
-export function sortPlaylistsByLikes(playlists) {
-    let copy = 
-    return playlists.sort(function (a,b) {
-        return b.likes.length - a.likes.length;
-    });
+export function sortPlaylistsByLikes(playlists, filters) {
+    let filteredPlaylists = [];
+
+    for (let playlist of playlists) {
+        let match = true;
+
+        if (filters.likes) {
+            if (playlist.like.length < filters.like.length) {
+                match = false;
+            }
+        }
+
+        if (match) {
+            filteredPlaylists.push(playlist);
+        }
+    }
+
+    return filteredPlaylists;
+
+//     let copy = 
+//     return playlists.sort(function (a,b) {
+//         return b.likes.length - a.likes.length;
+//     });
 }
 
 export function removeSongFromPlaylist() {}

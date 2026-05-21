@@ -54,10 +54,7 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
 sortLikes.addEventListener("submit", async function mostPopularPlaylists(event) {
     event.preventDefault();
 
-
-}
-
-
+    
 });
 
 // like.addEventListener("click", async function likePlaylist(event) {
