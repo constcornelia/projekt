@@ -1,6 +1,7 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
-import { createUser, alertUser, getUser } from "./login.js";
+import { createUser, getUser } from "./login.js";
+import { extname } from "jsr:@std/path";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -111,8 +112,7 @@ async function handler(request) {
                     // cookies[username] = user.username;
                     break;
                 } else {
-                    alertUser("Wrong username or password");
-                    break;
+                    return new Response("Invalid login", { status: 401 });
                 }
             }
 
@@ -126,26 +126,58 @@ async function handler(request) {
         }
     }
 
+    // if (url.pathname == "/upload" && request.method == "POST") {
+    //     let fileReq = await request.formData();
+    //     const file = fileReq.get("profile");
+
+    //     const fileStr = crypto.randomUUID;
+    //     const extension = extname(file.name);
+    //     const filename = fileStr + extension;
+
+    //     const bytes = await file.bytes();
+    //     Deno.writeFileSync(`../uploads/${filename}`, bytes);
+
+    //     return new Response("Upload recieved!");
+    // }
+
     if (url.pathname == "/signup") {
         if (request.method == "GET") {
             return serveFile(request, "../../frontend/signup.html");
         }
 
         if (request.method == "POST") {
-            let signupReq = await request.json();
+            let signupReq = await request.formData();
+
+            const file = signupReq.get("profile");
+            const username = signupReq.get("username");
+            const password = signupReq.get("password");
+            
+            const fileStr = crypto.randomUUID;
+            const extension = extname(file.name);
+            const filename = fileStr + extension;
+
+            const bytes = await file.bytes();
+            if (bytes > 100000) return new Response("File is too large", { status: 400 });
+            Deno.writeFileSync(`../uploads/${filename}`, bytes);
+
             for (let user of users) {
-                if (signupReq.username == user.username) {
-                    break;
+                if (username == user.username) {
+                    return new Response("Username is already taken", { status: 401 });
                 }
             }
-            createUser(users, signupReq);
+
+            if (!username || !password) {
+                return new Response("Input data missing", { status: 400 });
+            }
+
+            createUser(users, file, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
             let cookieId = createRandomCookie();
-            let cookie = { username: signupReq.username, cookie: cookieId };
+            let cookie = { username: username, cookie: cookieId };
             cookies.push(cookie);
 
-            headers = {
+            let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                 "Location": "/"
             };
@@ -246,6 +278,8 @@ async function handler(request) {
             });
         }
 
+        if (url.pathname == "/profile")
+
 
         // Get active user
             // Get owned playlists
@@ -253,10 +287,7 @@ async function handler(request) {
 
         // Get playlist by id
 
-        let playlistPageRoute = new URLPattern({
-            pathname: "/playlists/:id"
-        });
-
+        let playlistPageRoute = new URLPattern({ pathname: "/playlists/:id" });
         if (playlistPageRoute.test(request.url)) {
             return serveFile(request, "../../frontend/public-playlist.html");
         }
@@ -294,8 +325,9 @@ async function handler(request) {
         // }
     }
 
-    // ha en funktion som ger true om man är ägaren kanske
-    if (request.method == "POST") {}
+    if (request.method == "POST") {
+
+    }
     
     if (request.method == "PATCH") {}
 
