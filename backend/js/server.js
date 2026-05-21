@@ -278,7 +278,7 @@ async function handler(request) {
             });
         }
 
-        if (url.pathname == "/profile")
+        if (url.pathname == "/profile") {
 
 
         // Get active user
@@ -290,7 +290,7 @@ async function handler(request) {
         let playlistPageRoute = new URLPattern({ pathname: "/playlists/:id" });
         if (playlistPageRoute.test(request.url)) {
             return serveFile(request, "../../frontend/public-playlist.html");
-        }
+        };
 
         let route = new URLPattern({ pathname: "/api/playlists/:id" });
 
@@ -356,6 +356,7 @@ async function handler(request) {
             return new Response(null, {});
         }
     }
+}
 
     return serveDir(request, { fsRoot: "../../frontend" });
 }
