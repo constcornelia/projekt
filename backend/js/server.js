@@ -98,47 +98,27 @@ async function handler(request) {
             let loginReq = await request.json();
             let cookieId = createRandomCookie();
 
-            let headers = null;
             // Kollar om den om det är rätt user och lösen, isf skapas en cookie
             for (let user of users) {
                 if (user.username == loginReq.username && user.password == loginReq.password) {
                     let cookie = { username: user.username, cookie: cookieId };
                     cookies.push(cookie);
 
-                    headers = {
+                    let headers = {
                         "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                         "Location": "/"
                     };
-                    // cookies[username] = user.username;
-                    break;
-                } else {
-                    return new Response("Invalid login", { status: 401 });
-                }
-            }
 
-            if (headers != null) {
-                return new Response(null, {
-                    status: 303, 
-                    headers: headers
-                });
+                    return new Response(null, {
+                        status: 303, 
+                        headers: headers
+                    });
+    
+                } 
             }
             return new Response("Invalid login", { status: 401 });
         }
     }
-
-    // if (url.pathname == "/upload" && request.method == "POST") {
-    //     let fileReq = await request.formData();
-    //     const file = fileReq.get("profile");
-
-    //     const fileStr = crypto.randomUUID;
-    //     const extension = extname(file.name);
-    //     const filename = fileStr + extension;
-
-    //     const bytes = await file.bytes();
-    //     Deno.writeFileSync(`../uploads/${filename}`, bytes);
-
-    //     return new Response("Upload recieved!");
-    // }
 
     if (url.pathname == "/signup") {
         if (request.method == "GET") {
@@ -293,14 +273,11 @@ async function handler(request) {
         };
 
         let route = new URLPattern({ pathname: "/api/playlists/:id" });
-
         if (route.test(request.url)) {
-
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
             let playlist = getPlaylistById(playlists, songs, id);
-
             let body = JSON.stringify(playlist);
 
             return new Response(body, {
