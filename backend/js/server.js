@@ -15,13 +15,11 @@ function handleResponse(body, status, headers) {
     });
 }
 
-function showPage(request, url, pathname, path) {
+function showPage(request, path) {
     const cookie = request.headers.get("cookie");
-    let session = checkSession(cookie);
+    let session = checkSession(cookie, cookies);
     if (session) {
-        if (request.method == "GET" && url.pathname == pathname) {
-            return serveFile(request, path);
-        }
+        return serveFile(request, path);
     }
     return handleResponse("Unauthorized", 401, null);
 }
@@ -29,21 +27,24 @@ function showPage(request, url, pathname, path) {
 async function handler(request) {
     let url = new URL(request.url);
 
-    let songs = data.songs;
-    let playlists = data.playlists;
     let users = userData.users;
+    let playlists = data.playlists;
+    let songs = data.songs;
+
+    // Shows pages that doesn't require authorization
+    if (request.method == "GET") {
+        if (url.pathname == "/welcome") return serveFile(request, "../../frontend/intro.html");
+        if (url.pathname == "/login") return serveFile(request, "../../frontend/login.html");
+        if (url.pathname == "/signup") return serveFile(request, "../../frontend/signup.html");
+    }
 
     if (url.pathname == "/" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
         let session = checkSession(cookie, cookies);
-        if (session) return showPage();
+        if (session) return showPage(request, "../../frontend/main.html");
 
         let headers = { "Location": "/welcome" };
         return handleResponse(null, 303, headers);
-    }
-
-    if (url.pathname == "/welcome" && request.method == "GET") {
-        return serveFile(request, "../../frontend/intro.html");
     }
 
     if (url.pathname == "/logout" && request.method == "GET") {
@@ -53,86 +54,60 @@ async function handler(request) {
         }
         return handleResponse(null, 303, headers);
     }
-    
-    // Logga in
-    if (url.pathname == "/login") {
 
-        if (request.method == "GET") {
-            return serveFile(request, "../../frontend/login.html")
-        }
-        
-        if (request.method == "POST") {
+    if (request.method == "POST") {
+        if (url.pathname == "/login") {
             let loginReq = await request.json();
-            let cookieId = createRandomCookie();
-
-            // Kollar om den om det är rätt user och lösen, isf skapas en cookie
-            for (let user of users) {
-                if (user.username == loginReq.username && user.password == loginReq.password) {
-                    let cookie = { username: user.username, cookie: cookieId };
-                    cookies.push(cookie);
-
-                    let headers = {
-                        "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
-                        "Location": "/"
-                    };
-
-                    return new Response(null, {
-                        status: 303, 
-                        headers: headers
-                    });
-    
-                } 
+            let cookieId = createRandomString();
+        
+            let correctLogin = checkLogin(users, loginReq, cookieId, cookies);
+            if (correctLogin) {
+                let headers = {
+                    "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
+                    "Location": "/"
+                };
+                return handleResponse(null, 303, headers);
             }
-            return new Response("Invalid login", { status: 401 });
-        }
-    }
-
-    if (url.pathname == "/signup") {
-        if (request.method == "GET") {
-            return serveFile(request, "../../frontend/signup.html");
+            return handleResponse("Invalid login", 401, null);
         }
 
-        if (request.method == "POST") {
+        if (url.pathname == "/signup") {
             let signupReq = await request.formData();
-
+        
             const file = signupReq.get("profile");
             const username = signupReq.get("username");
             const password = signupReq.get("password");
             
-            const fileStr = crypto.randomUUID;
+            const fileStr = createRandomString();
             const extension = extname(file.name);
             const filename = fileStr + extension;
-
+            
             const bytes = await file.bytes();
-            if (bytes > 100000) return new Response("File is too large", { status: 400 });
+            if (bytes > 100000) return handleResponse("File is too large", 400, null);
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             for (let user of users) {
                 if (username == user.username) {
-                    return new Response("Username is already taken", { status: 401 });
+                    return handleResponse("Username is already taken", 401, null);
                 }
             }
             
             if (!username || !password) {
-                return new Response("Input data missing", { status: 400 });
+                return handleResponse("Input data missing", 400, null);
             }
-
+        
             createUser(users, file, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
             let cookieId = createRandomCookie();
             let cookie = { username: username, cookie: cookieId };
             cookies.push(cookie);
-
+        
             let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=86400; Path=/",
                 "Location": "/"
             };
-
-            return new Response(null, {
-                status: 303,
-                headers: headers
-            });
+            return handleResponse(null, 303, headers);
         }
     }
 
