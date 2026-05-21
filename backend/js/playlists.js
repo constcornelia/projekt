@@ -237,28 +237,17 @@ export function createPlaylistById (database, body) {
 }
 
 export function sortPlaylistsByLikes(playlists, filters) {
-    let filteredPlaylists = [];
+    let sortedPlaylists = [];
 
     for (let playlist of playlists) {
-        let match = true;
-
-        if (filters.likes) {
-            if (playlist.like.length < filters.like.length) {
-                match = false;
-            }
-        }
-
-        if (match) {
-            filteredPlaylists.push(playlist);
-        }
+        sortedPlaylists.push(playlist);
     }
 
-    return filteredPlaylists;
+    sortedPlaylists.sort(function (a,b) {
+        return b.likes.length - a.likes.length;
+    });
 
-//     let copy = 
-//     return playlists.sort(function (a,b) {
-//         return b.likes.length - a.likes.length;
-//     });
+    return sortedPlaylists;
 }
 
 export function removeSongFromPlaylist() {}

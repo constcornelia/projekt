@@ -1,8 +1,7 @@
 const form = document.querySelector(".FilterForm");
 const searchBar = document.querySelector("#SearchPaylistForm");
 const clear = document.querySelector("#FiltersReset");
-const sortLikes = document.querySelector(".Sort-Playlists");
-const like = document.querySelector(".LikePlaylist-Button system-UI");
+const like = document.querySelector(".LikePlaylist-Button.system-UI");
 
 const api = new API();
 const ui = new UI();
@@ -14,12 +13,19 @@ form.addEventListener("submit", async function onSubmit(event) {
 
     let tag = form.elements.genre.value;
 
+    let sort = form.elements["Sort-Liked-playlists"].value;
+
+
     let endpoint = "/api/playlists";
 
     const params = new URLSearchParams();
 
     if (tag && tag !== "all") {
         params.append("tag", tag);
+    }
+
+    if (sort) {
+        params.append("sort", "likes");
     }
 
     let finalPoint = endpoint;
@@ -50,18 +56,6 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
         section.innerHTML = `<p>No playlists matched your search on: <span>${searchInput}</span></p>`;
     }
 });
-
-sortLikes.addEventListener("submit", async function mostPopularPlaylists(event) {
-    event.preventDefault();
-
-    
-});
-
-// like.addEventListener("click", async function likePlaylist(event) {
-//     event.preventDefault();
-
-
-// });
 
 clear.addEventListener("click", async function clearFilters(event) {
     event.preventDefault();

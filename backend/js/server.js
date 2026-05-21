@@ -164,7 +164,9 @@ async function handler(request) {
         if (url.pathname == "/api/playlists") {
             let tag = url.searchParams.get("tag");
             if (tag) playlists = filterPlaylistsByTag(playlists, tag);
-
+            let sort = url.searchParams.get("sort");
+            if (sort === "likes") playlists = sortPlaylistsByLikes(playlists);
+            
             let body = JSON.stringify(playlists);
             return new Response(body, { 
                 status: 200, 
