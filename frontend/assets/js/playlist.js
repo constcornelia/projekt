@@ -27,7 +27,6 @@ addSongForm.addEventListener("submit", async function onSubmit(event) {
 
     const input = addSongForm.elements.SearchSongInput.value;
     const songs = await api.getRequest("/api/songs/search?q=" + input);
-    console.log(songs);
 
     ui.renderSongs(songs);
 });
