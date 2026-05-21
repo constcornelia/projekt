@@ -10,4 +10,9 @@ form.addEventListener("submit", async function(event) {
     };
 
     let response = await fetch("/signup", options);
+
+    const errorAlert = document.querySelector(".error-note");
+    if (response.status == 401) errorAlert.innerHTML = "Username is already taken";
+    if (response.status == 400) errorAlert.innerHTML = "Please enter a username AND a password";
+    if (response.status === 303 || response.ok) window.location.href = "/";
 });

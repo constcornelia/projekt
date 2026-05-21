@@ -1,5 +1,6 @@
 const form = document.querySelector("#FilterForm");
 const searchBar = document.querySelector("#filters");
+const clear = document.querySelector("#FiltersReset");
 
 let api = new API();
 let ui = new UI();
@@ -45,9 +46,6 @@ form.addEventListener("submit", async function onSubmit(event) {
     } else {
         ui.renderPlaylists(playlists); 
     }
-
-    form.reset();
-    searchBar.reset();
 });
 
 searchBar.addEventListener("submit", async function searchSubmit(event) {
@@ -62,6 +60,13 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
     } else {
         main.innerHTML = `<p>No playlists matched your search on: <span>${searchInput}</span></p>`;
     }
+});
+
+clear.addEventListener("submit", async function clearFilters(event) {
+    event.preventDefault();
+
+    form.reset();
+    searchBar.reset();
 });
 
 showDropDowns();

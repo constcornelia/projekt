@@ -1,10 +1,17 @@
-function getNewUserId(users, id) {
+function getNewUserId(users) {
+    let highest = 0;
+
     for (let user of users) {
-        if (user.id == id) {
-            return user;
-        }
+        let idNr = user.id.substring(2);
+        idNr = parseInt(idNr);
+
+        if (highest < idNr) {
+            highest = idNr
+        };
     }
-    return null;
+
+    let newNr = highest + 1;
+    return "u-" + newNr;
 }
 
 export function getUser(users, cookies, activeCookie) {
