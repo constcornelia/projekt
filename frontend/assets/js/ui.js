@@ -125,18 +125,11 @@ class UI {
 
   async showProfile() {
     const toProfile = document.querySelector("#toPersonal");
-    const users = await api.getRequest("/api/users");
-    console.log(users);
+    if (!toProfile) return;
+
     let user = await api.getRequest("/api/profile/info");
-    console.log(user);
-    
-    let username;
-    for (let u of users) {
-        username = api.getRequest(`/profile/${u.username}`);
-        if (username == user.username) {
-            toProfile.href = `/profile/${username}`;
-        }
-    }
+
+    toProfile.href = `/profile/${user.username}`;
   }
 }
 
