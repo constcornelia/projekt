@@ -170,16 +170,12 @@ async function handler(request) {
                 return new Response("Input data missing", { status: 400 });
             }
 
-            console.log(username);
-            console.log(file);
-            console.log(password);
-
             createUser(users, file, username, password);
-            // Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
+            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
-            // let cookieId = createRandomCookie();
-            // let cookie = { username: username, cookie: cookieId };
-            // cookies.push(cookie);
+            let cookieId = createRandomCookie();
+            let cookie = { username: username, cookie: cookieId };
+            cookies.push(cookie);
 
             let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
