@@ -1,6 +1,7 @@
 import { serveFile, serveDir } from "jsr:@std/http/file-server";
+import { extname } from "jsr:@std/path";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
-// import { createUser, alertUser, getUser } from "./login.js";
+import { createUser, getUser } from "./login.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -230,16 +231,16 @@ async function handler(request) {
             });
         }
 
-        // const cookie = request.headers.get("cookie");
-        // let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
-        // if (url.pathname == "/api/profile/info") {
-        //     let body = JSON.stringify(user);
-        //     return new Response(body, {
-        //         status: 200,
-        //         headers: headers
-        //     });
-        //     // Get users name + pfp
-        // }
+        const cookie = request.headers.get("cookie");
+        let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
+        if (url.pathname == "/api/profile/info") {
+            let body = JSON.stringify(user);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
+            // Get users name + pfp
+        }
 
         if (url.pathname == "/api/profile/info") {
 
