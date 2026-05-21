@@ -47,11 +47,12 @@ export function filterPlaylistsByTag(playlists, tag) {
     return playlistsByByTag;
 }
 
-export function getPlaylistBySearch(database, query) {
+export function getPlaylistBySearch(playlists, query) {
     let filteredPlaylists = [];
+
     let q = query.toLowerCase();
 
-    for (let playlist of database.playlists) {
+    for (let playlist of playlists.database) {
         if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
             filteredPlaylists.push(playlist);
         }

@@ -194,17 +194,30 @@ async function handler(request) {
         if (url.pathname == "/api/playlists/search") {
             let phrase = url.searchParams.get("q");
             if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
+            
+            let body = JSON.stringify(playlists);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
         }
 
         // Search for a song by artist or title to add to a playlist
         if (url.pathname == "/api/songs/search") {
             let phrase = url.searchParams.get("q");
             if (phrase) songs = getSongsBySearch(songs, phrase);
+            
+            let body = JSON.stringify(songs);
+            return new Response(body, {
+                status: 200,
+                headers: headers
+            });
         }
 
         // Get all tags (for "select genre")
         if (url.pathname == "/api/tags") {
             let tags = getTags(playlists);
+            
             let body = JSON.stringify(tags);
             return new Response(body, {
                 status: 200,

@@ -1,9 +1,7 @@
-const form = document.querySelector("#FilterForm");
-const searchBar = document.querySelector("#filters");
+const form = document.querySelector(".FilterForm");
+const searchBar = document.querySelector("#SearchPaylistForm");
 const clear = document.querySelector("#FiltersReset");
-
-let api = new API();
-let ui = new UI();
+const main = document.querySelector("#PublicPlaylistsCollection");
 
 ui.getPlaylists();
 
@@ -14,14 +12,11 @@ async function showPlaylists() {
 
 async function showDropDowns () {
     let tags = await api.getRequest("/api/tags");
-    console.log(tags);
     ui.dropDownsTags(tags);
 }
 
 form.addEventListener("submit", async function onSubmit(event) {
     event.preventDefault();
-
-    const main = document.querySelector("#PublicPlaylistsCollection");
 
     let tag = form.elements.genre.value;
 
@@ -51,8 +46,8 @@ form.addEventListener("submit", async function onSubmit(event) {
 searchBar.addEventListener("submit", async function searchSubmit(event) {
     event.preventDefault();
 
-    let searchInput = searchBar.elements.searchInput.value;
-
+    let searchInput = searchBar.elements.SearchInput.value;
+   
     let playlists = await api.getRequest("/api/playlists/search?q=" + searchInput);
 
     if (playlists && playlists.length > 0) {
@@ -62,7 +57,7 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
     }
 });
 
-clear.addEventListener("submit", async function clearFilters(event) {
+clear.addEventListener("click", async function clearFilters(event) {
     event.preventDefault();
 
     form.reset();

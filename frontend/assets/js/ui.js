@@ -19,7 +19,7 @@ AddSongForm.addEventListener("submit", function (event) {
 // Product   =   Playlist
 // Brand     =   Song 
 // Category  =   Tags
-let api = new API();
+const api = new API();
 
 class UI {
 
@@ -112,7 +112,7 @@ class UI {
       if (!selectTag) return;
 
       let tags = await api.getRequest("/api/tags");
-
+   
       for (let tag of tags) {
           const option = document.createElement("option");
 
