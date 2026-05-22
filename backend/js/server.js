@@ -2,6 +2,7 @@ import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername } from "./login.js";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists } from "./playlists.js";
+import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
 const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
@@ -68,7 +69,7 @@ async function handler(request) {
                 };
                 return handleResponse(null, 303, headers);
             }
-            return handleResponse("Invalid login", 401, null);
+            return handleResponse("Invalid login", 401);
         }
 
         if (url.pathname == "/signup") {
@@ -95,7 +96,7 @@ async function handler(request) {
             }
             
             if (!username || !password) {
-                return handleResponse("Input data missing", 400, null);
+                return handleResponse("Input data missing", 400);
             }
         
             createUser(users, file, username, password);
@@ -321,13 +322,20 @@ async function handler(request) {
 
     if (request.method == "POST") {
 
+        // Lägg till spellista
         if (url.pathname == "/profile/new-playlist") {
             let playlistReq = await request.json();
         }
 
     }
     
-    if (request.method == "PATCH") {}
+    if (request.method == "PATCH") {
+
+        // Ändra profil-bild
+        // Som ägare av spellista ändra info i spellista + radera låtar
+
+        // Lägg till låtar i andras och sina egna spellistor
+    }
 
     if (request.method == "DELETE") {
 
