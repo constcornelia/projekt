@@ -251,3 +251,34 @@ export function sortPlaylistsByLikes(playlists) {
 }
 
 export function removeSongFromPlaylist() {}
+
+function getNewPlaylistId(playlists) {
+    let highest = 0;
+
+    for (let playlist of playlists) {
+        let idNr = playlist.id.substring(2);
+        idNr = parseInt(idNr);
+
+        if (highest < idNr) {
+            highest = idNr;
+        }
+    }
+    let newNr = highest + 1;
+    return "p-" + newNr;
+}
+
+
+export function createPlaylist(playlists, file, title, description) {
+    let id = getNewPlaylistId(playlists);
+
+    let newPlaylist = {
+        id: id,
+        ownerId: "",
+        name: title,
+        description: description,
+        imgUrl: file,
+        likes: [],
+        tags: "",
+        songs: []
+    };
+}

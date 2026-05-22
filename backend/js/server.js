@@ -27,11 +27,11 @@ function showPage(request, path) {
 
 async function handler(request) {
     let url = new URL(request.url);
-
+    
     let users = userData.users;
     let playlists = data.playlists;
     let songs = data.songs;
-
+    
     // Shows pages that doesn't require authorization
     if (request.method == "GET") {
         if (url.pathname == "/welcome") return serveFile(request, "../../frontend/intro.html");
@@ -99,7 +99,7 @@ async function handler(request) {
                 return handleResponse("Input data missing", 400);
             }
         
-            createUser(users, file, username, password);
+            createUser(users, filename, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
             let cookieId = createRandomString();
@@ -117,21 +117,18 @@ async function handler(request) {
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
 
-        // Get all/filtered playlists
         if (url.pathname == "/api/playlists") {
             let tag = url.searchParams.get("tag");
             if (tag) playlists = filterPlaylistsByTag(playlists, tag);
+
             let sort = url.searchParams.get("sort");
             if (sort === "likes") playlists = sortPlaylistsByLikes(playlists);
             
             let body = JSON.stringify(playlists);
-            return new Response(body, { 
-                status: 200, 
-                headers: headers 
-            });
+            return handleResponse(body, 200, headers);
         }
 
-        // Get all users
+        // Get all users OBS: TROR INTE VI BEHÖVER DEN HÄR
         if (url.pathname == "/api/users") {
             users = JSON.stringify(users);
             return new Response(users, {
@@ -140,13 +137,9 @@ async function handler(request) {
             });
         }
 
-        // Get all songs
         if (url.pathname == "/api/songs") {
             let songs = JSON.stringify(songs);
-            return new Response(songs, {
-                status: 200,
-                headers: headers
-            });
+            return handleResponse(songs, 200, headers);
         }
 
         // Search for a playlist by name and description
@@ -155,10 +148,7 @@ async function handler(request) {
             if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
             
             let body = JSON.stringify(playlists);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
+            return handleResponse(body, 200, headers);
         }
 
         // Search for a song by artist or title to add to a playlist
@@ -167,10 +157,7 @@ async function handler(request) {
             if (phrase) songs = getSongsBySearch(songs, phrase);
             
             let body = JSON.stringify(songs);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
+            return handleResponse(body, 200, headers);
         }
 
         // Get all tags (for "select genre")
@@ -178,10 +165,7 @@ async function handler(request) {
             let tags = getTags(playlists);
             
             let body = JSON.stringify(tags);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
+            return handleResponse(body, 200, headers);
         }
 
         // const cookie = request.headers.get("cookie");
@@ -296,41 +280,46 @@ async function handler(request) {
             let id = match.pathname.groups.id;
 
             let playlist = getPlaylistById(playlists, songs, id);
+            
             let body = JSON.stringify(playlist);
-
-            return new Response(body, {
-                status: 200,
-                headers: headers,
-            });
+            return handleResponse(body, 200, headers); 
         }
-        // PROBELM: Du försökte använda samma route för HTML och JSON API
-        // let route = new URLPattern({ pathname: "/api/playlists/:id" });
-        // if (route.test(request.url)) {
-        //     let match = route.exec(request.url);
-        //     let id = match.pathname.groups.id;
-
-        //     let playlist = getPlaylistById(playlists, songs, id);
-        //     if (playlist) return serveFile(request, "../../frontend/public-playlist.html");
-
-        //     let body = JSON.stringify(playlist);
-        //     return new Response(body, {
-        //         status: 200,
-        //         headers: headers,
-        //     });
-        // }
     }
     
     // Lägg till spellista
-    if (url.pathname == "/profile/new-playlist") {
-        if (request.method == "GET") return showPage(request, "../../frontend/new-playlist.html");
-        let playlistReq = await request.json();
+    if (url.pathname == "/new-playlist") {
+        if (request.method == "GET") return serveFile(request, "../../frontend/new-playlist.html");
+        // let playlistReq = await request.json();
     }
     if (request.method == "POST") {
 
+        // Lägg till spellista
+        if (url.pathname == "/new-playlist") {
+            let playlistReq = await request.json();
+
+            const file = playlistReq.get("add-cover");
+            const title = playlistReq.get("playlist-name");
+            const description = playlistReq.get("playlist-description");
+
+            const fileStr = createRandomString();
+            const extension = extname(file.name);
+            const filename = fileStr + extension;
+
+            if (!file) return handleResponse("Playlist cover is missing", 400);
+
+            createPlaylist(playlists, file, title, description);
+        }
 
     }
     
     if (request.method == "PATCH") {
+
+        if (url.pathname == "/api/add-song") {
+
+            // Nog smartast om songreq innehåller id:et från usern, låten och spellistan
+            let songReq = await request.json();
+
+        }
 
         // Ändra profil-bild
         // Som ägare av spellista ändra info i spellista + radera låtar
