@@ -38,7 +38,6 @@ class UI {
   }
 
   async renderPlaylists(playlists) {
-
     const section = sections[0];
 
     if (!section) return;

@@ -49,7 +49,7 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
     if (playlists && playlists.length > 0) {
         ui.renderPlaylists(playlists);
     } else {
-        for (let section of sections) {
+        for (let section of section) {
             section.innerHTML = `<p>No playlists matched your search on: <span>${searchInput}</span></p>`;
         }
     }
