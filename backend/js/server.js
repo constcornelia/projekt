@@ -1,7 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername } from "./login.js";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, createPlaylist, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -295,7 +295,7 @@ async function handler(request) {
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
-            let playlist = getPlaylistById(playlists, songs, id);
+            let playlist = getPlaylistById(playlists, songs);
             
             let body = JSON.stringify(playlist);
             return handleResponse(body, 200, headers); 
@@ -311,12 +311,14 @@ async function handler(request) {
 
         // Lägg till spellista
         if (url.pathname == "/new-playlist") {
-            let playlistReq = await request.json();
+            let playlistReq = await request.formData();
 
             const file = playlistReq.get("add-cover");
-            const title = playlistReq.get("playlist-name");
-            const tags = playlistReq.get("playlist-tags");
-            const description = playlistReq.get("playlist-description");
+            // console.log(file);
+            
+            // const title = playlistReq.get("playlist-name");
+            // const tags = playlistReq.get("playlist-tags");
+            // const description = playlistReq.get("playlist-description");
 
             const fileStr = createRandomString();
             const extension = extname(file.name);
@@ -324,8 +326,8 @@ async function handler(request) {
 
             if (!file) return handleResponse("Playlist cover is missing", 400);
 
-            let id = generateId(playlists, "p-");
-            createPlaylist(playlists, id, playlistReq);
+            // let id = generateId(playlists, "p-");
+            createPlaylist(playlists, playlistReq, filename);
         }
 
     }

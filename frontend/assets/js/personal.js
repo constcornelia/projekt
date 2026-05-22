@@ -23,5 +23,4 @@ createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
     };
     
     let response = await fetch("/new-playlist", options);
-    console.log(response);
 });

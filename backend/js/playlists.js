@@ -268,18 +268,35 @@ function getNewPlaylistId(playlists) {
 }
 
 
-export function createPlaylist(playlists, id, req) {
+export function createPlaylist(playlists, req, filename) {
+    // console.log(req);
+
+    let id = getNewPlaylistId(playlists);
+
+    let file = req.get("add-cover");
+    let name = req.get("playlist-name");
+    let description = req.get("playlist-description");
+    let tags = req.get("playlist-tag");
+
+    // console.log('req:', req);
+    console.log(filename);
+    // console.log(name);
+    // console.log(description);
+    // console.log(tags);
+
 
     let newPlaylist = {
         id: id,
         ownerId: "",
-        name: req.title,
-        description: req.description,
-        imgUrl: req.file,
+        name: name,
+        description: description,
+        imgUrl: filename,
         likes: [],
-        tags: req.tags,
+        tags: tags,
         songs: []
     };
+
+    console.log('new', newPlaylist);
 
 
 }
