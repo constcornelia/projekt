@@ -268,18 +268,17 @@ function getNewPlaylistId(playlists) {
 }
 
 
-export function createPlaylist(playlists, file, title, description, tagInput) {
-    let id = getNewPlaylistId(playlists);
+export function createPlaylist(playlists, id, req) {
 
     let newPlaylist = {
         id: id,
         ownerId: "",
-        name: title,
-        description: description,
-        imgUrl: file,
+        name: req.title,
+        description: req.description,
+        imgUrl: req.file,
         likes: [],
-        tags: tags,
-        songs: songs
+        tags: req.tags,
+        songs: []
     };
 
 

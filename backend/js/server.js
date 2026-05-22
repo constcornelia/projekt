@@ -16,6 +16,21 @@ function handleResponse(body, status, headers) {
     });
 }
 
+function generateId (data, start) {
+    let highest = 0;
+
+    for (let element of data) {
+        let idNr = data.id.substring(2);
+        idNr = parseInt(idNr);
+
+        if (highest < element) highest = element;
+    }
+
+    let newNr = highest + 1;
+    if (start == "u-") return "u-" + newNr;
+    if (start == "p-") return "p-" + newNr;
+}
+
 function showPage(request, path) {
     const cookie = request.headers.get("cookie");
     let session = checkSession(cookie, cookies);
@@ -99,7 +114,8 @@ async function handler(request) {
                 return handleResponse("Input data missing", 400);
             }
         
-            createUser(users, filename, username, password);
+            let id = generateId(users, "u-");
+            createUser(users, id, filename, username, password);
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             
             let cookieId = createRandomString();
@@ -299,6 +315,7 @@ async function handler(request) {
 
             const file = playlistReq.get("add-cover");
             const title = playlistReq.get("playlist-name");
+            const tags = playlistReq.get("playlist-tags");
             const description = playlistReq.get("playlist-description");
 
             const fileStr = createRandomString();
@@ -307,7 +324,8 @@ async function handler(request) {
 
             if (!file) return handleResponse("Playlist cover is missing", 400);
 
-            createPlaylist(playlists, file, title, description);
+            let id = generateId(playlists, "p-");
+            createPlaylist(playlists, id, playlistReq);
         }
 
     }

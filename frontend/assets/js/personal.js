@@ -10,16 +10,18 @@
 //     createPlaylist.style.display = "none";
 // });
 
-// const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
-// createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
-//     event.preventDefault();
-
-//     const data = new FormData(createPlaylistForm);
-
-//     let options = {
-//         method: "POST",
-//         body: data
-//     };
-
-//     let response = await fetch("", options);
-// });
+console.log("carolina är konstig");
+const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
+createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
+    event.preventDefault();
+    
+    const data = new FormData(createPlaylistForm);
+    
+    let options = {
+        method: "POST",
+        body: data
+    };
+    
+    let response = await fetch("/new-playlist", options);
+    console.log(response);
+});
