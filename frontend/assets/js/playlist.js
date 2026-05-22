@@ -14,8 +14,8 @@ async function loadPlaylist() {
     ui.renderSongs(playlistData.songs, position, false);
 }
 
-const addSongButton = document.querySelector(".SongToPlaylist-Button");
-addSongButton.addEventListener("click", async function onClick(event) {
+const showAddSong = document.querySelector(".SongToPlaylist-Button");
+showAddSong.addEventListener("click", function onClick(event) {
     const addSong = document.querySelector("#AddSong");
     addSong.style.display = "block";
 });
@@ -29,6 +29,16 @@ addSongForm.addEventListener("submit", async function onSubmit(event) {
 
     const position = document.querySelector("#SearchResultSongs ul");
     ui.renderSongs(songs, position, true);
+});
+
+const addSongButton = document.querySelector(".AddSongButton");
+addSongButton.addEventListener("click", function onClick(event) {
+
+    let data = JSON.stringify({
+        songId: "",
+        playlistId: "",
+        userId: ""
+    });
 });
 
 loadPlaylist();

@@ -62,8 +62,8 @@ function getNewUserId(users) {
         idNr = parseInt(idNr);
 
         if (highest < idNr) {
-            highest = idNr
-        };
+            highest = idNr;
+        }
     }
 
     let newNr = highest + 1;
