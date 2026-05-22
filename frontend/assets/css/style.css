@@ -635,6 +635,10 @@ som bli synlig på add knäpp click*/
     display: none;
     flex: 2;
 }
+#NewPlaylist>#AddSong{
+    display: initial;
+    flex: 2;
+}
 #AddSongForm {
     padding: 10px;
     border-radius: 20px;

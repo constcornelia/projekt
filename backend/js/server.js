@@ -1,7 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername } from "./login.js";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists, createPlaylist } from "./playlists.js";
+import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -285,7 +285,12 @@ async function handler(request) {
             return handleResponse(body, 200, headers); 
         }
     }
-
+    
+    // Lägg till spellista
+    if (url.pathname == "/profile/new-playlist") {
+        if (request.method == "GET") return showPage(request, "../../frontend/new-playlist.html");
+        let playlistReq = await request.json();
+    }
     if (request.method == "POST") {
 
         // Lägg till spellista
