@@ -69,7 +69,7 @@ async function handler(request) {
                 };
                 return handleResponse(null, 303, headers);
             }
-            return handleResponse("Invalid login", 401, null);
+            return handleResponse("Invalid login", 401);
         }
 
         if (url.pathname == "/signup") {
@@ -84,17 +84,17 @@ async function handler(request) {
             const filename = fileStr + extension;
             
             const bytes = await file.bytes();
-            if (bytes > 100000) return handleResponse("File is too large", 400, null);
+            if (bytes > 100000) return handleResponse("File is too large", 400);
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             for (let user of users) {
                 if (username == user.username) {
-                    return handleResponse("Username is already taken", 401, null);
+                    return handleResponse("Username is already taken", 401);
                 }
             }
             
             if (!username || !password) {
-                return handleResponse("Input data missing", 400, null);
+                return handleResponse("Input data missing", 400);
             }
         
             createUser(users, file, username, password);
@@ -320,13 +320,20 @@ async function handler(request) {
 
     if (request.method == "POST") {
 
+        // Lägg till spellista
         if (url.pathname == "/profile/new-playlist") {
             let playlistReq = await request.json();
         }
 
     }
     
-    if (request.method == "PATCH") {}
+    if (request.method == "PATCH") {
+
+        // Ändra profil-bild
+        // Som ägare av spellista ändra info i spellista + radera låtar
+
+        // Lägg till låtar i andras och sina egna spellistor
+    }
 
     if (request.method == "DELETE") {
 

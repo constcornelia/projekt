@@ -1,9 +1,7 @@
 const api = new API();
+const ui = new UI();
 
 async function loadPlaylist() {
-
-    const api = new API();
-    const ui = new UI();
 
     // Hämtar playlist id från URL:en
     const playlistId = window.location.pathname.split("/")[2];
@@ -12,7 +10,8 @@ async function loadPlaylist() {
     let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
 
     // och renderar alla songs på sidan
-    ui.renderSongs(playlistData.songs);
+    const position = document.querySelector(".songs ul");
+    ui.renderSongs(playlistData.songs, position, false);
 }
 
 const addSongButton = document.querySelector(".SongToPlaylist-Button");
@@ -28,7 +27,8 @@ addSongForm.addEventListener("submit", async function onSubmit(event) {
     const input = addSongForm.elements.SearchSongInput.value;
     const songs = await api.getRequest("/api/songs/search?q=" + input);
 
-    ui.renderSongs(songs);
+    const position = document.querySelector("#SearchResultSongs ul");
+    ui.renderSongs(songs, position, true);
 });
 
 loadPlaylist();

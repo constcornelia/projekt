@@ -70,24 +70,29 @@ class UI {
       }
   }
 
-  renderSongs(songs) {
+  renderSongs(songs, position, add) {
 
-      const songList = document.querySelector(".songs ul");
+      if (!position) return;
 
-      if (!songList) return;
-
-      songList.innerHTML = "";
+      position.innerHTML = "";
 
       for (let song of songs) {
 
           let li = document.createElement("li");
 
+          if (add) {
+            li.innerHTML = `
+                ${song.name} - ${song.artist}
+                <button type="button" class="AddSongButton">Add song</button>
+            `;
+          } else {
           li.innerHTML = `
               ${song.name} - ${song.artist}
               <button class="Play StopPlaying"></button>
           `;
+          }
 
-          songList.appendChild(li);
+          position.appendChild(li);
       }
   }
 
