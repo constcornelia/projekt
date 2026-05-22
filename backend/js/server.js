@@ -1,6 +1,6 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername } from "./login.js";
+import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername, getActiveUser } from "./login.js";
 import { filterPlaylistsByTag, getPlaylistBySearch, createPlaylist, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
@@ -312,6 +312,10 @@ async function handler(request) {
         // Lägg till spellista
         if (url.pathname == "/new-playlist") {
             let playlistReq = await request.formData();
+
+            const cookie = request.headers.get("cookie");
+            let user = getActiveUser(cookie, cookies);
+            console.log('u', user);
 
             const file = playlistReq.get("add-cover");
             // console.log(file);

@@ -23,6 +23,24 @@ export function checkLogin(users, req, cookieId, cookies) {
     return false;
 }
 
+export function getActiveUser(cookie, cookies) {
+    let parts = cookie.split("=");
+    let cookieId = parts[1];
+
+    console.log(cookie);
+    console.log(cookies)
+    for (let c of cookies) {
+        if (c.cookie == cookieId) return c;
+    }
+    return null;
+
+    // let user = null;
+    // for (let i = 0; i < cookies.length; i++) {
+    //     if (cookies[i].cookie.includes(cookie)) user = cookies[i];
+    // }
+    // return user;
+}
+
 
 
 /* 
@@ -83,14 +101,14 @@ export function getUser(users, cookies, activeCookie) {
     return null;
 }
 
-export function createUser(users, file, username, password) {
+export function createUser(users, filename, username, password) {
     let id = getNewUserId(users);
     
     let newUser = {
         id: id,
         username: username,
         password: password,
-        profilePicUrl: file.name
+        profilePicUrl: filename
     };
 
     console.log(newUser);
