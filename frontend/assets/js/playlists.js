@@ -35,23 +35,25 @@ form.addEventListener("submit", async function onSubmit(event) {
             section.innerHTML = "No playlists found for your selection."
         }
     } else {
-        ui.renderPlaylists(playlists); 
+        let position = document.querySelector("#PublicPlaylistsCollection");
+        ui.renderPlaylists(playlists, position); 
     }
 });
 
 searchBar.addEventListener("submit", async function searchSubmit(event) {
     event.preventDefault();
 
+    let section = document.querySelector("#PublicPlaylistsCollection");
     let searchInput = searchBar.elements.SearchInput.value;
    
     let playlists = await api.getRequest("/api/playlists/search?q=" + searchInput);
 
     if (playlists && playlists.length > 0) {
-        ui.renderPlaylists(playlists);
+        ui.renderPlaylists(playlists, section);
     } else {
-        for (let section of sections) {
+        // for (let section of sections) {
             section.innerHTML = `<p>No playlists matched your search on: <span>${searchInput}</span></p>`;
-        }
+        // }
     }
 });
 
@@ -59,10 +61,10 @@ clear.addEventListener("click", async function clearFilters(event) {
     event.preventDefault();
 
     let endpoint = "/api/playlists";
-
     let playlists = await api.getRequest(endpoint);
 
-    ui.renderPlaylists(playlists); 
+    let position = document.querySelector("#PersonalPlaylistsCollection");
+    ui.renderPlaylists(playlists, position); 
 
     form.reset();
     searchBar.reset();

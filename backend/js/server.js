@@ -319,13 +319,14 @@ async function handler(request) {
         //     });
         // }
     }
-
+    
+    // Lägg till spellista
+    if (url.pathname == "/profile/new-playlist") {
+        if (request.method == "GET") return showPage(request, "../../frontend/new-playlist.html");
+        let playlistReq = await request.json();
+    }
     if (request.method == "POST") {
 
-        // Lägg till spellista
-        if (url.pathname == "/profile/new-playlist") {
-            let playlistReq = await request.json();
-        }
 
     }
     
