@@ -8,33 +8,6 @@
 </head>
 
 <body>
-  <!--osynlig form for skapa playlist-->
-    <section class="hidden-elements">
-      <!--osynlig nu ska visas när add playlist knapp ckickad-->
-      <div id="CreatePlaylist" class="edit-elements pop-up">
-        <h1 class="title">Create new playlist</h1>
-        <form id="CreatePlaylistForm" class="system-UI">
-      
-          <div class="form-input-area">
-            <label for="add-cover" class="sub-title">Playlist cover:</label>
-            <input type="file" id="add-cover" name="add-cover" >
-          </div>
-          <div class="form-input-area">
-            <label for="playlist-name" class="sub-title">Playlist name:</label>
-            <input type="text" id="playlist-name" name="playlist-name">
-          </div>
-          <div class="form-input-area">
-            <label for="playlist-description" class="sub-title">Playlist description:</label>
-            <textarea id="playlist-description" name="playlist-description"></textarea>
-          </div>
-          <div class="edit-actions">
-            <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel</button>
-            <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Create playlist</button>
-            <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
-          </div>
-        </form>
-      </div>
-    </section>  
 
     <nav>
       <a href="/" class="home clear-link">
@@ -80,8 +53,7 @@
   
 <section id="PersonalPlaylistsCollection">
     <div class="add-playlist-card">
-      <button class="CreatePlaylist-Button"></button>
-      <div class="system-UI-accent">Create new playlist</div>
+      <a href="new-playlist.html" id="CreatePlaylistLink" class="CreatePlaylist-Button system-UI-accent">Create new playlist</a>
     </div>
 
     <a href="profile/playlists" class="clear-link">
