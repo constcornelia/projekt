@@ -10,22 +10,6 @@
 //     createPlaylist.style.display = "none";
 // });
 
-<<<<<<< Updated upstream
-console.log("carolina är konstig");
-const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
-createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
-    event.preventDefault();
-    
-    const data = new FormData(createPlaylistForm);
-    
-    let options = {
-        method: "POST",
-        body: data
-    };
-    
-    let response = await fetch("/new-playlist", options);
-});});
-=======
 // const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
 // createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
 //     event.preventDefault();
@@ -40,6 +24,8 @@ createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
 //     let response = await fetch("", options);
 // });
 
+const search = document.querySelector()
+
 const form = document.querySelector("#CreatePlaylistForm");
 form.addEventListener("submit", async function onSubmit(event) {
     event.preventDefault();
@@ -52,4 +38,3 @@ form.addEventListener("submit", async function onSubmit(event) {
 // Lägg in allt i databasen
 // Uppdatera och rendera om sina egna låtar
 // Alerta usern om något går fel eller om spellistan lyckades skapas
->>>>>>> Stashed changes
