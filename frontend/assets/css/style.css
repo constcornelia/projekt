@@ -637,9 +637,8 @@ som bli synlig på add knäpp click*/
     display: none;
     flex: 2;
 }
-#NewPlaylist>#AddSong{
+#NewPlaylist #AddSong{
     display: initial;
-    flex: 2;
 }
 #AddSongForm {
     padding: 10px;
@@ -690,8 +689,7 @@ som bli synlig på add knäpp click*/
     display: none;
     flex: 2;
 }
-#EditPlaylistForm,
-#CreatePlaylistForm {
+#EditPlaylistForm {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -728,7 +726,9 @@ som bli synlig på add knäpp click*/
     justify-content: space-between;
 }
 
-#CreatePlaylist{
-    width: 400px;
 
+#CreatePlaylistForm{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
 }
