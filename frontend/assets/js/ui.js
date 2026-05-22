@@ -20,11 +20,10 @@ AddSongForm.addEventListener("submit", function (event) {
 // Brand     =   Song 
 // Category  =   Tags
 
-
-let sections = [
-    document.querySelector("#PublicPlaylistsCollection"),
-    document.querySelector("#PersonalPlaylistsCollection")
-];
+// let sections = [
+//     document.querySelector("#PublicPlaylistsCollection"),
+//     document.querySelector("#PersonalPlaylistsCollection")
+// ];
 
 class UI {
   async getPlaylists() {
@@ -37,24 +36,18 @@ class UI {
       this.renderSongs(songs);
   }
 
-  async renderPlaylists(playlists) {
-    const section = sections[0];
-
-    if (!section) return;
-
-    section.innerHTML = "";
+  async renderPlaylists(playlists, position) {
+    if (!position) return;
+    position.innerHTML = "";
     
     let users = await api.getRequest("/api/users");
 
-      for (let playlist of playlists) {
+    for (let playlist of playlists) {
+        let a = document.createElement("a");
+        a.href = `/playlists/${playlist.id}`;
+        a.classList.add('clear-link');
 
-          let a = document.createElement("a");
-
-          a.href = `/playlists/${playlist.id}`;
-          a.classList.add('clear-link');
-
-          let ownerName;
-
+        let ownerName;
         for (let user of users) {
             if (user.id == playlist.ownerId) {
                 ownerName = user.username;
@@ -74,14 +67,12 @@ class UI {
         </div>
         `;
         
-        section.appendChild(a);
+        position.appendChild(a);
       }
   }
 
   renderSongs(songs, position, add) {
-
       if (!position) return;
-
       position.innerHTML = "";
 
       for (let song of songs) {
@@ -132,8 +123,6 @@ class UI {
     if (!toProfile) return; //undvika andra sidor att få error 
 
     let user = await api.getRequest("/api/profile/info");
-    console.log(user);
-
     if (!user) return; //om server inte gav en user så stoppas funktionen och ändrar inte länken
 
     // Om user finns så ändrar länken till profile/username
