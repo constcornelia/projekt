@@ -18,7 +18,9 @@ class API {
            return data;
 
        } catch (error) {
-        section.innerHTML = "Couldn't reach data. Please try again! " + error;
+        for (let section of sections) {
+            section.innerHTML = "Couldn't reach data. Please try again! " + error;
+        }
        }
    }
 
@@ -49,7 +51,9 @@ class API {
 
            alert("Successfully posted!");
        } catch (error) {
-           section.innerHTML = "Couldn't post product " + error;
+        for (let section of sections) {
+            section.innerHTML = "Couldn't post product " + error;
+        }
        }
    }
 
@@ -76,7 +80,9 @@ class API {
            alert("Successfully edited!");
 
        } catch (error) {
-           section.innerHTML = "Couldn't edit product " + error;
+        for (let section of sections) {
+            section.innerHTML = "Couldn't edit product " + error;
+        }
        }
    }
 
@@ -105,7 +111,9 @@ class API {
            alert("Successfully deleted!");
           
        } catch (error) {
-           section.innerHTML = "Couldn't delete product " + error;
+        for (let section of sections) {
+            section.innerHTML = "Couldn't delete product " + error;
+        }
        }
    }
 }

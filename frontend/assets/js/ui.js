@@ -19,7 +19,12 @@ AddSongForm.addEventListener("submit", function (event) {
 // Product   =   Playlist
 // Brand     =   Song 
 // Category  =   Tags
-const section = document.querySelector("#PublicPlaylistsCollection");
+
+
+let sections = [
+    document.querySelector("#PublicPlaylistsCollection"),
+    document.querySelector("#PersonalPlaylistsCollection")
+];
 
 class UI {
   async getPlaylists() {
@@ -33,6 +38,9 @@ class UI {
   }
 
   async renderPlaylists(playlists) {
+
+    const section = sections[0];
+
     if (!section) return;
 
     section.innerHTML = "";
@@ -66,6 +74,7 @@ class UI {
           <img src="${playlist.imgUrl}">
         </div>
         `;
+        
         section.appendChild(a);
       }
   }
