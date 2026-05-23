@@ -16,14 +16,33 @@
     --secondary-color: rgb(65, 65, 65);
     --hover-color: rgba(255, 255, 255, 0.3);
     --shadowing-color: rgba(0, 0, 0, 0.40);
+    --bright-color: darksalmon;
 
     --light-text-color: white;
     --dark-text-color: black;
 }
-
+/*
 body {
     background-color: darksalmon;
     margin: 0 30px;
+}*/
+body {
+    background: linear-gradient(-45deg, salmon, darksalmon, coral);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    padding: 0 20px;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /*text styles*/
@@ -295,7 +314,6 @@ footer {
     border-radius: 35px;
     background-color: var(--main-color-light);
     margin-bottom: 20px;
-    gap: 10px;
 }
 #filters h1{
     margin-bottom: 10px;
@@ -355,21 +373,35 @@ label.Sort-Playlists:has(input:checked) {
     display: none;
 }
 
-.FilterForm button{
+.FilterForm button#FiltersReset{
     transition: var(--transition);
-    background-color: darksalmon;
+    background-color: transparent;
     color: var(--light-text-color);
-    border: none;
+    border: solid 2px var(--bright-color);
     border-radius: 25px;
     width: 120px;
+    color: var(--bright-color);
 }
-.FilterForm button:hover {
+.FilterForm button#FiltersReset:hover {
     transition: var(--transition);
     transform: var(--transform-hover);
     cursor: pointer;
     font-weight: bolder;
 }
-
+.FilterForm button#FiltersSubmit{
+    transition: var(--transition);
+    background-color: var(--bright-color);
+    color: var(--light-text-color);
+    border: none;
+    border-radius: 25px;
+    width: 120px;
+}
+.FilterForm button#FiltersSubmit:hover {
+    transition: var(--transition);
+    transform: var(--transform-hover);
+    cursor: pointer;
+    font-weight: bolder;
+}
 
 /*playlist collection*/
 
@@ -418,6 +450,7 @@ label.Sort-Playlists:has(input:checked) {
     display: flex;
     gap: 20px;
     justify-content: center;
+    height: 65px;
 }
 
 button.LikePlaylist-Button{
@@ -429,7 +462,6 @@ button.LikePlaylist-Button{
     background-position: center;
     background-size: contain;
     color: var(--main-color);
-    height: 100%;
     aspect-ratio: 2/1;
     padding: 20px;
 
@@ -451,7 +483,6 @@ button.Play{
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    height: 100%;
     aspect-ratio: 1/1;
 }
 button.Play:hover {
@@ -465,32 +496,21 @@ button.Play:hover {
 }*/
 
 .add-playlist-card {
-    min-width: 200px;
-    aspect-ratio: 1;
-    padding: 20px;
-    border-radius: 60px;
-    box-sizing: border-box;
-    text-align: center;
     color: var(--main-color);
 
     display: flex;
     flex-direction: column;
-    gap: 20px;
     align-items: center;
-    justify-content: center;
-}
-.add-playlist-card button.CreatePlaylist-Button{
+    gap: 20px;
+
     transition: var(--transition);
-    border: none;
-    background-color: transparent;
-    background-image: url("../images/icons/add.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    width: 50%;
-    height: 50%;
+
 }
-.add-playlist-card button.CreatePlaylist-Button:hover {
+.add-playlist-card>img{
+    width: 100px;
+    height: 100px;
+}
+.add-playlist-card:hover {
     cursor: pointer;
     transform: var(--transform-hover);
     transition: var(--transition);

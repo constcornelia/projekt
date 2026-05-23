@@ -39,8 +39,8 @@
             </label>
           </div>
           <div>
-            <button id="FiltersSubmit" type="submit" class="system-UI">Sort playlists</button>
             <button id="FiltersReset" type="reset" class="system-UI">Clear filters</button>
+            <button id="FiltersSubmit" type="submit" class="system-UI">Sort playlists</button>
           </div>
   
     
@@ -49,9 +49,12 @@
     </section>
   
 <section id="PersonalPlaylistsCollection">
-    <div class="add-playlist-card">
-      <a href="/new-playlist" id="CreatePlaylistLink" class="CreatePlaylist-Button system-UI-accent">Create new playlist</a>
-    </div>
+    <a href="/new-playlist" class="clear-link">
+      <div id="CreatePlaylistLink" class="add-playlist-card system-UI-accent">
+        <img src="/assets/images/icons/add.svg">
+        <p class="system-UI-accent">Create new playlist</p>
+      </div>
+    </a>
 
     <a href="/profile/playlists" class="clear-link">
       <div class="playlist-card">
