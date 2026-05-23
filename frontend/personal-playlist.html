@@ -89,23 +89,32 @@
         </div>
       </form>
     </div>
+    <div class="PlaylistData edit-elements">
+      <div class="info">
+        <h1 id="PlaylistName" class="title">playlist name</h1>
+        <p id="PlaylistDescription" class="system-UI-accent">description</p>
+        <p id="PlaylistTag" class="system-UI-accent">tag</p>
+      </div>
+      <div class="songs">
+        <h1 class="title">Songs in playlist</h1>
+        <ul class="system-UI">
+          <!--li är bara för exempel men ska skapas med api data
+          listener på remove song aktiveras AlertDeleteSong-->
+          <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
+          <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
+          <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
+        </ul>
+        </div>
+    </div>
 
     <div class="songs">
-      <h1 class="title">Songs in playlist</h1>
-      <ul class="system-UI">
-        <!--li är bara för exempel men ska skapas med api data
-        listener på remove song aktiveras AlertDeleteSong-->
-        <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
-        <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
-        <li>song<button type="button" class="RemoveSongButton">remove song</button><button class="Play StopPlaying"></button></li>
-      </ul>
     </div>
     <!--osynlig nu ska visas när add song knapp klickad-->
     <div id="AddSong" class="edit-elements">
       <h1 class="title">Add song to playlist</h1>
-      <form id="AddSongForm" class="system-UI">
+      <form id="AddSongForm" class="SearchSongElement system-UI">
         <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
-        <button id="ButtonSearch" type="submit"></button>
+        <button class="ButtonSearchSong" type="submit"></button>
       </form>
       <div id="SearchResultSongs" class="system-UI">
         <ul>
