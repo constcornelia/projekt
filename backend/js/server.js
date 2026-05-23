@@ -116,26 +116,32 @@ async function handler(request) {
 
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
-
-        // Hämtar cookie från request
+        // Hämtar cookie från requesten
+        // Exempel: "session_id=abc123"
         let cookie = request.headers.get("cookie");
-
+        // Sparar den inloggade användaren
         let currentUser = null;
-
+        // Kör bara om en cookie finns
         if (cookie) {
-
-            // Delar upp cookie-strängen
+            // Delar upp cookie-strängen vid "="
+            // Exempel:
+            // ["session_id", "abc123"]
             let parts = cookie.split("=");
-
+            // Hämtar själva cookie-id:t
+            // Exempel:
+            // "abc123"
             let cookieId = parts[1];
-
-            // Hittar användaren som matchar cookie-id:t
+            // Loopar igenom alla sparade sessions-cookies
             for (let i = 0; i < cookies.length; i++) {
-
+                // Om cookie-id:t matchar en sparad cookie
                 if (cookies[i].cookie == cookieId) {
-
+                    // Sparar användaren som är inloggad
+                    // Exempel:
+                    // {
+                    //   username: "cornelia",
+                    //   cookie: "abc123"
+                    // }
                     currentUser = cookies[i];
-
                 }
             }
         }
@@ -203,24 +209,19 @@ async function handler(request) {
         // }
 
         if (url.pathname == "/api/profile/info") {
-
             // Exempel: "session_id=abc123"
             let cookie = request.headers.get("cookie");
-
             // Om ingen cookie finns så är användaren är inte inloggad
             if (!cookie) {
                 return new Response(null, { status: 401 });
             }
-
             // Delar upp texten vid "="
             // Exempel: ["session_id", "abc123"]
             let parts = cookie.split("=");
-
             let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
 
             // Sparar användaren om det hittar rätt cookie
             let user = null;
-
             for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
                 if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
                     user = { // Sparar användarens username
@@ -229,11 +230,9 @@ async function handler(request) {
                     break; // Stoppar loopen när rätt user hittats
                 }
             }
-
             if (!user) { // Om ingen användare
                 return new Response(null, { status: 404 });
             }
-
             return new Response(JSON.stringify(user), {
                 status: 200,
                 headers: { "Content-Type": "application/json" }
@@ -259,19 +258,11 @@ async function handler(request) {
         // }
 
         if (url.pathname == "/api/profile/playlists/liked") {
-
             // Om ingen användare är inloggad
-            if (!currentUser) {
-
-                return handleResponse("Unauthorized", 401, null);
-
-            }
-
+            if (!currentUser) return handleResponse("Unauthorized", 401, null);
             // Hämtar användarens likade spellistor
             let likedPlaylists = getLikedPlaylists(playlists, currentUser);
-
             let body = JSON.stringify(likedPlaylists);
-
             return new Response(body, {
                 status: 200,
                 headers: headers
@@ -336,22 +327,132 @@ async function handler(request) {
     }
     if (request.method == "POST") {
 
-        // Lägg till spellista
-        if (url.pathname == "/new-playlist") {
-            let playlistReq = await request.json();
+        // // Lägg till spellista
+        // if (url.pathname == "/new-playlist") {
+        //     let playlistReq = await request.json();
 
-            const file = playlistReq.get("add-cover");
-            const title = playlistReq.get("playlist-name");
-            const description = playlistReq.get("playlist-description");
+        //     const file = playlistReq.get("add-cover");
+        //     const title = playlistReq.get("playlist-name");
+        //     const description = playlistReq.get("playlist-description");
 
-            const fileStr = createRandomString();
-            const extension = extname(file.name);
-            const filename = fileStr + extension;
+        //     const fileStr = createRandomString();
+        //     const extension = extname(file.name);
+        //     const filename = fileStr + extension;
 
-            if (!file) return handleResponse("Playlist cover is missing", 400);
+        //     if (!file) return handleResponse("Playlist cover is missing", 400);
 
-            createPlaylist(playlists, file, title, description);
+        //     createPlaylist(playlists, file, title, description);
+        // }
+
+         // Skapar ny spellista
+if (url.pathname == "/api/playlists") {
+
+    let formData = await request.formData();
+
+    let name = formData.get("name");
+
+    let description = formData.get("description");
+
+    let tag = formData.get("tag");
+
+    let songs = JSON.parse(formData.get("songs"));
+
+    const file = formData.get("cover");
+
+    let filename = "";
+
+    if (file && file.name) {
+
+        const fileStr = createRandomString();
+
+        const extension = extname(file.name);
+
+        filename = fileStr + extension;
+
+        const bytes = await file.bytes();
+
+        Deno.writeFileSync(`../uploads/${filename}`, bytes);
+
+    }
+
+    let cookie = request.headers.get("cookie");
+
+    if (!cookie) {
+
+        return handleResponse("Unauthorized", 401, null);
+
+    }
+
+    let parts = cookie.split("=");
+
+    let cookieId = parts[1];
+
+    let currentUser = null;
+
+    for (let i = 0; i < cookies.length; i++) {
+
+        if (cookies[i].cookie == cookieId) {
+
+            currentUser = cookies[i];
+
         }
+    }
+
+    if (!currentUser) {
+
+        return handleResponse("Unauthorized", 401, null);
+
+    }
+
+    let foundUser = null;
+
+    for (let user of users) {
+
+        if (user.username == currentUser.username) {
+
+            foundUser = user;
+
+        }
+    }
+
+    let newId = "p-" + (playlists.length + 1);
+
+    let newPlaylist = {
+
+        id: newId,
+
+        ownerId: foundUser.id,
+
+        name: name,
+
+        description: description,
+
+        imgUrl: `/uploads/${filename}`,
+
+        likes: [],
+
+        tags: [tag],
+
+        songs: songs
+    };
+
+    playlists.push(newPlaylist);
+
+    Deno.writeTextFileSync(
+        "../data/database.json",
+        JSON.stringify(data, null, 2)
+    );
+
+    let headers = {
+        "Content-Type": "application/json"
+    };
+
+    return handleResponse(
+        JSON.stringify(newPlaylist),
+        201,
+        headers
+    );
+}
 
     }
     
@@ -411,7 +512,6 @@ async function handler(request) {
                     likeIndex = i;
                 }
             }
-
             if (alreadyLiked) {
                 // Första värdet är positionen
                 // Andra värdet är hur många element som ska tas bort
@@ -477,6 +577,15 @@ async function handler(request) {
             return new Response(null, {});
         }
     }
+
+    if (url.pathname.startsWith("/uploads/")) {
+
+    return serveDir(request, {
+        fsRoot: "../uploads",
+        urlRoot: "uploads"
+    });
+
+}
 
     return serveDir(request, { fsRoot: "../../frontend" });
 }

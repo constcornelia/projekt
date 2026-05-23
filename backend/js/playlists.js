@@ -71,16 +71,14 @@ export function getPlaylistById(playlists, songs, id) {
         }
     }
 
-    if (!foundPlaylist) {
-        return null;
-    }
+    if (!foundPlaylist) return null;
 
     let playlistSongs = [];
 
     for (let song of songs) {
         for (let playlistSong of foundPlaylist.songs) {
 
-            if (song.id == playlistSong.songId) {
+            if (song.id === playlistSong.songId) {
                 playlistSongs.push(song);
             }
         }

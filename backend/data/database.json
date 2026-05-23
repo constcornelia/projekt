@@ -509,8 +509,8 @@
       "description": "Playlist for the emos",
       "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
       "likes": [
-        "dilara",
-        "cornelia"
+        "cornelia",
+        "dilara"
       ],
       "tags": [
         "emo",
@@ -529,9 +529,7 @@
       "name": "Late Night Drive",
       "description": "Perfekt för nattliga bilturer",
       "imgUrl": "https://i.pinimg.com/736x/27/20/45/272045dccb59100f1fdc575bad67350f.jpg",
-      "likes": [
-        "dilara"
-      ],
+      "likes": [],
       "tags": [
         "chill"
       ],
@@ -548,9 +546,7 @@
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
       "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
-      "likes": [
-        "dilara"
-      ],
+      "likes": [],
       "tags": [
         "workout",
         "hype"
@@ -586,7 +582,9 @@
       "name": "Party Bangers",
       "description": "Musik som höjer stämningen",
       "imgUrl": "https://i.pinimg.com/1200x/25/2b/c6/252bc611b9e0bae4ce0fc170d7ff9791.jpg",
-      "likes": [],
+      "likes": [
+        "dilara"
+      ],
       "tags": [
         "party",
         "hype"
@@ -640,7 +638,9 @@
       "name": "Summer Vibes",
       "description": "Sol, värme och semester",
       "imgUrl": "https://i.pinimg.com/736x/de/f0/e6/def0e6a60a8b9bd2bc3eec453ff4430c.jpg",
-      "likes": [],
+      "likes": [
+        "dilara"
+      ],
       "tags": [
         "summer",
         "electronic"
@@ -666,6 +666,71 @@
         {
           "songId": "s-17",
           "editorId": "u-1"
+        }
+      ]
+    },
+    {
+      "id": "p-10",
+      "ownerId": "u-3",
+      "name": "XO",
+      "description": "Til we OD",
+      "imgUrl": "/uploads/02c834a2-3476-4fd3-9a60-d2344301fcd4.png",
+      "likes": [],
+      "tags": [
+        "chill"
+      ],
+      "songs": [
+        "s-6",
+        "s-63"
+      ]
+    },
+    {
+      "id": "p-11",
+      "ownerId": "u-3",
+      "name": "XO",
+      "description": "Til we OD",
+      "imgUrl": "/uploads/739575ef-40d2-461d-a90d-f323d3661996.png",
+      "likes": [],
+      "tags": [
+        "chill"
+      ],
+      "songs": [
+        "s-6",
+        "s-63"
+      ]
+    },
+    {
+      "id": "p-12",
+      "ownerId": "u-3",
+      "name": "sf",
+      "description": "sf",
+      "imgUrl": "/uploads/0c27163d-5e7f-4eb4-a467-4c81fa0f57b8.png",
+      "likes": [],
+      "tags": [
+        "sdf"
+      ],
+      "songs": [
+        "s-2"
+      ]
+    },
+    {
+      "id": "p-13",
+      "ownerId": "u-3",
+      "name": "XO",
+      "description": "Till we OD",
+      "imgUrl": "/uploads/47c9292f-2587-4e87-afec-a412b0da3409.png",
+      "likes": [
+        "dilara"
+      ],
+      "tags": [
+        "chill"
+      ],
+      "songs": [
+        {
+          "songId": "s-6"
+        },
+        {
+          "songId": "s-63"
         }
       ]
     }
