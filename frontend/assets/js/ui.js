@@ -117,6 +117,15 @@ class UI {
           position.appendChild(li);
       }
   }
+  renderPlaylistInfo(playlist, position){
+    if (!position) return;
+    position.innerHTML = `
+    <h1 id="PlaylistName" class="title">${playlist.name}</h1>
+    <p id="PlaylistDescription" class="system-UI">${playlist.description}</p>
+    <p id="PlaylistTag" class="system-UI-accent">${playlist.tags}</p>
+    <img src="${playlist.imgUrl}">
+    `;
+  }
 
 
   async dropDownsPlaylist (playlistElement) {

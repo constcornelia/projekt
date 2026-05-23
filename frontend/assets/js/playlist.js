@@ -9,8 +9,12 @@ async function loadPlaylist() {
     let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
 
     // och renderar alla songs på sidan
-    const position = document.querySelector(".songs ul");
-    ui.renderSongs(playlistData.songs, position, false);
+    const positionSong = document.querySelector(".songs ul");
+    ui.renderSongs(playlistData.songs, positionSong, false);
+
+    const positionInfo = document.querySelector(".info");
+    ui.renderPlaylistInfo(playlistData.playlist, positionInfo);
+
 }
 
 const showAddSong = document.querySelector(".SongToPlaylist-Button");
