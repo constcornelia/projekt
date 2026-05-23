@@ -31,9 +31,7 @@ form.addEventListener("submit", async function onSubmit(event) {
     let playlists = await api.getRequest(finalPoint);
 
     if (playlists.length === 0) {
-        for (let section of sections) {
-            section.innerHTML = "No playlists found for your selection."
-        }
+            position.innerHTML = "No playlists found for your selection."
     } else {
         let position = document.querySelector("#PublicPlaylistsCollection");
         ui.renderPlaylists(playlists, position); 
@@ -51,9 +49,7 @@ searchBar.addEventListener("submit", async function searchSubmit(event) {
     if (playlists && playlists.length > 0) {
         ui.renderPlaylists(playlists, section);
     } else {
-        // for (let section of sections) {
-            section.innerHTML = `<p>No playlists matched your search on: <span>${searchInput}</span></p>`;
-        // }
+        section.innerHTML = `<p>No playlists matched your search on: <span>${searchInput}</span></p>`;
     }
 });
 

@@ -20,11 +20,6 @@ AddSongForm.addEventListener("submit", function (event) {
 // Brand     =   Song 
 // Category  =   Tags
 
-// let sections = [
-//     document.querySelector("#PublicPlaylistsCollection"),
-//     document.querySelector("#PersonalPlaylistsCollection")
-// ];
-
 class UI {
   async getPlaylists() {
       let playlists = await api.getRequest("/api/playlists");
