@@ -59,7 +59,7 @@
       <h1 class="title">Create new playlist</h1>
       <form id="CreatePlaylistForm" class="system-UI">
     
-        <div id="PlaylistData">
+        <div id="PlaylistDataInputs">
           <div class="form-input-area">
             <label for="add-cover" class="sub-title">Playlist cover:</label>
             <input type="file" id="add-cover" name="add-cover" >
@@ -76,35 +76,37 @@
             <label for="playlist-tag" class="sub-title">Playlist tag:</label>
             <input type="text" id="playlist-tag" name="playlist-tag">
           </div>
+        </div>
+
+
+        <div class="AddingSongs">
           <div class="songs">
-            <h1 class="title">Added songs</h1>
-            <ul class="system-UI">
-              <li>test</li>
+            <label>Added songs</label>
+            <ul class="system-UI form-input-area">
+              <li>no songs yet</li>
                <!--mening att genom search form på höger sidan hit ska läägs till låter 
                annars jag kan inte komma på hur ni kan söka låt i samma form-->
             </ul>
           </div>
 
+          <div class="SearchSongElement">
+            <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
+            <button class="ButtonSearchSong" type="submit"></button>
+          </div>
+            <div id="SearchResultSongs">
+              <ul>
+              <!--alla li ska aderas genom search
+              sen varenda låt kan aderas med knapp vid låtnamn-->
+              <li>song<button type="button" class="AddSongButton">add song</button></li>
+              </ul>
+            </div>
         </div>
-        <div class="form-input-area">
-          <label class="sub-title">Add song to playlist:</label>
-          <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
-          <button id="ButtonSearch" type="submit"></button>
-          <div id="SearchResultSongs">
-            <ul>
-            <!--alla li ska aderas genom search
-            sen varenda låt kan aderas med knapp vid låtnamn-->
-            <li>song<button type="button" class="AddSongButton">add song</button></li>
-            </ul>
-        </div>
-
-        </div>
-
         <div class="edit-actions">
           <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel</button>
           <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Create playlist</button>
           <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
         </div>
+
       </form>
     </div>
 

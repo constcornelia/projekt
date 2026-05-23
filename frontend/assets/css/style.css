@@ -537,22 +537,25 @@ nav button.LikePlaylist-Button:hover {
     transform: var(--transform-hover);
     transition: var(--transition);
 }
+
+/*playlist*/
 .playlist-content{
     display: flex;
     gap: 20px;
 }
 
-#PublicPlaylist {
-    background-color: var(--main-color);
-    border-radius: 40px;
-    padding: 20px;
-    color: var(--light-text-color);
-    flex: 1;
+.PlaylistData {
     display: flex;
     flex-direction: column;
+    flex: 1;
 }
+.PlaylistData .info p{
+    margin: 10px 0;
+}
+
+/*songs list*/
 ul{
-    margin: 30px 0;
+    margin: 10px 0;
     padding: 0;
 }
 li{
@@ -586,15 +589,58 @@ li:hover button{
 
 }
 
-/*adding song*
-det verkat för komplicerad göra med popup 
-eftersom vi behöver placera sökresultat någonstans
-så gjorde jag istället extra section 
-som bli synlig på add knäpp click*/
+/*adding songs*/
+#AddSong{
+    display: none;
+}
 
 
+/*seach song forms*/
+.SearchSongElement {
+    padding: 10px;
+    border-radius: 20px;
+    border: solid 1px var(--light-text-color);
+    display: flex;
+    align-items: center;
+    margin: 30px 0;
 
-/*hidden elements, synlig med event listener*/
+}
+.SearchSongElement>input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    flex: 1;
+}
+.SearchSongElement ::placeholder{
+    color: var(--light-text-color);
+    font-weight: 500;
+    font-size: 13px;
+
+}
+.ButtonSearchSong {
+    border: none;
+    background-color: transparent;
+    background-image: url("../images/icons/seach-revert.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+.SearchSongElement:focus-within {
+    background-color: var(--light-text-color);
+    transition: var(--transition);
+}
+.SearchSongElement:focus-within>button {
+    background-image: url("../images/icons/search.svg");
+}
+.SearchSongElement:focus-within>input {
+    color: var(--main-color);
+}
+
+
+/*hidden elements, display:none > display:initial med event listener*/
 .hidden-elements{
     display: flex;
     flex-direction: column;
@@ -633,58 +679,9 @@ som bli synlig på add knäpp click*/
     color: var(--light-text-color);
 }
 
-#AddSong{
-    display: none;
-    flex: 2;
-}
-#NewPlaylist #AddSong{
-    display: initial;
-}
-#AddSongForm {
-    padding: 10px;
-    border-radius: 20px;
-    border: solid 1px var(--light-text-color);
-    display: flex;
-    align-items: center;
-    margin: 30px 0;
-
-}
-#AddSongForm>input {
-    border: none;
-    outline: none;
-    background-color: transparent;
-    flex: 1;
-}
-#AddSongForm ::placeholder{
-    color: var(--light-text-color);
-    font-weight: 500;
-    font-size: 13px;
-
-}
-#AddSongForm>button {
-    border: none;
-    background-color: transparent;
-    background-image: url("../images/icons/seach-revert.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-}
-#AddSongForm:focus-within {
-    background-color: var(--light-text-color);
-    transition: var(--transition);
-}
-#AddSongForm:focus-within>button {
-    background-image: url("../images/icons/search.svg");
-}
-#AddSongForm:focus-within>input {
-    color: var(--main-color);
-}
 
 
-
+/*edit and crate playlist*/
 #EditPlaylist{
     display: none;
     flex: 2;
@@ -696,6 +693,12 @@ som bli synlig på add knäpp click*/
     margin: 30px 0;
 
 }
+#CreatePlaylistForm{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
 #EditPlaylistForm .form-input-area,
 #CreatePlaylistForm .form-input-area {
     display: flex;
@@ -706,8 +709,10 @@ som bli synlig på add knäpp click*/
 #CreatePlaylistForm .form-input-area label {
     margin-left: 10px;
 }
-#EditPlaylistForm input, #EditPlaylistForm textarea,
-#CreatePlaylistForm input, #CreatePlaylist textarea {
+input[type="text"],
+input[type="file"],
+textarea,
+ul.form-input-area {
     outline-color: var(--hover-color);
     padding: 10px;
     border: solid 2px var(--hover-color);
@@ -727,8 +732,3 @@ som bli synlig på add knäpp click*/
 }
 
 
-#CreatePlaylistForm{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-}
