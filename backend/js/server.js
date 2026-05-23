@@ -314,6 +314,91 @@ async function handler(request) {
     
     if (request.method == "PATCH") {
 
+    let likeRoute = new URLPattern({
+        pathname: "/api/playlists/:id/like"
+    });
+
+    if (likeRoute.test(request.url)) {
+
+        let match = likeRoute.exec(request.url);
+        let playlistId = match.pathname.groups.id;
+
+        let cookie = request.headers.get("cookie");
+
+        if (!cookie) {
+            return handleResponse("Unauthorized", 401, null);
+        }
+
+        let parts = cookie.split("=");
+        let cookieId = parts[1];
+
+        let currentUser = null;
+
+        // Hitta användaren från cookies
+        for (let i = 0; i < cookies.length; i++) {
+
+            if (cookies[i].cookie == cookieId) {
+
+                currentUser = cookies[i].username;
+
+            }
+        }
+
+        if (!currentUser) {
+            return handleResponse("Unauthorized", 401, null);
+        }
+
+        let playlist = null;
+
+        // Hitta spellistan
+        for (let i = 0; i < playlists.length; i++) {
+
+            if (playlists[i].id == playlistId) {
+
+                playlist = playlists[i];
+
+            }
+        }
+
+        if (!playlist) {
+            return handleResponse("Playlist not found", 404, null);
+        }
+
+        let alreadyLiked = false;
+
+        // Kolla om användaren redan likat
+        for (let i = 0; i < playlist.likes.length; i++) {
+
+            if (playlist.likes[i] == currentUser) {
+
+                alreadyLiked = true;
+
+            }
+        }
+
+        // Lägg till like om användaren inte redan finns
+        if (!alreadyLiked) {
+
+            playlist.likes.push(currentUser);
+
+        }
+
+        // Sparar databasen
+        Deno.writeTextFileSync(
+            "../data/database.json",
+            JSON.stringify(data, null, 2)
+        );
+
+        let headers = {
+            "Content-Type": "application/json"
+        };
+
+        let body = JSON.stringify(playlist);
+
+        return handleResponse(body, 200, headers);
+    }
+
+
         if (url.pathname == "/api/add-song") {
 
             // Nog smartast om songreq innehåller id:et från usern, låten och spellistan

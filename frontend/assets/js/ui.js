@@ -20,6 +20,12 @@ AddSongForm.addEventListener("submit", function (event) {
 // Brand     =   Song 
 // Category  =   Tags
 
+
+let sections = [
+    document.querySelector("#PublicPlaylistsCollection"),
+    document.querySelector("#PersonalPlaylistsCollection")
+];
+
 class UI {
   async getPlaylists() {
       let playlists = await api.getRequest("/api/playlists");
@@ -31,26 +37,31 @@ class UI {
       this.renderSongs(songs);
   }
 
-  async renderPlaylists(playlists, position) {
-    if (!position) return;
-    position.innerHTML = "";
+  async renderPlaylists(playlists) {
+    const section = sections[0];
+
+    if (!section) return;
+
+    section.innerHTML = "";
     
     let users = await api.getRequest("/api/users");
 
-    for (let playlist of playlists) {
-        let a = document.createElement("a");
-        a.href = `/playlists/${playlist.id}`;
-        a.classList.add('clear-link');
+      for (let playlist of playlists) {
 
-        let ownerName;
+          let a = document.createElement("a");
+
+          let playlistCard = document.createElement("div");
+          playlistCard.classList.add("playlist-card")
+
+          let ownerName;
+
         for (let user of users) {
             if (user.id == playlist.ownerId) {
                 ownerName = user.username;
             }
         }
 
-        a.innerHTML = `
-        <div class="playlist-card">
+        playlistCard.innerHTML = `
           <h1 class="title-UI">${playlist.name} </h1>
           <p>${ownerName}</p>
           <div class="playlist-actions">
@@ -59,15 +70,28 @@ class UI {
           </div>
           <p class="system-UI-accent">#${playlist.tags}</p>
           <img src="${playlist.imgUrl}">
-        </div>
         `;
-        
-        position.appendChild(a);
+          section.appendChild(playlistCard);
+
+          let likeButton = a.querySelector(".LikePlaylist-Button");
+          
+          likeButton.addEventListener("click", async function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            await api.patchRequest(`/api/playlists/${playlist.id}/like`);
+
+            let updatedPlaylist = await api.getRequest(`/api/playlists/${playlist.id}`);
+
+            likeButton.querySelector("span").textContent = updatedPlaylist.likes.length;
+        });
       }
   }
 
   renderSongs(songs, position, add) {
+
       if (!position) return;
+
       position.innerHTML = "";
 
       for (let song of songs) {
@@ -118,6 +142,8 @@ class UI {
     if (!toProfile) return; //undvika andra sidor att få error 
 
     let user = await api.getRequest("/api/profile/info");
+    console.log(user);
+
     if (!user) return; //om server inte gav en user så stoppas funktionen och ändrar inte länken
 
     // Om user finns så ändrar länken till profile/username
