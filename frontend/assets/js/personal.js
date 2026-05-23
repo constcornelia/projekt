@@ -23,3 +23,20 @@
 
 //     let response = await fetch("", options);
 // });
+
+const ui = new UI();
+const api = new API();
+
+async function showLikedPlaylists() {
+
+    // Hämtar likade playlists från servern
+    let playlists = await api.getRequest("/api/profile/playlists/liked");
+
+    // Hämtar sektionen i HTML
+    let section = document.querySelector("#PersonalPlaylistsCollection");
+
+    // Renderar spellistorna
+    ui.renderPersonalPlaylists(playlists, section);
+}
+
+showLikedPlaylists();

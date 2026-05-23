@@ -508,7 +508,10 @@
       "name": "My Emo Romance",
       "description": "Playlist for the emos",
       "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
-      "likes": [],
+      "likes": [
+        "dilara",
+        "cornelia"
+      ],
       "tags": [
         "emo",
         "punk"
@@ -526,7 +529,9 @@
       "name": "Late Night Drive",
       "description": "Perfekt för nattliga bilturer",
       "imgUrl": "https://i.pinimg.com/736x/27/20/45/272045dccb59100f1fdc575bad67350f.jpg",
-      "likes": [],
+      "likes": [
+        "dilara"
+      ],
       "tags": [
         "chill"
       ],
@@ -543,7 +548,9 @@
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
       "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
-      "likes": [],
+      "likes": [
+        "dilara"
+      ],
       "tags": [
         "workout",
         "hype"

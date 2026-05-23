@@ -92,6 +92,97 @@ class UI {
       }
   }
 
+  async renderPersonalPlaylists(playlists, section) {
+
+    if (!section) return;
+
+    // Behåller create-playlist kortet
+    section.innerHTML = `
+    <a href="/new-playlist" class="clear-link">
+      <div id="CreatePlaylistLink" class="add-playlist-card system-UI-accent">
+        <img src="/assets/images/icons/add.svg">
+        <p class="system-UI-accent">Create new playlist</p>
+      </div>
+    </a>
+    `;
+
+    let users = await api.getRequest("/api/users");
+
+    for (let playlist of playlists) {
+
+        let a = document.createElement("a");
+
+        a.href = `/playlists/${playlist.id}`;
+
+        a.classList.add("clear-link");
+
+        let ownerName;
+
+        for (let user of users) {
+
+            if (user.id == playlist.ownerId) {
+
+                ownerName = user.username;
+
+            }
+        }
+
+        a.innerHTML = `
+        <div class="playlist-card">
+
+          <h1 class="title-UI">${playlist.name}</h1>
+
+          <p>${ownerName}</p>
+
+          <div class="playlist-actions">
+
+            <button class="LikePlaylist-Button system-UI">
+              <span>${playlist.likes.length}</span>
+            </button>
+
+            <button class="Play StopPlaying"></button>
+
+          </div>
+
+          <p class="system-UI-accent">#${playlist.tags}</p>
+
+          <img src="${playlist.imgUrl}">
+
+        </div>
+        `;
+
+        section.appendChild(a);
+
+                // Hämtar like-knappen från spellistekortet
+        let likeButton = a.querySelector(".LikePlaylist-Button");
+
+        // När användaren klickar på like-knappen
+        likeButton.addEventListener("click", async function (event) {
+
+            // Stoppar länken från att öppna spellistan
+            event.preventDefault();
+
+            // Skickar PATCH-request som togglar like/unlike
+            await api.patchRequest(`/api/playlists/${playlist.id}/like`);
+
+            // Hämtar den uppdaterade spellistan
+            let updatedPlaylist = await api.getRequest(`/api/playlists/${playlist.id}`);
+
+            // Uppdaterar like-siffran direkt i knappen
+            likeButton.querySelector("span").textContent =
+                updatedPlaylist.playlist.likes.length;
+
+            // Om användaren tog bort sin like:
+            // ta bort spellistan från "My Collection"
+            if (
+                !updatedPlaylist.playlist.likes.includes(currentUser.id)
+            ) {
+                a.remove();
+            }
+        });
+    }
+}
+
   renderSongs(songs, position, add) {
 
       if (!position) return;

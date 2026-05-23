@@ -117,6 +117,29 @@ async function handler(request) {
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
 
+        // Hämtar cookie från request
+        let cookie = request.headers.get("cookie");
+
+        let currentUser = null;
+
+        if (cookie) {
+
+            // Delar upp cookie-strängen
+            let parts = cookie.split("=");
+
+            let cookieId = parts[1];
+
+            // Hittar användaren som matchar cookie-id:t
+            for (let i = 0; i < cookies.length; i++) {
+
+                if (cookies[i].cookie == cookieId) {
+
+                    currentUser = cookies[i];
+
+                }
+            }
+        }
+
         if (url.pathname == "/api/playlists") {
             let tag = url.searchParams.get("tag");
             if (tag) playlists = filterPlaylistsByTag(playlists, tag);
@@ -226,9 +249,29 @@ async function handler(request) {
             });
         }
 
+        // if (url.pathname == "/api/profile/playlists/liked") {
+        //     let likedPlaylists = getLikedPlaylists(playlists, user);
+        //     let body = JSON.stringify(likedPlaylists);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers
+        //     });
+        // }
+
         if (url.pathname == "/api/profile/playlists/liked") {
-            let likedPlaylists = getLikedPlaylists(playlists, user);
+
+            // Om ingen användare är inloggad
+            if (!currentUser) {
+
+                return handleResponse("Unauthorized", 401, null);
+
+            }
+
+            // Hämtar användarens likade spellistor
+            let likedPlaylists = getLikedPlaylists(playlists, currentUser);
+
             let body = JSON.stringify(likedPlaylists);
+
             return new Response(body, {
                 status: 200,
                 headers: headers

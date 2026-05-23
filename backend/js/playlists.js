@@ -13,7 +13,8 @@ export function getLikedPlaylists(playlists, user) {
     let likedPlaylists = [];
 
     for (let playlist of playlists) {
-        if(playlist.likes.includes(user.id)) {
+        // Kollar om användarens username finns i likes arrayen
+        if(playlist.likes.includes(user.username)) {
             likedPlaylists.push(playlist);
         }
     }
