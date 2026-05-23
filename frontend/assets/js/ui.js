@@ -46,6 +46,7 @@ class UI {
         let a = document.createElement("a");
         a.href = `/playlists/${playlist.id}`;
         a.classList.add('clear-link');
+        a.value = playlist.id;
 
         let ownerName;
         for (let user of users) {
@@ -70,6 +71,20 @@ class UI {
         position.appendChild(a);
       }
   }
+  
+  async renderPlaylist(playlist) {
+    const section = document.querySelector("#PublicPlaylist");
+    section.innerHTML = "";
+
+    const div = document.createElement("div");
+    div.innerHTML = `
+        <h1 id="PlaylistName" class="title">${playlist.name}</h1>
+        <p id="PlaylistDescription" class="system-UI-accent">${playlist.description}</p>
+        <p id="PlaylistTag" class="system-UI-accent">#${playlist.tags}</p>
+    `;
+
+    section.append(div);
+  }
 
   renderSongs(songs, position, add) {
       if (!position) return;
@@ -78,6 +93,7 @@ class UI {
       for (let song of songs) {
 
           let li = document.createElement("li");
+          li.value = song.id;
 
           if (add) {
             li.innerHTML = `

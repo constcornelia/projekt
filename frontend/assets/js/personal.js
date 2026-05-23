@@ -10,26 +10,33 @@
 //     createPlaylist.style.display = "none";
 // });
 
-// const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
-// createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
+async function showOwnedPlaylists() {
+    const playlists = await api.getRequest("/api/profile/playlists/owned");
+    console.log(playlists);
+}
+
+const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
+createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
+    event.preventDefault();
+
+    const data = new FormData(createPlaylistForm);
+
+    let options = {
+        method: "POST",
+        body: data
+    };
+
+    let response = await fetch("", options);
+});
+
+// const search = document.querySelector()
+
+// const form = document.querySelector("#CreatePlaylistForm");
+// form.addEventListener("submit", async function onSubmit(event) {
 //     event.preventDefault();
 
-//     const data = new FormData(createPlaylistForm);
 
-//     let options = {
-//         method: "POST",
-//         body: data
-//     };
-
-//     let response = await fetch("", options);
 // });
-
-const search = document.querySelector()
-
-const form = document.querySelector("#CreatePlaylistForm");
-form.addEventListener("submit", async function onSubmit(event) {
-    event.preventDefault();
-});
 
 // Få userId
 // Sök på låtar

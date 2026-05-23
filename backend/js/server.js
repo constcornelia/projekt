@@ -1,6 +1,6 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername, getActiveUser } from "./login.js";
+import { checkSession, checkLogin, createRandomString, getUserInfo, createUser, getUser, getUserByUsername, getActiveUser } from "./login.js";
 import { filterPlaylistsByTag, getPlaylistBySearch, createPlaylist, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
@@ -14,21 +14,6 @@ function handleResponse(body, status, headers) {
         status: status,
         headers: headers
     });
-}
-
-function generateId (data, start) {
-    let highest = 0;
-
-    for (let element of data) {
-        let idNr = data.id.substring(2);
-        idNr = parseInt(idNr);
-
-        if (highest < element) highest = element;
-    }
-
-    let newNr = highest + 1;
-    if (start == "u-") return "u-" + newNr;
-    if (start == "p-") return "p-" + newNr;
 }
 
 function showPage(request, path) {
@@ -78,6 +63,9 @@ async function handler(request) {
         
             let correctLogin = checkLogin(users, loginReq, cookieId, cookies);
             if (correctLogin) {
+                let cookie = { username: loginReq.username, cookie: cookieId };
+                cookies.push(cookie);
+
                 let headers = {
                     "Set-Cookie": "session_id=" + cookieId + "; Max-Age=10080; path=/",
                     "Location": "/"
@@ -196,36 +184,36 @@ async function handler(request) {
         // }
 
         if (url.pathname == "/api/profile/info") {
-
-            // Exempel: "session_id=abc123"
+            // Vi vill ha hela userobjektet här från users.json
             let cookie = request.headers.get("cookie");
+            let activeCookie = getActiveUser(cookie, cookies);
+            let user = getUserInfo(users, activeCookie);
 
-            // Om ingen cookie finns så är användaren är inte inloggad
-            if (!cookie) {
-                return new Response(null, { status: 401 });
-            }
+            // if (!cookie) {
+            //     return new Response(null, { status: 401 });
+            // }
 
-            // Delar upp texten vid "="
-            // Exempel: ["session_id", "abc123"]
-            let parts = cookie.split("=");
+            // // Delar upp texten vid "="
+            // // Exempel: ["session_id", "abc123"]
+            // let parts = cookie.split("=");
 
-            let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
+            // let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
 
-            // Sparar användaren om det hittar rätt cookie
-            let user = null;
+            // // Sparar användaren om det hittar rätt cookie
+            // let user = null;
 
-            for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
-                if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
-                    user = { // Sparar användarens username
-                        username: cookies[i].username
-                    };
-                    break; // Stoppar loopen när rätt user hittats
-                }
-            }
+            // for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
+            //     if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
+            //         user = { // Sparar användarens username
+            //             username: cookies[i].username
+            //         };
+            //         break; // Stoppar loopen när rätt user hittats
+            //     }
+            // }
 
-            if (!user) { // Om ingen användare
-                return new Response(null, { status: 404 });
-            }
+            // if (!user) { // Om ingen användare
+            //     return new Response(null, { status: 404 });
+            // }
 
             return new Response(JSON.stringify(user), {
                 status: 200,
@@ -234,7 +222,11 @@ async function handler(request) {
         }
 
         if (url.pathname == "/api/profile/playlists/owned") {
+            const cookie = request.headers.get("cookie");
+            const activeCookie = getUserInfo(users, cookies, cookie);
+            let user = getUserInfo(users, activeCookie);
             let ownedPlaylists = getOwnedPlaylists(playlists, user);
+            console.log(user);
             let body = JSON.stringify(ownedPlaylists);
             return new Response(body, {
                 status: 200,
@@ -270,7 +262,7 @@ async function handler(request) {
             let username = match.pathname.groups.username;
 
             let user = getUserByUsername(users, username);
-            console.log(user);
+            console.log('user', user);
 
             let body = JSON.stringify(user);
             return new Response(body, {
@@ -295,7 +287,7 @@ async function handler(request) {
             let match = route.exec(request.url);
             let id = match.pathname.groups.id;
 
-            let playlist = getPlaylistById(playlists, songs);
+            let playlist = getPlaylistById(playlists, songs, id);
             
             let body = JSON.stringify(playlist);
             return handleResponse(body, 200, headers); 
@@ -315,10 +307,8 @@ async function handler(request) {
 
             const cookie = request.headers.get("cookie");
             let user = getActiveUser(cookie, cookies);
-            console.log('u', user);
 
             const file = playlistReq.get("add-cover");
-            // console.log(file);
             
             // const title = playlistReq.get("playlist-name");
             // const tags = playlistReq.get("playlist-tags");
@@ -330,8 +320,7 @@ async function handler(request) {
 
             if (!file) return handleResponse("Playlist cover is missing", 400);
 
-            // let id = generateId(playlists, "p-");
-            createPlaylist(playlists, playlistReq, filename);
+            createPlaylist(playlists, playlistReq, filename, user, users);
         }
 
     }

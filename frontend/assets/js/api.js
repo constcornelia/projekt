@@ -18,9 +18,9 @@ class API {
            return data;
 
        } catch (error) {
-        for (let section of sections) {
-            section.innerHTML = "Couldn't reach data. Please try again! " + error;
-        }
+        // for (let section of sections) {
+            // section.innerHTML = "Couldn't reach data. Please try again! " + error;
+        // }
        }
    }
 

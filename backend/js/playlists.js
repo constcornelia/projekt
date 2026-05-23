@@ -2,7 +2,7 @@ export function getOwnedPlaylists(playlists, user) {
     let ownedPlaylists = [];
 
     for (let playlist of playlists) {
-        if(playlist.ownerId == user.id) {
+        if (playlist.ownerId == user.id) {
             ownedPlaylists.push(playlist)
         }
     }
@@ -61,34 +61,29 @@ export function getPlaylistBySearch(playlists, query) {
 }
 
 export function getPlaylistById(playlists, songs, id) {
-
-    let foundPlaylist = null;
-
+    let foundPlaylist;
     for (let playlist of playlists) {
         if (playlist.id == id) {
             foundPlaylist = playlist;
         }
     }
 
-    if (!foundPlaylist) {
-        return null;
-    }
+    if (!foundPlaylist) return null;
 
     let playlistSongs = [];
-
     for (let song of songs) {
         for (let playlistSong of foundPlaylist.songs) {
-
             if (song.id == playlistSong.songId) {
                 playlistSongs.push(song);
             }
         }
     }
 
-    return {
+    let playlistData = {
         playlist: foundPlaylist,
         songs: playlistSongs
-    };
+    }
+    return playlistData;
 }
 
 // export function getPlaylistById(playlists, songs, id) {
@@ -267,27 +262,29 @@ function getNewPlaylistId(playlists) {
     return "p-" + newNr;
 }
 
+function getUserId(users) {
 
-export function createPlaylist(playlists, req, filename) {
-    // console.log(req);
+}
 
+
+export function createPlaylist(playlists, req, filename, user, users) {
     let id = getNewPlaylistId(playlists);
+
+    let userId;
+    for (let u of users) {
+        if (user.username == u.username) {
+            userId = u.id;
+        }
+    }
 
     let file = req.get("add-cover");
     let name = req.get("playlist-name");
     let description = req.get("playlist-description");
     let tags = req.get("playlist-tag");
 
-    // console.log('req:', req);
-    console.log(filename);
-    // console.log(name);
-    // console.log(description);
-    // console.log(tags);
-
-
     let newPlaylist = {
         id: id,
-        ownerId: "",
+        ownerId: userId,
         name: name,
         description: description,
         imgUrl: filename,
@@ -295,8 +292,4 @@ export function createPlaylist(playlists, req, filename) {
         tags: tags,
         songs: []
     };
-
-    console.log('new', newPlaylist);
-
-
 }

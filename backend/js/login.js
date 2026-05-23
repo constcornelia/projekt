@@ -15,8 +15,6 @@ export function createRandomString() {
 export function checkLogin(users, req, cookieId, cookies) {
     for (let user of users) {
         if (user.username == req.username && user.password == req.password) {
-            let cookie = { username: user.username, cookie: cookieId };
-            cookies.push(cookie);
             return true;
         }
     }
@@ -24,13 +22,15 @@ export function checkLogin(users, req, cookieId, cookies) {
 }
 
 export function getActiveUser(cookie, cookies) {
+    if (!cookie) return null;
+
     let parts = cookie.split("=");
     let cookieId = parts[1];
 
-    console.log(cookie);
-    console.log(cookies)
     for (let c of cookies) {
-        if (c.cookie == cookieId) return c;
+        if (c.cookie == cookieId) {
+            return c;
+        }
     }
     return null;
 
@@ -41,6 +41,33 @@ export function getActiveUser(cookie, cookies) {
     // return user;
 }
 
+
+export function getUserInfo(users, cookies, cookie) {
+    console.log(cookie);
+    let parts = cookie.split("=");
+    let cookieId = parts[1];
+
+    let activeCookie;
+    for (let c of cookies) {
+        if (c.cookie == cookieId) {
+            activeCookieUser = c.username
+        }
+    }
+
+    for (let user of users) {
+        if (user.username == activeCookieUser) {
+            return user;
+        }
+    }
+
+    return null;
+    
+    // let user = null;
+    // for (let i = 0; i < cookies.length; i++) {
+    //     if (cookies[i].cookie.includes(cookie)) user = cookies[i];
+    // }
+    // return user;
+}
 
 
 /* 
