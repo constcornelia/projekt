@@ -2,7 +2,6 @@ const api = new API();
 const ui = new UI();
 
 async function loadPlaylist() {
-
     // Hämtar playlist id från URL:en
     const playlistId = window.location.pathname.split("/")[2];
 
@@ -16,6 +15,8 @@ async function loadPlaylist() {
 
 const showAddSong = document.querySelector(".SongToPlaylist-Button");
 showAddSong.addEventListener("click", function onClick(event) {
+    event.preventDefault();
+
     const addSong = document.querySelector("#AddSong");
     addSong.style.display = "block";
 });
@@ -33,6 +34,7 @@ addSongForm.addEventListener("submit", async function onSubmit(event) {
 
 const addSongButton = document.querySelector(".AddSongButton");
 addSongButton.addEventListener("click", function onClick(event) {
+    event.preventDefault();
 
     let data = JSON.stringify({
         songId: "",
