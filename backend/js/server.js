@@ -186,34 +186,34 @@ async function handler(request) {
         if (url.pathname == "/api/profile/info") {
             // Vi vill ha hela userobjektet här från users.json
             let cookie = request.headers.get("cookie");
-            let activeCookie = getActiveUser(cookie, cookies);
-            let user = getUserInfo(users, activeCookie);
+            // let activeCookie = getActiveUser(cookie, cookies);
+            // let user = getUserInfo(users, activeCookie);
 
-            // if (!cookie) {
-            //     return new Response(null, { status: 401 });
-            // }
+            if (!cookie) {
+                return new Response(null, { status: 401 });
+            }
 
-            // // Delar upp texten vid "="
-            // // Exempel: ["session_id", "abc123"]
-            // let parts = cookie.split("=");
+            // Delar upp texten vid "="
+            // Exempel: ["session_id", "abc123"]
+            let parts = cookie.split("=");
 
-            // let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
+            let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
 
-            // // Sparar användaren om det hittar rätt cookie
-            // let user = null;
+            // Sparar användaren om det hittar rätt cookie
+            let user = null;
 
-            // for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
-            //     if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
-            //         user = { // Sparar användarens username
-            //             username: cookies[i].username
-            //         };
-            //         break; // Stoppar loopen när rätt user hittats
-            //     }
-            // }
+            for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
+                if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
+                    user = { // Sparar användarens username
+                        username: cookies[i].username
+                    };
+                    break; // Stoppar loopen när rätt user hittats
+                }
+            }
 
-            // if (!user) { // Om ingen användare
-            //     return new Response(null, { status: 404 });
-            // }
+            if (!user) { // Om ingen användare
+                return new Response(null, { status: 404 });
+            }
 
             return new Response(JSON.stringify(user), {
                 status: 200,
