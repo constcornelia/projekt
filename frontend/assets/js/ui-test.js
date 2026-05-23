@@ -157,3 +157,40 @@ class UI {
     toProfile.href = `/profile/${user.username}`;
   }
 }
+
+
+
+
+
+    if (!position) return;
+    position.innerHTML = "";
+    
+    let users = await api.getRequest("/api/users");
+
+    for (let playlist of playlists) {
+        let a = document.createElement("a");
+        a.href = `/playlists/${playlist.id}`;
+        a.classList.add('clear-link');
+
+        let ownerName;
+        for (let user of users) {
+            if (user.id == playlist.ownerId) {
+                ownerName = user.username;
+            }
+        }
+
+        a.innerHTML = `
+        <div class="playlist-card">
+          <h1 class="title-UI">${playlist.name} </h1>
+          <p>${ownerName}</p>
+          <div class="playlist-actions">
+            <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
+            <button class="Play StopPlaying"></button>
+          </div>
+          <p class="system-UI-accent">#${playlist.tags}</p>
+          <img src="${playlist.imgUrl}">
+        </div>
+        `;
+        
+        position.appendChild(a);
+      }

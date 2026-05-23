@@ -313,104 +313,101 @@ async function handler(request) {
     }
     
     if (request.method == "PATCH") {
+        let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
+        if (likeRoute.test(request.url)) {
+            let match = likeRoute.exec(request.url);
+            let playlistId = match.pathname.groups.id;
+            let cookie = request.headers.get("cookie");
+            // Om ingen cookie finns är användaren inte inloggad
+            if (!cookie) return handleResponse("Unauthorized", 401, null);
 
-    let likeRoute = new URLPattern({
-        pathname: "/api/playlists/:id/like"
-    });
+            // Delar upp cookie strängen vid "="
+            let parts = cookie.split("=");
+            // Hämtar själva cookie-id:t
+            let cookieId = parts[1];
 
-    if (likeRoute.test(request.url)) {
+            let currentUser = null;
+            // Loopar igenom sparade cookies för att hitta rätt användare
+            for (let i = 0; i < cookies.length; i++) {
+                // Om cookie id:t matchar
+                if (cookies[i].cookie == cookieId) {
+                    // Sparar användarens username
+                    currentUser = cookies[i].username;
+                }
+            }
+            // Om ingen användare hittades
+            if (!currentUser) return handleResponse("Unauthorized", 401, null);
+            
 
-        let match = likeRoute.exec(request.url);
-        let playlistId = match.pathname.groups.id;
+            let playlist = null;
+            // Loopar igenom alla spellistor
+            for (let i = 0; i < playlists.length; i++) {
+                // Om spellistans id matchar
+                if (playlists[i].id == playlistId) {
+                    // Sparar rätt spellista
+                    playlist = playlists[i];
+                }
+            }
+            // Om spellistan inte finns
+            if (!playlist) return handleResponse("Playlist not found", 404, null);
 
-        let cookie = request.headers.get("cookie");
+           
+            let alreadyLiked = false;
+            // Sparar vilken plats i arrayen användaren finns på och -1 betyder "inte hittad"
+            let likeIndex = -1;
+            // Loopar igenom alla användare som har likat spellistan
+            for (let i = 0; i < playlist.likes.length; i++) {
+                // Kollar om användaren i arrayen är samma som den inloggade användaren
+                if (playlist.likes[i] == currentUser) {
+                    // Om användaren hittas betyder det att den redan har likat
+                    alreadyLiked = true;
+                    // Sparar vilken position användaren finns på i arrayen
+                    // Exempel:
+                    // ["dilara", "cornelia", "elena"]
+                    // Om currentUser är "cornelia" blir likeIndex = 1
+                    likeIndex = i;
+                }
+            }
 
-        if (!cookie) {
-            return handleResponse("Unauthorized", 401, null);
-        }
+            if (alreadyLiked) {
+                // Första värdet är positionen
+                // Andra värdet är hur många element som ska tas bort
 
-        let parts = cookie.split("=");
-        let cookieId = parts[1];
+                // Exempel:
+                // ["dilara", "cornelia", "elena"]
+                // splice(1, 1)
+                // Resultat:
+                // ["dilara", "elena"]
+                playlist.likes.splice(likeIndex, 1);
+            } else {
+                // Om användaren INTE redan finns i likes-arrayen
+                // läggs användaren till sist i arrayen
 
-        let currentUser = null;
-
-        // Hitta användaren från cookies
-        for (let i = 0; i < cookies.length; i++) {
-
-            if (cookies[i].cookie == cookieId) {
-
-                currentUser = cookies[i].username;
+                // Exempel:
+                // ["dilara", "cornelia"]
+                // push("elena")
+                // Resultat:
+                // ["dilara", "cornelia", "elena"]
+                playlist.likes.push(currentUser);
 
             }
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            let headers = { "Content-Type": "application/json"};
+            let body = JSON.stringify(playlist);
+            return handleResponse(body, 200, headers);
         }
-
-        if (!currentUser) {
-            return handleResponse("Unauthorized", 401, null);
-        }
-
-        let playlist = null;
-
-        // Hitta spellistan
-        for (let i = 0; i < playlists.length; i++) {
-
-            if (playlists[i].id == playlistId) {
-
-                playlist = playlists[i];
-
-            }
-        }
-
-        if (!playlist) {
-            return handleResponse("Playlist not found", 404, null);
-        }
-
-        let alreadyLiked = false;
-
-        // Kolla om användaren redan likat
-        for (let i = 0; i < playlist.likes.length; i++) {
-
-            if (playlist.likes[i] == currentUser) {
-
-                alreadyLiked = true;
-
-            }
-        }
-
-        // Lägg till like om användaren inte redan finns
-        if (!alreadyLiked) {
-
-            playlist.likes.push(currentUser);
-
-        }
-
-        // Sparar databasen
-        Deno.writeTextFileSync(
-            "../data/database.json",
-            JSON.stringify(data, null, 2)
-        );
-
-        let headers = {
-            "Content-Type": "application/json"
-        };
-
-        let body = JSON.stringify(playlist);
-
-        return handleResponse(body, 200, headers);
     }
 
+    if (url.pathname == "/api/add-song") {
 
-        if (url.pathname == "/api/add-song") {
+        // Nog smartast om songreq innehåller id:et från usern, låten och spellistan
+        let songReq = await request.json();
 
-            // Nog smartast om songreq innehåller id:et från usern, låten och spellistan
-            let songReq = await request.json();
-
-        }
-
+    }
         // Ändra profil-bild
         // Som ägare av spellista ändra info i spellista + radera låtar
 
         // Lägg till låtar i andras och sina egna spellistor
-    }
 
     if (request.method == "DELETE") {
 

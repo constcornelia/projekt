@@ -49,9 +49,8 @@ class UI {
       for (let playlist of playlists) {
 
           let a = document.createElement("a");
-
-          let playlistCard = document.createElement("div");
-          playlistCard.classList.add("playlist-card")
+          a.href = `/playlists/${playlist.id}`;
+          a.classList.add('clear-link');
 
           let ownerName;
 
@@ -61,7 +60,8 @@ class UI {
             }
         }
 
-        playlistCard.innerHTML = `
+        a.innerHTML = `
+        <div class="playlist-card">
           <h1 class="title-UI">${playlist.name} </h1>
           <p>${ownerName}</p>
           <div class="playlist-actions">
@@ -70,20 +70,24 @@ class UI {
           </div>
           <p class="system-UI-accent">#${playlist.tags}</p>
           <img src="${playlist.imgUrl}">
+        </div>
         `;
-          section.appendChild(playlistCard);
+        section.appendChild(a);
 
-          let likeButton = a.querySelector(".LikePlaylist-Button");
+        let likeButton = a.querySelector(".LikePlaylist-Button");
           
-          likeButton.addEventListener("click", async function (event) {
+        likeButton.addEventListener("click", async function (event) {
             event.preventDefault();
-            event.stopPropagation();
 
+            // Skickar PATCH-request till servern och lägger till eller tar bort användarens like
             await api.patchRequest(`/api/playlists/${playlist.id}/like`);
 
+            // Hämtar den uppdaterade spellistan från servern
             let updatedPlaylist = await api.getRequest(`/api/playlists/${playlist.id}`);
+            console.log(updatedPlaylist);
 
-            likeButton.querySelector("span").textContent = updatedPlaylist.likes.length;
+            // Uppdaterar siffran i like-knappen så att rätt antal likes visas direkt på sidan
+            likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length;
         });
       }
   }
