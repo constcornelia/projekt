@@ -66,7 +66,7 @@ class UI {
           <p>${ownerName}</p>
           <div class="playlist-actions">
             <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
-            <button class="Play StopPlaying"></button>
+            <button class="Play"></button>
           </div>
           <p class="system-UI-accent">#${playlist.tags}</p>
           <img src="${playlist.imgUrl}">
@@ -89,6 +89,13 @@ class UI {
             // Uppdaterar siffran i like-knappen så att rätt antal likes visas direkt på sidan
             likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length;
         });
+        let playButton = a.querySelector(".Play")
+        playButton.addEventListener("click", async function (event) {
+            event.preventDefault();
+            playButton.classList.toggle("StopPlaying");
+
+        });
+
       }
   }
 
