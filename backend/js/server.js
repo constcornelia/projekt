@@ -345,115 +345,101 @@ async function handler(request) {
         // }
 
          // Skapar ny spellista
-if (url.pathname == "/api/playlists") {
+        if (url.pathname == "/api/playlists") {
+            // Hämtar all formdata från requesten
+            let formData = await request.formData();
 
-    let formData = await request.formData();
+            // Variabler för datan från formuläret
+            let name;
+            let description;
+            let tag;
+            let songs;
+            let file;
 
-    let name = formData.get("name");
+            // Loopar igenom all formdata
+            for (let data of formData) {
+                // Första värdet är fältets namn
+                // Exempel:
+                // "name"
+                let key = data[0];
+                // Andra värdet är innehållet
+                // Exempel:
+                // "My playlist"
+                let value = data[1];
 
-    let description = formData.get("description");
+                // Sparar spellistans data
+                if (key == "name") name = value;
+                if (key == "description") description = value;
+                if (key == "tag") tag = value;
+                // JSON.parse gör om texten tillbaka till en array
+                if (key == "songs") songs = JSON.parse(value);
+                if (key == "cover") file = value;
+            }
+            // Variabel för filnamnet
+            let filename = "";
+            // Kör bara om en fil finns
+            if (file && file.name) {
+                // Skapar slumpmässigt filnamn
+                const fileStr = createRandomString();
+                // Hämtar filens ändelse
+                // Exempel:
+                // ".png"
+                const extension = extname(file.name);
+                // Skapar komplett filnamn
+                filename = fileStr + extension;
+                // Hämtar filens innehåll
+                const bytes = await file.bytes();
+                // Sparar filen i uploads mappen
+                Deno.writeFileSync(`../uploads/${filename}`, bytes);
+            }
+            let cookie = request.headers.get("cookie");
+            // Om ingen cookie finns, så är användaren är inte inloggad
+            if (!cookie) return handleResponse("Unauthorized", 401, null);
+            // Delar upp cookie-strängen vid "="
+            let parts = cookie.split("=");
+            // Hämtar själva cookie-id:t
+            let cookieId = parts[1];
+            // Variabel för inloggad användare
+            let currentUser = null;
+            // Loopar igenom alla sparade cookies
+            for (let i = 0; i < cookies.length; i++) {
+                // Om cookie-id:t matchar
+                if (cookies[i].cookie == cookieId) {
+                    // Sparar användaren
+                    currentUser = cookies[i];
+                }
+            }
+            // Om ingen användare hittades
+            if (!currentUser) return handleResponse("Unauthorized", 401, null);
+            // Variabel för hela användarobjektet
+            let foundUser = null;
+            // Letar upp användaren i users-arrayen
+            for (let user of users) {
+                if (user.username == currentUser.username) {
+                    foundUser = user;
+                }
+            }
+            // Skapar nytt playlist-id
+            // Exempel:
+            // "p-9"
+            let newId = "p-" + (playlists.length + 1);
+            // Skapar den nya spellistan
+            let newPlaylist = {
+                id: newId,
+                ownerId: foundUser.id,
+                name: name,
+                description: description,
+                imgUrl: `/uploads/${filename}`,
+                likes: [],
+                tags: [tag],
+                songs: songs
+            };
+            playlists.push(newPlaylist);
 
-    let tag = formData.get("tag");
-
-    let songs = JSON.parse(formData.get("songs"));
-
-    const file = formData.get("cover");
-
-    let filename = "";
-
-    if (file && file.name) {
-
-        const fileStr = createRandomString();
-
-        const extension = extname(file.name);
-
-        filename = fileStr + extension;
-
-        const bytes = await file.bytes();
-
-        Deno.writeFileSync(`../uploads/${filename}`, bytes);
-
-    }
-
-    let cookie = request.headers.get("cookie");
-
-    if (!cookie) {
-
-        return handleResponse("Unauthorized", 401, null);
-
-    }
-
-    let parts = cookie.split("=");
-
-    let cookieId = parts[1];
-
-    let currentUser = null;
-
-    for (let i = 0; i < cookies.length; i++) {
-
-        if (cookies[i].cookie == cookieId) {
-
-            currentUser = cookies[i];
-
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            let headers = { "Content-Type": "application/json" };
+            return handleResponse(JSON.stringify(newPlaylist), 201, headers);
         }
-    }
-
-    if (!currentUser) {
-
-        return handleResponse("Unauthorized", 401, null);
-
-    }
-
-    let foundUser = null;
-
-    for (let user of users) {
-
-        if (user.username == currentUser.username) {
-
-            foundUser = user;
-
-        }
-    }
-
-    let newId = "p-" + (playlists.length + 1);
-
-    let newPlaylist = {
-
-        id: newId,
-
-        ownerId: foundUser.id,
-
-        name: name,
-
-        description: description,
-
-        imgUrl: `/uploads/${filename}`,
-
-        likes: [],
-
-        tags: [tag],
-
-        songs: songs
-    };
-
-    playlists.push(newPlaylist);
-
-    Deno.writeTextFileSync(
-        "../data/database.json",
-        JSON.stringify(data, null, 2)
-    );
-
-    let headers = {
-        "Content-Type": "application/json"
-    };
-
-    return handleResponse(
-        JSON.stringify(newPlaylist),
-        201,
-        headers
-    );
-}
-
     }
     
     if (request.method == "PATCH") {
@@ -481,8 +467,6 @@ if (url.pathname == "/api/playlists") {
             }
             // Om ingen användare hittades
             if (!currentUser) return handleResponse("Unauthorized", 401, null);
-            
-
             let playlist = null;
             // Loopar igenom alla spellistor
             for (let i = 0; i < playlists.length; i++) {
@@ -494,8 +478,6 @@ if (url.pathname == "/api/playlists") {
             }
             // Om spellistan inte finns
             if (!playlist) return handleResponse("Playlist not found", 404, null);
-
-           
             let alreadyLiked = false;
             // Sparar vilken plats i arrayen användaren finns på och -1 betyder "inte hittad"
             let likeIndex = -1;

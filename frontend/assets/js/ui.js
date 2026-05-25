@@ -39,21 +39,16 @@ class UI {
 
   async renderPlaylists(playlists) {
     const section = sections[0];
-
     if (!section) return;
-
     section.innerHTML = "";
     
     let users = await api.getRequest("/api/users");
-
       for (let playlist of playlists) {
-
           let a = document.createElement("a");
           a.href = `/playlists/${playlist.id}`;
           a.classList.add('clear-link');
 
           let ownerName;
-
         for (let user of users) {
             if (user.id == playlist.ownerId) {
                 ownerName = user.username;
@@ -75,17 +70,13 @@ class UI {
         section.appendChild(a);
 
         let likeButton = a.querySelector(".LikePlaylist-Button");
-          
         likeButton.addEventListener("click", async function (event) {
             event.preventDefault();
-
             // Skickar PATCH-request till servern och lägger till eller tar bort användarens like
             await api.patchRequest(`/api/playlists/${playlist.id}/like`);
-
             // Hämtar den uppdaterade spellistan från servern
             let updatedPlaylist = await api.getRequest(`/api/playlists/${playlist.id}`);
             console.log(updatedPlaylist);
-
             // Uppdaterar siffran i like-knappen så att rätt antal likes visas direkt på sidan
             likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length;
         });
@@ -93,9 +84,7 @@ class UI {
   }
 
   async renderPersonalPlaylists(playlists, section) {
-
     if (!section) return;
-
     // Behåller create-playlist kortet
     section.innerHTML = `
     <a href="/new-playlist" class="clear-link">
@@ -107,50 +96,32 @@ class UI {
     `;
 
     let users = await api.getRequest("/api/users");
-
     for (let playlist of playlists) {
-
         let a = document.createElement("a");
-
         a.href = `/playlists/${playlist.id}`;
-
         a.classList.add("clear-link");
 
         let ownerName;
-
         for (let user of users) {
-
             if (user.id == playlist.ownerId) {
-
                 ownerName = user.username;
-
             }
         }
 
         a.innerHTML = `
         <div class="playlist-card">
-
           <h1 class="title-UI">${playlist.name}</h1>
-
           <p>${ownerName}</p>
-
           <div class="playlist-actions">
-
             <button class="LikePlaylist-Button system-UI">
               <span>${playlist.likes.length}</span>
             </button>
-
             <button class="Play StopPlaying"></button>
-
           </div>
-
           <p class="system-UI-accent">#${playlist.tags}</p>
-
           <img src="${playlist.imgUrl}">
-
         </div>
         `;
-
         section.appendChild(a);
 
         let likeButton = a.querySelector(".LikePlaylist-Button");
@@ -165,8 +136,7 @@ class UI {
             // Uppdaterar like-siffran direkt i knappen
             likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length;
 
-            // Om användaren tog bort sin like:
-            // ta bort spellistan från "My Collection"
+            // Om användaren tog bort sin like så tas spellistan bort från "My Collection"
             if (!updatedPlaylist.playlist.likes.includes(currentUser.id)) {
                 a.remove();
             }
@@ -175,22 +145,14 @@ class UI {
 }
 
 renderSongs(songs, position, add) {
-
-    // Om ingen position skickats in -> stoppa funktionen
+    // Om ingen position skickats in, så stoppas funktionen
     if (!position) return;
-
-    // Tömmer listan innan nya låtar renderas
     position.innerHTML = "";
 
-    // Loopar igenom alla låtar
     for (let song of songs) {
-
-        // Skapar nytt li-element
         let li = document.createElement("li");
-
         // Om låtarna ska kunna läggas till i en spellista
         if (add) {
-
             li.innerHTML = `
                 ${song.name} - ${song.artist}
                 <button type="button" class="AddSongButton">
@@ -198,45 +160,33 @@ renderSongs(songs, position, add) {
                 </button>
             `;
 
-            // Hämtar knappen från li-elementet
             let addButton = li.querySelector(".AddSongButton");
+            addButton.addEventListener("click", async function (event) {
+                event.preventDefault();
+                let currentUser = await api.getRequest("/api/profile/info");
+                const addedSongsList = document.querySelector(".songs ul");
+                // Om texten "no songs yet" finns, så töms listan
+                if (addedSongsList.textContent.includes("no songs yet")) {
+                    addedSongsList.innerHTML = "";
+                }
 
-addButton.addEventListener("click", async function (event) {
+                let addedLi = document.createElement("li");
+                addedLi.textContent = `${song.name} - ${song.artist}`;
+                addedSongsList.appendChild(addedLi);
 
-    event.preventDefault();
-
-    let currentUser = await api.getRequest("/api/profile/info");
-
-    const addedSongsList = document.querySelector(".songs ul");
-
-    if (addedSongsList.textContent.includes("no songs yet")) {
-        addedSongsList.innerHTML = "";
-    }
-
-    let addedLi = document.createElement("li");
-
-    addedLi.textContent = `${song.name} - ${song.artist}`;
-
-    addedSongsList.appendChild(addedLi);
-
-    // SPARAR SONG-ID I ARRAYEN
-    addedSongs.push({
-    songId: song.id,
-    editorId: currentUser.id // eller den inloggade användaren
-    });
-
-});
-
+                // Sparar låten i addedSongs arrayen
+                addedSongs.push({
+                songId: song.id,
+                editorId: currentUser.id // eller den inloggade användaren
+                });
+            });
         } else {
-
             // Vanlig rendering av låtar i spellistor
             li.innerHTML = `
                 ${song.name} - ${song.artist}
                 <button class="Play StopPlaying"></button>
             `;
         }
-
-        // Lägger till li i listan
         position.appendChild(li);
     }
 }
@@ -250,10 +200,8 @@ addButton.addEventListener("click", async function (event) {
     `;
   }
 
-
   async dropDownsPlaylist (playlistElement) {
     let playlists = await api.getRequest("/api/playlists");
-
       for (let playlist of playlists) {
           const option = document.createElement("option");
           option.value = playlist.id;
@@ -264,7 +212,6 @@ addButton.addEventListener("click", async function (event) {
   
   async dropDownsTags(tagElement) {
       let tags = await api.getRequest("/api/tags");
-   
       for (let tag of tags) {
           const option = document.createElement("option");
           option.value = tag;

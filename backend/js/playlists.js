@@ -61,29 +61,27 @@ export function getPlaylistBySearch(playlists, query) {
     return filteredPlaylists;
 }
 
+// Hämtar en specifik spellista och alla låtar som tillhör den
 export function getPlaylistById(playlists, songs, id) {
-
+    // Sparar spellistan som matchar id:t
     let foundPlaylist = null;
-
     for (let playlist of playlists) {
         if (playlist.id == id) {
             foundPlaylist = playlist;
         }
     }
-
     if (!foundPlaylist) return null;
-
+    // Array som ska innehålla alla fullständiga låt-objekt
     let playlistSongs = [];
-
     for (let song of songs) {
         for (let playlistSong of foundPlaylist.songs) {
-
+            // Om låtens id matchar songId i spellistan
             if (song.id === playlistSong.songId) {
+                // Lägg till hela låt-objektet i arrayen
                 playlistSongs.push(song);
             }
         }
     }
-
     return {
         playlist: foundPlaylist,
         songs: playlistSongs
@@ -126,26 +124,25 @@ export function getTags(playlists) {
 }
 
 export function deletePlaylistById(database, playlistId) {
+    // Ny array som ska innehålla alla spellistor
+    // förutom den som ska tas bort
     let updatedPlaylists = [];
 
     let found = false;
-
     for (let playlist of database.playlists) {
         if (playlist.id === playlistId) {
             found = true;
         } else {
+            // Alla andra spellistor sparas kvar
             updatedPlaylists.push(playlist);
         }
     } 
+    if (!found) return false;
 
-    if (!found) {
-        return false;
-    }
-
+    // Ersätter gamla playlist-arrayen med den uppdaterade
     database.playlists = updatedPlaylists;
-
     Deno.writeTextFileSync("database.json", JSON.stringify(database));
-
+    // Returnerar true om spellistan togs bort
     return true;
 }
 
