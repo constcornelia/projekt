@@ -508,7 +508,10 @@
       "name": "My Emo Romance",
       "description": "Playlist for the emos",
       "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
-      "likes": [],
+      "likes": [
+        "cornelia",
+        "dilara"
+      ],
       "tags": [
         "emo",
         "punk"
@@ -579,7 +582,9 @@
       "name": "Party Bangers",
       "description": "Musik som höjer stämningen",
       "imgUrl": "https://i.pinimg.com/1200x/25/2b/c6/252bc611b9e0bae4ce0fc170d7ff9791.jpg",
-      "likes": [],
+      "likes": [
+        "dilara"
+      ],
       "tags": [
         "party",
         "hype"
@@ -633,7 +638,9 @@
       "name": "Summer Vibes",
       "description": "Sol, värme och semester",
       "imgUrl": "https://i.pinimg.com/736x/de/f0/e6/def0e6a60a8b9bd2bc3eec453ff4430c.jpg",
-      "likes": [],
+      "likes": [
+        "dilara"
+      ],
       "tags": [
         "summer",
         "electronic"
@@ -659,6 +666,27 @@
         {
           "songId": "s-17",
           "editorId": "u-1"
+        }
+      ]
+    },
+    {
+      "id": "p-10",
+      "ownerId": "u-3",
+      "name": "XO",
+      "description": "Til we od ",
+      "imgUrl": "/uploads/85a8bec0-705b-4016-b9c3-306905267648.png",
+      "likes": [
+        "dilara"
+      ],
+      "tags": [
+        "chill, sad"
+      ],
+      "songs": [
+        {
+          "songId": "s-6"
+        },
+        {
+          "songId": "s-63"
         }
       ]
     }

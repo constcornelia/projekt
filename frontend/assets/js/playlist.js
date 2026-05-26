@@ -2,49 +2,45 @@ const api = new API();
 const ui = new UI();
 
 async function loadPlaylist() {
-    // Hämtar playlist id från URL:en
+    // Hämtar spellistans id från URL:en
+    // Exempel: /playlists/p-1 -> "p-1"
     const playlistId = window.location.pathname.split("/")[2];
-
-    // hämtar playlistens data från API:t
+    // Hämtar spellistans data från servern
     let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
-
-    // och renderar alla songs på sidan
+    // Hämtar positionen där låtarna ska visas
     const positionSong = document.querySelector(".songs ul");
+    // Renderar spellistans låtar
     ui.renderSongs(playlistData.songs, positionSong, false);
-
+    // Hämtar positionen där spellistans info ska visas
     const positionInfo = document.querySelector(".info");
+    // Renderar spellistans information
     ui.renderPlaylistInfo(playlistData.playlist, positionInfo);
-
 }
 
 const showAddSong = document.querySelector(".SongToPlaylist-Button");
-showAddSong.addEventListener("click", function onClick(event) {
-    event.preventDefault();
-
-    const addSong = document.querySelector("#AddSong");
-    addSong.style.display = "block";
-});
+// Kör bara om knappen finns på sidan
+if (showAddSong) {
+    showAddSong.addEventListener("click", function (event) {
+        event.preventDefault();
+        // Hämtar formuläret för att lägga till låtar
+        const addSong = document.querySelector("#AddSong");
+        // Visar formuläret
+        addSong.style.display = "block";
+    });
+}
 
 const addSongForm = document.querySelector("#AddSongForm");
-addSongForm.addEventListener("submit", async function onSubmit(event) {
-    event.preventDefault();
-
-    const input = addSongForm.elements.SearchSongInput.value;
-    const songs = await api.getRequest("/api/songs/search?q=" + input);
-
-    const position = document.querySelector("#SearchResultSongs ul");
-    ui.renderSongs(songs, position, true);
-});
-
-const addSongButton = document.querySelector(".AddSongButton");
-addSongButton.addEventListener("click", function onClick(event) {
-    event.preventDefault();
-
-    let data = JSON.stringify({
-        songId: "",
-        playlistId: "",
-        userId: ""
+// Kör bara om formuläret finns
+if (addSongForm) {
+    addSongForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        // Hämtar texten användaren sökt på
+        const input = addSongForm.elements.SearchSongInput.value;
+        // Hämtar matchande låtar från servern
+        const songs = await api.getRequest("/api/songs/search?q=" + input);
+        // Hämtar positionen där sökresultatet ska visas
+        const position = document.querySelector("#SearchResultSongs ul");
+        ui.renderSongs(songs, position, true);
     });
-});
-
+}
 loadPlaylist();

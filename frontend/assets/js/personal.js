@@ -23,3 +23,13 @@
 
 //     let response = await fetch("", options);
 // });
+
+const ui = new UI();
+const api = new API();
+
+async function showLikedPlaylists() {
+    let playlists = await api.getRequest("/api/profile/playlists/liked");
+    let section = document.querySelector("#PersonalPlaylistsCollection");
+    ui.renderPersonalPlaylists(playlists, section);
+}
+showLikedPlaylists();
