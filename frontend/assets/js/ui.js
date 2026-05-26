@@ -117,7 +117,7 @@ class UI {
           } else {
           li.innerHTML = `
               ${song.name} - ${song.artist}
-              <button class="Play StopPlaying"></button>
+              <button class="Play"></button>
           `;
           }
 
