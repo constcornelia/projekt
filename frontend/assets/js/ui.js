@@ -83,10 +83,12 @@ class UI {
         let playButton = a.querySelector(".Play")
         playButton.addEventListener("click", async function (event) {
             event.preventDefault();
-            playButton.classList.toggle("StopPlaying");
-
+            if (playButton.classList.contains("StopPlaying")) {
+                playButton.classList.remove("StopPlaying");
+            } else {
+                playButton.classList.add("StopPlaying");
+            }
         });
-
       }
   }
 
