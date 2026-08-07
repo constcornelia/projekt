@@ -1,3 +1,65 @@
+export function getTags(playlists) {
+    const tags = [];
+
+    for (let playlist of playlists) {
+        for (let tag of playlist.tags) {
+            if (!tags.includes(tag)) {
+                tags.push(tag);
+            } 
+        }
+    }
+    return tags;
+}
+
+export function filterPlaylistsByTag(playlists, tag) {
+    let playlistsByByTag = [];
+
+    for (let playlist of playlists) {
+        for (let playlistTag of playlist.tags) {
+            if (playlistTag == tag) {
+                playlistsByByTag.push(playlist);
+            }
+        }
+    }
+    return playlistsByByTag;
+}
+
+export function sortPlaylistsByLikes(playlists) {
+    let copy = Array.from(playlists);
+    let sortedPlaylists = [];
+
+    function compare(a, b) {
+        if (a.likes.length < b.likes.length) return 1;
+        else if (a.likes.length > b.likes.length) return -1;
+        else return 0;
+    }
+    copy.sort(compare);
+    return copy;
+
+    // for (let playlist of playlists) {
+    //     sortedPlaylists.push(playlist);
+    // }
+
+    // sortedPlaylists.sort(function (a,b) {
+    //     return b.likes.length - a.likes.length;
+    // });
+
+    // return sortedPlaylists;
+}
+
+export function getPlaylistBySearch(playlists, query) {
+    let filteredPlaylists = [];
+
+    let q = query.toLowerCase();
+
+    for (let playlist of playlists) {
+        if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
+            filteredPlaylists.push(playlist);
+        }
+    }
+    return filteredPlaylists;
+}
+
 export function getOwnedPlaylists(playlists, user) {
     let ownedPlaylists = [];
 
@@ -33,32 +95,6 @@ export function getContributedPlaylists(playlists, user) {
         }
     }
     return contributedPlaylists;
-}
-
-export function filterPlaylistsByTag(playlists, tag) {
-    let playlistsByByTag = [];
-
-    for (let playlist of playlists) {
-        for (let playlistTag of playlist.tags) {
-            if (playlistTag == tag) {
-                playlistsByByTag.push(playlist);
-            }
-        }
-    }
-    return playlistsByByTag;
-}
-
-export function getPlaylistBySearch(playlists, query) {
-    let filteredPlaylists = [];
-
-    let q = query.toLowerCase();
-
-    for (let playlist of playlists) {
-        if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
-            filteredPlaylists.push(playlist);
-        }
-    }
-    return filteredPlaylists;
 }
 
 // Hämtar en specifik spellista och alla låtar som tillhör den
@@ -109,19 +145,6 @@ export function getPlaylistById(playlists, songs, id) {
 //     return playlistData;
 // }
 
-export function getTags(playlists) {
-    const tags = [];
-    for (let playlist of playlists) {
-        for (let tag of playlist.tags) {
-            if (!tags.includes(tag)) {
-                tags.push(tag);
-            } else {
-                continue;
-            }
-        }
-    }
-    return tags;
-}
 
 export function deletePlaylistById(database, playlistId) {
     // Ny array som ska innehålla alla spellistor
@@ -230,20 +253,6 @@ export function createPlaylistById (database, body) {
     Deno.writeTextFileSync("database.json", JSON.stringify(database));
 
     return newPlaylist;
-}
-
-export function sortPlaylistsByLikes(playlists) {
-    let sortedPlaylists = [];
-
-    for (let playlist of playlists) {
-        sortedPlaylists.push(playlist);
-    }
-
-    sortedPlaylists.sort(function (a,b) {
-        return b.likes.length - a.likes.length;
-    });
-
-    return sortedPlaylists;
 }
 
 export function removeSongFromPlaylist() {}
