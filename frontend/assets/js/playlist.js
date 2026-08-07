@@ -20,13 +20,14 @@ async function loadPlaylist() {
 const showAddSong = document.querySelector(".SongToPlaylist-Button");
 // Kör bara om knappen finns på sidan
 if (showAddSong) {
-    showAddSong.addEventListener("click", function (event) {
-        event.preventDefault();
-        // Hämtar formuläret för att lägga till låtar
-        const addSong = document.querySelector("#AddSong");
-        // Visar formuläret
-        addSong.style.display = "block";
-    });
+    showAddSong.addEventListener("click", async function (event) {
+    event.preventDefault();
+    const addSong = document.querySelector("#AddSong");
+    addSong.style.display = "block";
+    let songs = await api.getRequest("/api/songs");
+    const position = document.querySelector("#SearchResultSongs ul");
+    ui.renderSongs(songs, position, true);
+});
 }
 
 const addSongForm = document.querySelector("#AddSongForm");

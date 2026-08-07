@@ -72,12 +72,19 @@
             <label for="playlist-description" class="sub-title">Playlist description:</label>
             <textarea id="playlist-description" name="playlist-description"></textarea>
           </div>
+          <label for="playlist-tag" class="sub-title">Playlist tags:</label>
           <div class="form-input-area">
-            <label for="playlist-tag" class="sub-title">Playlist tag:</label>
-            <input type="text" id="playlist-tag" name="playlist-tag">
+            <div class="TagSelector">
+              <div class="Select">
+                <select id="playlist-tag" class="system-UI">
+                  <option value="">Select tag</option>
+                </select>
+              </div>             
+              <button type="button" id="AddTagButton" class="ActionButton-light system-UI-accent">Add</button>
+            </div>
+            <ul id="SelectedTags" class="form-input-area"></ul>
           </div>
         </div>
-
 
         <div class="AddingSongs">
           <div class="songs">

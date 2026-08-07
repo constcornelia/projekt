@@ -9,16 +9,15 @@ class API {
                 "Accept": "application/json"
                }
            });
-      
            let response = await fetch (request);
            if (!response.ok) {
                throw new Error (response.status);
            }
            let data = await response.json();
            return data;
-
        } catch (error) {
-            position.innerHTML = "Couldn't reach data. Please try again! " + error;
+            // position.innerHTML = "Couldn't reach data. Please try again! " + error;
+            console.log(error);
        }
    }
 
@@ -33,23 +32,16 @@ class API {
                },
                body: JSON.stringify(body)
            });
-
-
            let response = await fetch (request);
-
-
            let data = null;
-
-
            if (response.status !== 201) {
                data = await response.json();
                return data;
            }
-
-
            alert("Successfully posted!");
        } catch (error) {
-            position.innerHTML = "Couldn't post product " + error;
+            // position.innerHTML = "Couldn't post product " + error;
+            console.log(error);
        }
    }
 
@@ -63,20 +55,16 @@ class API {
                },
                body: JSON.stringify(body)
            });
-
            let response = await fetch (request);
-
            let data = null;
-
            if (response.status !== 204) {
                data = await response.json();
                return data;
            }
-
            alert("Successfully edited!");
-
        } catch (error) {
-            position.innerHTML = "Couldn't edit product " + error;
+            // position.innerHTML = "Couldn't edit product " + error;
+            console.log(error);
        }
    }
 
@@ -88,24 +76,16 @@ class API {
                  "Authorization": "Bearer 67"
                }
            });
-
-
            let response = await fetch (request);
-
-
            let data = null;
-
-
            if (response.status !== 204) {
                data = await response.json();
                return data;
            }
-
-
            alert("Successfully deleted!");
-          
        } catch (error) {
-            position.innerHTML = "Couldn't delete product " + error;
+            // position.innerHTML = "Couldn't delete product " + error;
+            console.log(error);
        }
    }
 }
