@@ -47,53 +47,49 @@
 
   </section>
 
-
-
   <nav>
     <a href="/" class="home clear-link">
       <img src="/assets/images/icons/logo.svg">
         <div>YourSound</div>
     </a>
-    <div class="space">
-      <form action="" id="SearchPaylistForm">
-        <input type="search" name="SearchInput" id="SearchInput" class="system-UI" placeholder="Search by playlist name, tags or description">
-        <button id="ButtonSearch" type="submit"></button>
-      </form>
-    </div>
-    <a id="toPersonal" href="personal.html" class="ActionButton system-UI-accent clear-link">My collection</a>
+    <div class="space"></div>
+      <button class="LikePlaylist-Button system-UI-accent"><span>ff</span></button>
+      <!--listener på LikePlaylist så AlertAddPlaylist bli synlig-->
+      <button class="SongToPlaylist-Button system-UI-accent"><span>add song</span></button>
+      <!--listener på AddSongButton så AddSong div bli synlig-->
   </nav>
-
-  <section id="filters">
-    <h1 class="title-UI">Find your best playlist</h1>
-
-      <form class="FilterForm system-UI">
-        <div>
-          <div class="Select">
-            <select id="SelectGenre" class="system-UI" name="genre">
-              <option value="">Select tag</option>
-            </select>
-          </div>
-          <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
-            <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
-          </label>
-        </div>
-        <div>
-          <button id="FiltersReset" type="reset" class="system-UI">Clear filters</button>
-          <button id="FiltersSubmit" type="submit" class="system-UI">Sort playlists</button>
-        </div>
-
   
-    </form>
-
-  </section>
-
-
-  <section id="PublicPlaylistsCollection">
-
-      <a href="/playlists" class="clear-link">
-        <div class="playlist-card">
-      </a>
-
+  <section id="PublicPlaylist" class="playlist-content">
+    <div class="PlaylistData edit-elements">
+      <div class="info">
+        <img src="" alt="">
+        <h1 id="PlaylistName" class="title">playlist name</h1>
+        <p id="PlaylistDescription" class="system-UI">description</p>
+        <p id="PlaylistTag" class="system-UI-accent">tag</p>
+      </div>
+      <div class="songs">
+        <h1 class="title">Songs in playlist</h1>
+        <ul class="system-UI">
+           <!--li är bara för exempel men ska skapas med api data-->
+        </ul>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när add song knapp klickad-->
+    <div id="AddSong" class="edit-elements">
+      <h1 class="title">Add song to playlist</h1>
+      <form id="AddSongForm" class="SearchSongElement">
+        <input type="search" name="SearchSongInput" id="SearchSongInput" class="system-UI" placeholder="Search song">
+        <button class="ButtonSearchSong" type="submit"></button>
+      </form>
+      <div id="SearchResultSongs" class="system-UI">
+        <ul>
+          <!--alla li ska aderas genom search
+          sen varenda låt kan aderas med knapp vid låtnamn-->
+          <li>song<button type="button" class="AddSongButton">add song</button></li>
+        </ul>
+      </div>
+    </div>
+  
   </section>
 
   <footer>
@@ -112,8 +108,7 @@
 
   <script src="/assets/js/api.js"></script>
   <script src="/assets/js/ui.js"></script>
-  <script src="/assets/js/playlists.js"></script>
-
+  <script src="/assets/js/playlist.js"></script>
 </body>
 
 </html>

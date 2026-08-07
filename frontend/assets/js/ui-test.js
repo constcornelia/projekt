@@ -1,0 +1,198 @@
+//det verkar att search funkar inte utan submit
+// så  gjorde jag två former for search och sortering
+//for main.html
+/*
+let FilterForm = document.getElementById("FilterForm");
+FilterForm.addEventListener("change", function (event) {
+    console.log("new value!", event.target);
+
+})
+
+let AddSongForm = document.getElementById("AddSongForm");
+AddSongForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    let SearchInput = SearchForm.SearchInput.value;
+    console.log("new value!", SearchForm.SearchInput);
+
+})*/
+
+// Product   =   Playlist
+// Brand     =   Song 
+// Category  =   Tags
+
+
+let sections = [
+    document.querySelector("#PublicPlaylistsCollection"),
+    document.querySelector("#PersonalPlaylistsCollection")
+];
+
+class UI {
+  async getPlaylists() {
+      let playlists = await api.getRequest("/api/playlists");
+      this.renderPlaylists(playlists);
+  }
+
+  async getSongs() {
+      let songs = await api.getRequest("/api/songs")
+      this.renderSongs(songs);
+  }
+
+  async renderPlaylists(playlists) {
+    const section = sections[0];
+
+    if (!section) return;
+
+    section.innerHTML = "";
+    
+    let users = await api.getRequest("/api/users");
+
+      for (let playlist of playlists) {
+
+          let a = document.createElement("a");
+
+          let playlistCard = document.createElement("div");
+          playlistCard.classList.add("playlist-card")
+
+          let ownerName;
+
+        for (let user of users) {
+            if (user.id == playlist.ownerId) {
+                ownerName = user.username;
+            }
+        }
+
+        playlistCard.innerHTML = `
+          <h1 class="title-UI">${playlist.name} </h1>
+          <p>${ownerName}</p>
+          <div class="playlist-actions">
+            <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
+            <button class="Play StopPlaying"></button>
+          </div>
+          <p class="system-UI-accent">#${playlist.tags}</p>
+          <img src="${playlist.imgUrl}">
+        `;
+          section.appendChild(playlistCard);
+
+          playlistCard.addEventListener('click', function (event) {
+            let LikeButton = document.querySelector(".playlist-card button.LikePlaylist-Button");
+            let PlayButton = document.querySelector(".playlist-card button.Play");
+            let playlistLink = document.querySelector(".playlist-card a");
+            console.log(event.target);
+            
+            if(event.target == LikeButton){
+                console.log('like+1');
+                
+
+            }
+
+            if(event.target !== LikeButton && event.target !== PlayButton){
+                location.href = `/playlists/${playlist.id}`;
+                console.log('link funkar');
+
+            }
+        })
+
+      }
+  }
+
+  renderSongs(songs, position, add) {
+
+      if (!position) return;
+
+      position.innerHTML = "";
+
+      for (let song of songs) {
+
+          let li = document.createElement("li");
+
+          if (add) {
+            li.innerHTML = `
+                ${song.name} - ${song.artist}
+                <button type="button" class="AddSongButton">Add song</button>
+            `;
+          } else {
+          li.innerHTML = `
+              ${song.name} - ${song.artist}
+              <button class="Play StopPlaying"></button>
+          `;
+          }
+
+          position.appendChild(li);
+      }
+  }
+
+
+  async dropDownsPlaylist (playlistElement) {
+    let playlists = await api.getRequest("/api/playlists");
+
+      for (let playlist of playlists) {
+          const option = document.createElement("option");
+          option.value = playlist.id;
+          option.textContent = playlist.name;
+          playlistElement.append(option);
+      }
+  }
+  
+  async dropDownsTags(tagElement) {
+      let tags = await api.getRequest("/api/tags");
+   
+      for (let tag of tags) {
+          const option = document.createElement("option");
+          option.value = tag;
+          option.textContent = tag;
+          tagElement.append(option);
+      }
+  }
+
+  async showProfile() {
+    const toProfile = document.querySelector("#toPersonal");
+    if (!toProfile) return; //undvika andra sidor att få error 
+
+    let user = await api.getRequest("/api/profile/info");
+    console.log(user);
+
+    if (!user) return; //om server inte gav en user så stoppas funktionen och ändrar inte länken
+
+    // Om user finns så ändrar länken till profile/username
+    toProfile.href = `/profile/${user.username}`;
+  }
+}
+
+
+
+
+
+    if (!position) return;
+    position.innerHTML = "";
+    
+    let users = await api.getRequest("/api/users");
+
+    for (let playlist of playlists) {
+        let a = document.createElement("a");
+        a.href = `/playlists/${playlist.id}`;
+        a.classList.add('clear-link');
+
+        let ownerName;
+        for (let user of users) {
+            if (user.id == playlist.ownerId) {
+                ownerName = user.username;
+            }
+        }
+
+        a.innerHTML = `
+        <div class="playlist-card">
+          <h1 class="title-UI">${playlist.name} </h1>
+          <p>${ownerName}</p>
+          <div class="playlist-actions">
+            <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
+            <button class="Play StopPlaying"></button>
+          </div>
+          <p class="system-UI-accent">#${playlist.tags}</p>
+          <img src="${playlist.imgUrl}">
+        </div>
+        `;
+        
+        position.appendChild(a);
+      }
+
+   

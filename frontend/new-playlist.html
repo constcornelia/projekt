@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>YourSound</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+
+<body>
+<!--sektionen med osynliga elementer som ska visas efter klick-->
+  <section class="hidden-elements">
+    <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
+    <div id="AlertDeleteSong" class="edit-elements pop-up">
+      <h1 class="title">the song</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p class="text">Delete from playlist?</p>
+        <div>
+          <button id="UndoDeleteSong" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
+          <button id="ConfirmDeleteSong" type="submit" class="ActionButton-light system-UI-accent">OK</button>
+        </div>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när låt aderas
+    listener på add song knappen-->
+    <div id="AlertAddSong" class="edit-elements pop-up">
+      <h1 class="title">song name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p>is added to your playlist</p>
+        <div>
+          <button id="UndoAddSong" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmAddSong" type="button" class="ActionButton-light">OK</button>
+        </div>
+      </div>
+    </div>
+    <!--osynlig nu ska visas när liked-->
+    <div id="AlertLikePlaylist" class="edit-elements pop-up">
+      <h1 class="title">playlist name</h1>
+      <div class="pop-up-action system-UI-accent">
+        <p> is added to your liked playlist</p>
+        <div>
+          <button id="UndoLike" type="button" class="ActionButton-light">Undo</button>
+          <button id="ConfirmLike" type="button" class="ActionButton-light">OK</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+  <nav>
+    <a href="/" class="home clear-link">
+      <img src="/assets/images/icons/logo.svg">
+        <div>YourSound</div>
+    </a>
+    <div class="space"></div>
+  </nav>
+
+  <section id="NewPlaylist" >
+    <div id="CreatePlaylist" class="edit-elements">
+      <h1 class="title">Create new playlist</h1>
+      <form id="CreatePlaylistForm" class="system-UI">
+    
+        <div id="PlaylistDataInputs">
+          <div class="form-input-area">
+            <label for="add-cover" class="sub-title">Playlist cover:</label>
+            <input type="file" id="add-cover" name="add-cover" >
+          </div>
+          <div class="form-input-area">
+            <label for="playlist-name" class="sub-title">Playlist name:</label>
+            <input type="text" id="playlist-name" name="playlist-name">
+          </div>
+          <div class="form-input-area">
+            <label for="playlist-description" class="sub-title">Playlist description:</label>
+            <textarea id="playlist-description" name="playlist-description"></textarea>
+          </div>
+          <div class="form-input-area">
+            <label for="playlist-tag" class="sub-title">Playlist tag:</label>
+            <input type="text" id="playlist-tag" name="playlist-tag">
+          </div>
+        </div>
+
+
+        <div class="AddingSongs">
+          <div class="songs">
+            <label>Added songs</label>
+            <ul class="system-UI form-input-area">
+              <li>no songs yet</li>
+               <!--mening att genom search form på höger sidan hit ska läägs till låter 
+               annars jag kan inte komma på hur ni kan söka låt i samma form-->
+            </ul>
+          </div>
+
+          <div class="SearchSongElement">
+            <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song">
+            <button class="ButtonSearchSong" type="button"></button>
+          </div>
+            <div id="SearchResultSongs">
+              <ul>
+              <!--alla li ska aderas genom search
+              sen varenda låt kan aderas med knapp vid låtnamn-->
+              <!-- <li>song<button type="button" class="AddSongButton">add song</button></li> -->
+              </ul>
+            </div>
+        </div>
+        <div class="edit-actions">
+          <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel</button>
+          <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Create playlist</button>
+          <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
+        </div>
+
+      </form>
+    </div>
+
+
+
+</section>
+
+
+
+  <footer>
+    <div>
+      <p class="sub-title">Digital design och utveckling III</p>
+      <p class="sub-title">Projekt, Grupp 5</p>
+      <p class="sub-title">&copy; 2026</p>
+    </div>
+    <div>
+      <p class="sub-title">Developers</p>
+      <p class="text">Cornelia Rönnemyr Papic</p>
+      <p class="text">Dilara Kinali</p>
+      <p class="text">Elena Khusanova</p>
+    </div>
+  </footer>
+
+  <script src="/assets/js/api.js"></script>
+  <script src="/assets/js/ui.js"></script>
+  <script src="/assets/js/newPlaylist.js"></script>
+</body>
+
+</html>
