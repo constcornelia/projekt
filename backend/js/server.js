@@ -1,6 +1,6 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-import { checkSession, checkLogin, createRandomString, createUser, getUser, getUserByUsername } from "./login.js";
+import { checkSession, checkLogin, checkSignup, getActiveUser } from "./login.js";
 import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
@@ -16,14 +16,14 @@ function handleResponse(body, status, headers) {
     });
 }
 
-function showPage(request, path) {
-    const cookie = request.headers.get("cookie");
-    let session = checkSession(cookie, cookies);
-    if (session) {
-        return serveFile(request, path);
-    }
-    return handleResponse("Unauthorized", 401, null);
-}
+// function showPage(request, path) {
+//     const cookie = request.headers.get("cookie");
+//     let session = checkSession(cookie, cookies);
+//     if (session) {
+//         return serveFile(request, path);
+//     }
+//     return handleResponse("Unauthorized", 401, null);
+// }
 
 async function handler(request) {
     let url = new URL(request.url);
@@ -31,6 +31,9 @@ async function handler(request) {
     let users = userData.users;
     let playlists = data.playlists;
     let songs = data.songs;
+
+    let headers = { "Content-Type": "application/json" };
+    if (request.method == "GET") headers = { "Accept": "application/json" };
     
     // Shows pages that doesn't require authorization
     if (request.method == "GET") {
