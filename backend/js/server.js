@@ -1,7 +1,8 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-import { checkSession, checkLogin, checkSignup, getActiveUser } from "./login.js";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
+
+import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -98,6 +99,7 @@ async function handler(request) {
                 }
                 return handleResponse(null, 303, headers);
             }
+
             let body = JSON.stringify({ error: "Invalid login" })
             return handleResponse(body, 401, null);
         }
@@ -143,7 +145,7 @@ async function handler(request) {
     // Search for a playlist by name and description
     if (url.pathname == "/api/playlists/search" && request.method == "GET") {
         let phrase = url.searchParams.get("q");
-        if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
+        if (phrase) playlists = getPlaylistsBySearch(playlists, phrase);
 
         if (!playlists) {
             let body = JSON.stringify({ error: "Not Found" });
@@ -154,6 +156,14 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
+    if (url.pathname == "/api/users" && request.method == "GET") {
+        users = JSON.stringify(users);
+        return new Response(users, {
+            status: 200,
+            headers: headers
+        });
+    }
+
     if (url.pathname == "/api/profile/info") {
         if (request.method == "GET") {
             const activeCookie = request.headers.get("cookie");
@@ -161,7 +171,7 @@ async function handler(request) {
 
             // Felhantera?
 
-            let body = JSON.stringify(body);
+            let body = JSON.stringify(user);
             return handleResponse(body, 303, headers);
         }
 
@@ -186,76 +196,44 @@ async function handler(request) {
     }
 
 
+    let playlistPage = new URLPattern({ pathname: "/playlists/:id" });
+    if (playlistPage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
+
+    let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
+    if (playlistRoute.test(request.url)) {
+        let match = playlistRoute.exec(request.url);
+        let id = match.pathname.groups.id;
+
+        // Felhantera
+
+        let playlist = getPlaylistById(playlists, id);
+        let body = JSON.stringify(playlist);
+        return handleResponse(body, 200, headers); 
+    }
+
+    let profilePage = new URLPattern({ pathname: "/profile/:username" });
+    if (profilePage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
+
+    let profileRoute = new URLPattern({ pathname: "/api/profile/:username" });
+    if (profileRoute.test(request.url)) {
+        let match = profileRoute.exec(request.url);
+        let username = match.pathname.groups.username;
+
+        // Felhantera
+
+        let user = getUserByUsername(users, username);
+        let body = JSON.stringify(user);
+        return handleResponse(body, 200, headers); 
+    }
+
+
+
 
 
 
 
 
 //     if (request.method == "GET") {
-//         let headers = { "Content-Type": "application/json" };
-//         // Hämtar cookie från requesten
-//         // Exempel: "session_id=abc123"
-//         let cookie = request.headers.get("cookie");
-//         // Sparar den inloggade användaren
-//         let currentUser = null;
-//         // Kör bara om en cookie finns
-//         if (cookie) {
-//             // Delar upp cookie-strängen vid "="
-//             // Exempel:
-//             // ["session_id", "abc123"]
-//             let parts = cookie.split("=");
-//             // Hämtar själva cookie-id:t
-//             // Exempel:
-//             // "abc123"
-//             let cookieId = parts[1];
-//             // Loopar igenom alla sparade sessions-cookies
-//             for (let i = 0; i < cookies.length; i++) {
-//                 // Om cookie-id:t matchar en sparad cookie
-//                 if (cookies[i].cookie == cookieId) {
-//                     // Sparar användaren som är inloggad
-//                     // Exempel:
-//                     // {
-//                     //   username: "cornelia",
-//                     //   cookie: "abc123"
-//                     // }
-//                     currentUser = cookies[i];
-//                 }
-//             }
-//         }
-
-//         if (url.pathname == "/api/playlists") {
-//             let tag = url.searchParams.get("tag");
-//             if (tag) playlists = filterPlaylistsByTag(playlists, tag);
-
-//             let sort = url.searchParams.get("sort");
-//             if (sort === "likes") playlists = sortPlaylistsByLikes(playlists);
-            
-//             let body = JSON.stringify(playlists);
-//             return handleResponse(body, 200, headers);
-//         }
-
-//         // Get all users OBS: TROR INTE VI BEHÖVER DEN HÄR
-//         if (url.pathname == "/api/users") {
-//             users = JSON.stringify(users);
-//             return new Response(users, {
-//                 status: 200,
-//                 headers: headers
-//             });
-//         }
-
-//         if (url.pathname == "/api/songs") {
-//             let body = JSON.stringify(songs);
-//             return handleResponse(body, 200, headers);
-//         }
-
-//         // Search for a playlist by name and description
-//         if (url.pathname == "/api/playlists/search") {
-//             let phrase = url.searchParams.get("q");
-//             if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
-            
-//             let body = JSON.stringify(playlists);
-//             return handleResponse(body, 200, headers);
-//         }
 
 //         // Search for a song by artist or title to add to a playlist
 //         if (url.pathname == "/api/songs/search") {
@@ -266,24 +244,7 @@ async function handler(request) {
 //             return handleResponse(body, 200, headers);
 //         }
 
-//         // Get all tags (for "select genre")
-//         if (url.pathname == "/api/tags") {
-//             let tags = getTags(playlists);
-            
-//             let body = JSON.stringify(tags);
-//             return handleResponse(body, 200, headers);
-//         }
 
-//         // const cookie = request.headers.get("cookie");
-//         // let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
-//         // if (url.pathname == "/api/profile/info") {
-//         //     let body = JSON.stringify(user);
-//         //     return new Response(body, {
-//         //         status: 200,
-//         //         headers: headers
-//         //     });
-//         //     // Get users name + pfp
-//         // }
 
 //         if (url.pathname == "/api/profile/info") {
 //             // Exempel: "session_id=abc123"
@@ -393,11 +354,6 @@ async function handler(request) {
 //             });
 //         }
 
-//         // Get active user
-//             // Get owned playlists
-//             // Get liked playlists
-
-//         // Get playlist by id
 
 //         let playlistPageRoute = new URLPattern({ pathname: "/playlists/:id" });
 //         if (playlistPageRoute.test(request.url)) {
