@@ -1,38 +1,15 @@
-export function getOwnedPlaylists(playlists, user) {
-    let ownedPlaylists = [];
-
+export function getTags(playlists) {
+    const tags = [];
     for (let playlist of playlists) {
-        if(playlist.ownerId == user.id) {
-            ownedPlaylists.push(playlist)
-        }
-    }
-    return ownedPlaylists;
-}
-
-export function getLikedPlaylists(playlists, user) {
-    let likedPlaylists = [];
-
-    for (let playlist of playlists) {
-        // Kollar om användarens username finns i likes arrayen
-        if(playlist.likes.includes(user.username)) {
-            likedPlaylists.push(playlist);
-        }
-    }
-    return likedPlaylists;
-}
-
-export function getContributedPlaylists(playlists, user) {
-    let contributedPlaylists = [];
-
-    for (let playlist of playlists) {
-        for (let song of playlist.songs) {
-            if (song.editorId == user.id) {
-                contributedPlaylists.push(playlist);
-                break;
+        for (let tag of playlist.tags) {
+            if (!tags.includes(tag)) {
+                tags.push(tag);
+            } else {
+                continue;
             }
         }
     }
-    return contributedPlaylists;
+    return tags;
 }
 
 export function filterPlaylistsByTag(playlists, tag) {
@@ -48,233 +25,282 @@ export function filterPlaylistsByTag(playlists, tag) {
     return playlistsByByTag;
 }
 
-export function getPlaylistBySearch(playlists, query) {
-    let filteredPlaylists = [];
+export function sortPlaylistsByLikes(playlists) {
+    let copy = Array.from(playlists);
 
-    let q = query.toLowerCase();
-
-    for (let playlist of playlists) {
-        if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
-            filteredPlaylists.push(playlist);
-        }
+    function compare(a, b) {
+        if (a.likes.length < b.likes.length) return 1;
+        else if (a.likes.length > b.likes.length) return -1;
+        else return 0;
     }
-    return filteredPlaylists;
+    copy.sort(compare);
+    return copy;
 }
 
-// Hämtar en specifik spellista och alla låtar som tillhör den
-export function getPlaylistById(playlists, songs, id) {
-    // Sparar spellistan som matchar id:t
-    let foundPlaylist = null;
+export function getPlaylistsBySearch(playlists, phrase) {
+    let playlistsBySearch = [];
+
+    for (let playlist of playlists) {            
+        phrase.toLowerCase();
+        let name = playlist.name.toLowerCase();
+        let description = playlist.description.toLowerCase();
+        
+        if (name.includes(phrase) || description.includes(phrase)) {
+            playlistsBySearch.push(playlist);
+        }
+    }
+    return playlistsBySearch;
+}
+
+export function getPlaylistById(playlists, id) {
     for (let playlist of playlists) {
         if (playlist.id == id) {
-            foundPlaylist = playlist;
+            return playlist;
         }
     }
-    if (!foundPlaylist) return null;
-    // Array som ska innehålla alla fullständiga låt-objekt
-    let playlistSongs = [];
-    for (let song of songs) {
-        for (let playlistSong of foundPlaylist.songs) {
-            // Om låtens id matchar songId i spellistan
-            if (song.id === playlistSong.songId) {
-                // Lägg till hela låt-objektet i arrayen
-                playlistSongs.push(song);
-            }
-        }
-    }
-    return {
-        playlist: foundPlaylist,
-        songs: playlistSongs
-    };
+    return null;
 }
 
-// export function getPlaylistById(playlists, songs, id) {
-//     let playlist;
+
+// export function getOwnedPlaylists(playlists, user) {
+//     let ownedPlaylists = [];
+
 //     for (let playlist of playlists) {
-//         if (playlist.id == id) {
-//             playlist = playlist;
+//         if(playlist.ownerId == user.id) {
+//             ownedPlaylists.push(playlist)
 //         }
 //     }
+//     return ownedPlaylists;
+// }
 
+// export function getLikedPlaylists(playlists, user) {
+//     let likedPlaylists = [];
+
+//     for (let playlist of playlists) {
+//         // Kollar om användarens username finns i likes arrayen
+//         if(playlist.likes.includes(user.username)) {
+//             likedPlaylists.push(playlist);
+//         }
+//     }
+//     return likedPlaylists;
+// }
+
+// export function getContributedPlaylists(playlists, user) {
+//     let contributedPlaylists = [];
+
+//     for (let playlist of playlists) {
+//         for (let song of playlist.songs) {
+//             if (song.editorId == user.id) {
+//                 contributedPlaylists.push(playlist);
+//                 break;
+//             }
+//         }
+//     }
+//     return contributedPlaylists;
+// }
+
+
+
+// export function getPlaylistBySearch(playlists, query) {
+//     let filteredPlaylists = [];
+
+//     let q = query.toLowerCase();
+
+//     for (let playlist of playlists) {
+//         if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
+//             filteredPlaylists.push(playlist);
+//         }
+//     }
+//     return filteredPlaylists;
+// }
+
+// // Hämtar en specifik spellista och alla låtar som tillhör den
+// export function getPlaylistById(playlists, songs, id) {
+//     // Sparar spellistan som matchar id:t
+//     let foundPlaylist = null;
+//     for (let playlist of playlists) {
+//         if (playlist.id == id) {
+//             foundPlaylist = playlist;
+//         }
+//     }
+//     if (!foundPlaylist) return null;
+//     // Array som ska innehålla alla fullständiga låt-objekt
 //     let playlistSongs = [];
 //     for (let song of songs) {
-//         for (let playlistSong of playlist.songs) {
-//             if (song.id == playlistSong.songId) {
+//         for (let playlistSong of foundPlaylist.songs) {
+//             // Om låtens id matchar songId i spellistan
+//             if (song.id === playlistSong.songId) {
+//                 // Lägg till hela låt-objektet i arrayen
 //                 playlistSongs.push(song);
 //             }
 //         }
 //     }
-
-//     let playlistData = { playlist: playlist, songs: playlistSongs};
-//     return playlistData;
+//     return {
+//         playlist: foundPlaylist,
+//         songs: playlistSongs
+//     };
 // }
 
-export function getTags(playlists) {
-    const tags = [];
-    for (let playlist of playlists) {
-        for (let tag of playlist.tags) {
-            if (!tags.includes(tag)) {
-                tags.push(tag);
-            } else {
-                continue;
-            }
-        }
-    }
-    return tags;
-}
+// // export function getPlaylistById(playlists, songs, id) {
+// //     let playlist;
+// //     for (let playlist of playlists) {
+// //         if (playlist.id == id) {
+// //             playlist = playlist;
+// //         }
+// //     }
 
-export function deletePlaylistById(database, playlistId) {
-    // Ny array som ska innehålla alla spellistor
-    // förutom den som ska tas bort
-    let updatedPlaylists = [];
+// //     let playlistSongs = [];
+// //     for (let song of songs) {
+// //         for (let playlistSong of playlist.songs) {
+// //             if (song.id == playlistSong.songId) {
+// //                 playlistSongs.push(song);
+// //             }
+// //         }
+// //     }
 
-    let found = false;
-    for (let playlist of database.playlists) {
-        if (playlist.id === playlistId) {
-            found = true;
-        } else {
-            // Alla andra spellistor sparas kvar
-            updatedPlaylists.push(playlist);
-        }
-    } 
-    if (!found) return false;
+// //     let playlistData = { playlist: playlist, songs: playlistSongs};
+// //     return playlistData;
+// // }
 
-    // Ersätter gamla playlist-arrayen med den uppdaterade
-    database.playlists = updatedPlaylists;
-    Deno.writeTextFileSync("database.json", JSON.stringify(database));
-    // Returnerar true om spellistan togs bort
-    return true;
-}
 
-// export function deleteSongFromPlaylist (playlists, playlistId, songId) {
-//     for (let playlist of playlists) {
+// export function deletePlaylistById(database, playlistId) {
+//     // Ny array som ska innehålla alla spellistor
+//     // förutom den som ska tas bort
+//     let updatedPlaylists = [];
 
-//         if (playlist.id === playlistId) {
-//             let updatedSongs = [];
-
-//             for (let song of playlist.songs) {
-
-//                 if (song.songId !== songId) {
-//                     updatedSongs.push(song);
-//                 }
-
-//             }
-//             playlist.songs = updatedSongs;
-//         }
-//     }
-//     return playlists;
-// }
-
-// export function editPlaylistById(database, playlistId, body) {
 //     let found = false;
-
 //     for (let playlist of database.playlists) {
 //         if (playlist.id === playlistId) {
-
 //             found = true;
-
-//             if (body.name) {
-//                 playlist.name = body.name;
-//             }
-
-//             if (body.tags) {
-//                 playlist.tags = body.tags;
-//             }
-
-//             if (body.songs) {
-//                 playlist.songs = body.songs;
-//             }
-
-//             if (body.imgUrl) {
-//                 playlist.imgUrl = body.imgUrl;
-//             }
-
-//             if (body.description) {
-//                 playlist.description = body.description;
-//             }
+//         } else {
+//             // Alla andra spellistor sparas kvar
+//             updatedPlaylists.push(playlist);
 //         }
-//     }
+//     } 
+//     if (!found) return false;
 
+//     // Ersätter gamla playlist-arrayen med den uppdaterade
+//     database.playlists = updatedPlaylists;
+//     Deno.writeTextFileSync("database.json", JSON.stringify(database));
+//     // Returnerar true om spellistan togs bort
 //     return true;
 // }
 
-export function createPlaylistId (database) {
-    let highestId = 0;
+// // export function deleteSongFromPlaylist (playlists, playlistId, songId) {
+// //     for (let playlist of playlists) {
 
-    for (let playlist of database.playlists) {
-        let id = parseInt(playlist.id.split("-")[1]);
+// //         if (playlist.id === playlistId) {
+// //             let updatedSongs = [];
 
-        if (id > highestId) {
-            highestId = id;
-        }
-    }
-    return `p-${highestId + 1}`;
-}
+// //             for (let song of playlist.songs) {
 
-export function createPlaylistById (database, body) {
-    let playlists = database.playlists;
+// //                 if (song.songId !== songId) {
+// //                     updatedSongs.push(song);
+// //                 }
 
-    let newId = createPlaylistId(database);
+// //             }
+// //             playlist.songs = updatedSongs;
+// //         }
+// //     }
+// //     return playlists;
+// // }
 
-    let newPlaylist = {
-        id: newId,
-        // ownerId: "u-1", måste fixa getUser??
-        name: body.name,
-        description: body.description,
-        imgUrl: body.imgUrl,
-        tags: body.tags,
-        songs: body.songs
-    };
-    playlists.push(newPlaylist);
+// // export function editPlaylistById(database, playlistId, body) {
+// //     let found = false;
 
-    Deno.writeTextFileSync("database.json", JSON.stringify(database));
+// //     for (let playlist of database.playlists) {
+// //         if (playlist.id === playlistId) {
 
-    return newPlaylist;
-}
+// //             found = true;
 
-export function sortPlaylistsByLikes(playlists) {
-    let sortedPlaylists = [];
+// //             if (body.name) {
+// //                 playlist.name = body.name;
+// //             }
 
-    for (let playlist of playlists) {
-        sortedPlaylists.push(playlist);
-    }
+// //             if (body.tags) {
+// //                 playlist.tags = body.tags;
+// //             }
 
-    sortedPlaylists.sort(function (a,b) {
-        return b.likes.length - a.likes.length;
-    });
+// //             if (body.songs) {
+// //                 playlist.songs = body.songs;
+// //             }
 
-    return sortedPlaylists;
-}
+// //             if (body.imgUrl) {
+// //                 playlist.imgUrl = body.imgUrl;
+// //             }
 
-export function removeSongFromPlaylist() {}
+// //             if (body.description) {
+// //                 playlist.description = body.description;
+// //             }
+// //         }
+// //     }
 
-function getNewPlaylistId(playlists) {
-    let highest = 0;
+// //     return true;
+// // }
 
-    for (let playlist of playlists) {
-        let idNr = playlist.id.substring(2);
-        idNr = parseInt(idNr);
+// export function createPlaylistId (database) {
+//     let highestId = 0;
 
-        if (highest < idNr) {
-            highest = idNr;
-        }
-    }
-    let newNr = highest + 1;
-    return "p-" + newNr;
-}
+//     for (let playlist of database.playlists) {
+//         let id = parseInt(playlist.id.split("-")[1]);
+
+//         if (id > highestId) {
+//             highestId = id;
+//         }
+//     }
+//     return `p-${highestId + 1}`;
+// }
+
+// export function createPlaylistById (database, body) {
+//     let playlists = database.playlists;
+
+//     let newId = createPlaylistId(database);
+
+//     let newPlaylist = {
+//         id: newId,
+//         // ownerId: "u-1", måste fixa getUser??
+//         name: body.name,
+//         description: body.description,
+//         imgUrl: body.imgUrl,
+//         tags: body.tags,
+//         songs: body.songs
+//     };
+//     playlists.push(newPlaylist);
+
+//     Deno.writeTextFileSync("database.json", JSON.stringify(database));
+
+//     return newPlaylist;
+// }
 
 
-export function createPlaylist(playlists, file, title, description) {
-    let id = getNewPlaylistId(playlists);
 
-    let newPlaylist = {
-        id: id,
-        ownerId: "",
-        name: title,
-        description: description,
-        imgUrl: file,
-        likes: [],
-        tags: "",
-        songs: []
-    };
-}
+// function getNewPlaylistId(playlists) {
+//     let highest = 0;
+
+//     for (let playlist of playlists) {
+//         let idNr = playlist.id.substring(2);
+//         idNr = parseInt(idNr);
+
+//         if (highest < idNr) {
+//             highest = idNr;
+//         }
+//     }
+//     let newNr = highest + 1;
+//     return "p-" + newNr;
+// }
+
+
+// export function createPlaylist(playlists, file, title, description) {
+//     let id = getNewPlaylistId(playlists);
+
+//     let newPlaylist = {
+//         id: id,
+//         ownerId: "",
+//         name: title,
+//         description: description,
+//         imgUrl: file,
+//         likes: [],
+//         tags: "",
+//         songs: []
+//     };
+// }

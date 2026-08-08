@@ -1,7 +1,8 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-import { checkSession, checkLogin, checkSignup, getActiveUser } from "./login.js";
-import { filterPlaylistsByTag, getPlaylistBySearch, getPlaylistById, getTags, deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, sortPlaylistsByLikes, getContributedPlaylists } from "./playlists.js";
+
+import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -98,6 +99,7 @@ async function handler(request) {
                 }
                 return handleResponse(null, 303, headers);
             }
+
             let body = JSON.stringify({ error: "Invalid login" })
             return handleResponse(body, 401, null);
         }
@@ -143,7 +145,7 @@ async function handler(request) {
     // Search for a playlist by name and description
     if (url.pathname == "/api/playlists/search" && request.method == "GET") {
         let phrase = url.searchParams.get("q");
-        if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
+        if (phrase) playlists = getPlaylistsBySearch(playlists, phrase);
 
         if (!playlists) {
             let body = JSON.stringify({ error: "Not Found" });
@@ -152,6 +154,14 @@ async function handler(request) {
             
         let body = JSON.stringify(playlists);
         return handleResponse(body, 200, headers);
+    }
+
+    if (url.pathname == "/api/users" && request.method == "GET") {
+        users = JSON.stringify(users);
+        return new Response(users, {
+            status: 200,
+            headers: headers
+        });
     }
 
     if (url.pathname == "/api/profile/info") {
@@ -187,6 +197,38 @@ async function handler(request) {
         let body = JSON.stringify(songs);
         return handleResponse(body, 200, headers);
     }
+
+
+    let playlistPage = new URLPattern({ pathname: "/playlists/:id" });
+    if (playlistPage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
+
+    let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
+    if (playlistRoute.test(request.url)) {
+        let match = playlistRoute.exec(request.url);
+        let id = match.pathname.groups.id;
+
+        // Felhantera
+
+        let playlist = getPlaylistById(playlists, id);
+        let body = JSON.stringify(playlist);
+        return handleResponse(body, 200, headers); 
+    }
+
+    let profilePage = new URLPattern({ pathname: "/profile/:username" });
+    if (profilePage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
+
+    let profileRoute = new URLPattern({ pathname: "/api/profile/:username" });
+    if (profileRoute.test(request.url)) {
+        let match = profileRoute.exec(request.url);
+        let username = match.pathname.groups.username;
+
+        // Felhantera
+
+        let user = getUserByUsername(users, username);
+        let body = JSON.stringify(user);
+        return handleResponse(body, 200, headers); 
+    }
+
 
 
 

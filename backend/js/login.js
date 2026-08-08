@@ -49,6 +49,14 @@ export function getActiveUser(activeCookie, cookies, users) {
     return activeUser;
 }
 
+export function getUserByUsername(users, username) {
+    for (let user of users) {
+        if (user.usename == username) {
+            return user;
+        }
+    }
+    return null;
+}
 
 
 // /* 
