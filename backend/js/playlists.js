@@ -11,54 +11,54 @@ export function getTags(playlists) {
     return tags;
 }
 
-export function filterPlaylistsByTag(playlists, tag) {
-    let playlistsByByTag = [];
+// export function filterPlaylistsByTag(playlists, tag) {
+//     let playlistsByByTag = [];
 
-    for (let playlist of playlists) {
-        for (let playlistTag of playlist.tags) {
-            if (playlistTag == tag) {
-                playlistsByByTag.push(playlist);
-            }
-        }
-    }
-    return playlistsByByTag;
-}
+//     for (let playlist of playlists) {
+//         for (let playlistTag of playlist.tags) {
+//             if (playlistTag == tag) {
+//                 playlistsByByTag.push(playlist);
+//             }
+//         }
+//     }
+//     return playlistsByByTag;
+// }
 
-export function sortPlaylistsByLikes(playlists) {
-    let copy = Array.from(playlists);
-    let sortedPlaylists = [];
+// export function sortPlaylistsByLikes(playlists) {
+//     let copy = Array.from(playlists);
+//     let sortedPlaylists = [];
 
-    function compare(a, b) {
-        if (a.likes.length < b.likes.length) return 1;
-        else if (a.likes.length > b.likes.length) return -1;
-        else return 0;
-    }
-    copy.sort(compare);
-    return copy;
+//     function compare(a, b) {
+//         if (a.likes.length < b.likes.length) return 1;
+//         else if (a.likes.length > b.likes.length) return -1;
+//         else return 0;
+//     }
+//     copy.sort(compare);
+//     return copy;
 
-    // for (let playlist of playlists) {
-    //     sortedPlaylists.push(playlist);
-    // }
+//     // for (let playlist of playlists) {
+//     //     sortedPlaylists.push(playlist);
+//     // }
 
-    // sortedPlaylists.sort(function (a,b) {
-    //     return b.likes.length - a.likes.length;
-    // });
+//     // sortedPlaylists.sort(function (a,b) {
+//     //     return b.likes.length - a.likes.length;
+//     // });
 
-    // return sortedPlaylists;
-}
+//     // return sortedPlaylists;
+// }
 
-export function getPlaylistBySearch(playlists, query) {
-    let filteredPlaylists = [];
+// export function getPlaylistBySearch(playlists, query) {
+//     let filteredPlaylists = [];
 
-    let q = query.toLowerCase();
+//     let q = query.toLowerCase();
 
-    for (let playlist of playlists) {
-        if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
-            filteredPlaylists.push(playlist);
-        }
-    }
-    return filteredPlaylists;
-}
+//     for (let playlist of playlists) {
+//         if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
+//             filteredPlaylists.push(playlist);
+//         }
+//     }
+//     return filteredPlaylists;
+// }
 
 export function getOwnedPlaylists(playlists, user) {
     let ownedPlaylists = [];
