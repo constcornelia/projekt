@@ -1,14 +1,14 @@
 const api = new API();
 const ui = new UI();
 
-// Exempel:
-// [
-//   {
-//     songId: "s-17",
-//     editorId: "u-1"
-//   }
-// ]
+let tagSelect = document.querySelector("#playlist-tag");
+
+if (tagSelect) {
+    ui.dropDownsTags(tagSelect);
+}
+
 let addedSongs = [];
+let selectedTags = [];
 
 const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
 createPlaylistForm.addEventListener("submit", async function (event) {
@@ -33,6 +33,21 @@ createPlaylistForm.addEventListener("submit", async function (event) {
     // JSON.stringify gör arrayen till text så att den kan skickas
     formData.append("songs", JSON.stringify(addedSongs));
 
+
+    // Gör om alla valda tags till en sträng
+    let tagString = "";
+    for (let tag of selectedTags) {
+        if (tagString != "") {
+            tagString += ",";
+        }
+        tagString += tag;
+    }
+    // Skickar alla tags
+    formData.append("tag", tagString);
+    // Lägger till omslagsbild
+    formData.append("cover", coverInput.files[0]);
+    // Lägger till alla sparade låtar
+    formData.append("songs", JSON.stringify(addedSongs));
     // Skickar spellistan till servern
     await fetch("/api/playlists", {
         method: "POST",
@@ -81,3 +96,15 @@ searchInput.addEventListener("click", async function (event) {
     ui.renderSongs(songs, position, true);
 });
 
+const addTagButton = document.querySelector("#AddTagButton");
+if (addTagButton) {
+    addTagButton.addEventListener("click", function () {
+        let selectedTag = tagSelect.value;
+        if (selectedTag == "") return;
+        selectedTags.push(selectedTag);
+        let list = document.querySelector("#SelectedTags");
+        let li = document.createElement("li");
+        li.textContent = selectedTag;
+        list.append(li);
+    });
+}

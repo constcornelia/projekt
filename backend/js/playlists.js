@@ -97,6 +97,34 @@ export function getContributedPlaylists(playlists, user) {
     return contributedPlaylists;
 }
 
+export function filterPlaylistsByTag(playlists, tag) {
+    let filteredPlaylists = [];
+    for (let playlist of playlists) {
+        for (let playlistTag of playlist.tags) {
+            let tags = playlistTag.split(",");
+            for (let oneTag of tags) {
+                if (oneTag == tag) {
+                    filteredPlaylists.push(playlist);
+                }
+            }
+        }
+    }
+    return filteredPlaylists;
+}
+
+export function getPlaylistBySearch(playlists, query) {
+    let filteredPlaylists = [];
+
+    let q = query.toLowerCase();
+
+    for (let playlist of playlists) {
+        if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
+            filteredPlaylists.push(playlist);
+        }
+    }
+    return filteredPlaylists;
+}
+
 // Hämtar en specifik spellista och alla låtar som tillhör den
 export function getPlaylistById(playlists, songs, id) {
     // Sparar spellistan som matchar id:t
@@ -147,46 +175,28 @@ export function getPlaylistById(playlists, songs, id) {
 
 
 export function deletePlaylistById(database, playlistId) {
-    // Ny array som ska innehålla alla spellistor
-    // förutom den som ska tas bort
-    let updatedPlaylists = [];
-
-    let found = false;
-    for (let playlist of database.playlists) {
-        if (playlist.id === playlistId) {
-            found = true;
-        } else {
-            // Alla andra spellistor sparas kvar
-            updatedPlaylists.push(playlist);
+    for (let i = 0; i < database.playlists.length; i++) {
+        if (database.playlists[i].id == playlistId) {
+            database.playlists.splice(i, 1);
+            return true;
         }
-    } 
-    if (!found) return false;
-
-    // Ersätter gamla playlist-arrayen med den uppdaterade
-    database.playlists = updatedPlaylists;
-    Deno.writeTextFileSync("database.json", JSON.stringify(database));
-    // Returnerar true om spellistan togs bort
-    return true;
+    }
+    return false;
 }
 
-// export function deleteSongFromPlaylist (playlists, playlistId, songId) {
-//     for (let playlist of playlists) {
-
-//         if (playlist.id === playlistId) {
-//             let updatedSongs = [];
-
-//             for (let song of playlist.songs) {
-
-//                 if (song.songId !== songId) {
-//                     updatedSongs.push(song);
-//                 }
-
-//             }
-//             playlist.songs = updatedSongs;
-//         }
-//     }
-//     return playlists;
-// }
+export function removeSongFromPlaylist(playlists, playlistId, songId) {
+    for (let playlist of playlists) {
+        if (playlist.id == playlistId) {
+            for (let i = 0; i < playlist.songs.length; i++) {
+                if (playlist.songs[i].songId == songId) {
+                    playlist.songs.splice(i, 1);
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
 
 // export function editPlaylistById(database, playlistId, body) {
 //     let found = false;
@@ -223,7 +233,6 @@ export function deletePlaylistById(database, playlistId) {
 
 export function createPlaylistId (database) {
     let highestId = 0;
-
     for (let playlist of database.playlists) {
         let id = parseInt(playlist.id.split("-")[1]);
 
@@ -236,9 +245,7 @@ export function createPlaylistId (database) {
 
 export function createPlaylistById (database, body) {
     let playlists = database.playlists;
-
     let newId = createPlaylistId(database);
-
     let newPlaylist = {
         id: newId,
         // ownerId: "u-1", måste fixa getUser??
@@ -249,17 +256,24 @@ export function createPlaylistById (database, body) {
         songs: body.songs
     };
     playlists.push(newPlaylist);
-
     Deno.writeTextFileSync("database.json", JSON.stringify(database));
-
     return newPlaylist;
 }
 
-export function removeSongFromPlaylist() {}
+export function sortPlaylistsByLikes(playlists) {
+    let sortedPlaylists = [];
+    for (let playlist of playlists) {
+        sortedPlaylists.push(playlist);
+    }
+    sortedPlaylists.sort(function (a,b) {
+        return b.likes.length - a.likes.length;
+    });
+    return sortedPlaylists;
+}
 
-function getNewPlaylistId(playlists) {
+
+export function getNewPlaylistId(playlists) {
     let highest = 0;
-
     for (let playlist of playlists) {
         let idNr = playlist.id.substring(2);
         idNr = parseInt(idNr);
@@ -275,7 +289,6 @@ function getNewPlaylistId(playlists) {
 
 export function createPlaylist(playlists, file, title, description) {
     let id = getNewPlaylistId(playlists);
-
     let newPlaylist = {
         id: id,
         ownerId: "",

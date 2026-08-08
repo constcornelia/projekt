@@ -519,7 +519,7 @@
       "songs": [
         {
           "songId": "s-1",
-          "editorId": "u-1"
+          "editorId": "u-3"
         }
       ]
     },
@@ -629,6 +629,10 @@
         {
           "songId": "s-5",
           "editorId": "u-1"
+        },
+        {
+          "songId": "s-92",
+          "editorId": "u-3"
         }
       ]
     },
@@ -666,27 +670,6 @@
         {
           "songId": "s-17",
           "editorId": "u-1"
-        }
-      ]
-    },
-    {
-      "id": "p-10",
-      "ownerId": "u-3",
-      "name": "XO",
-      "description": "Til we od ",
-      "imgUrl": "/uploads/85a8bec0-705b-4016-b9c3-306905267648.png",
-      "likes": [
-        "dilara"
-      ],
-      "tags": [
-        "chill, sad"
-      ],
-      "songs": [
-        {
-          "songId": "s-6"
-        },
-        {
-          "songId": "s-63"
         }
       ]
     }
