@@ -581,27 +581,87 @@ async function handler(request) {
         // Lägg till låtar i andras och sina egna spellistor
 
     if (request.method == "DELETE") {
+        // delete song from playlist if owner
         let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs/:songId" });
         if (songRoute.test(request.url)) {
             let match = songRoute.exec(request.url);
             let playlistId = match.pathname.groups.id;
             let songId = match.pathname.groups.songId;
-            let removed = removeSongFromPlaylist(
-                playlists,
-                playlistId,
-                songId
-            );
+            let removed = removeSongFromPlaylist(playlists, playlistId, songId);
             if (!removed) {
+                return handleResponse("Song not found", 404, null);
+            }
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            return handleResponse( JSON.stringify({ message: "Song removed" }), 200, { "Content-Type": "application/json" });
+        }
+        // delete playlist if owner
+        let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
+        if (playlistRoute.test(request.url)) {
+            let match = playlistRoute.exec(request.url);
+            let playlistId = match.pathname.groups.id;
+            // kontrollera att användaren är inloggad
+            let cookie = request.headers.get("cookie");
+            if (!cookie) {
+                return handleResponse("Unauthorized", 401, null);
+            }
+            let parts = cookie.split("=");
+            let cookieId = parts[1];
+            // hitta aktuell session
+            let currentUser = null;
+            for (let session of cookies) {
+                if (session.cookie == cookieId) {
+                    currentUser = session;
+                    break;
+                }
+            }
+            if (!currentUser) {
+                return handleResponse("Unauthorized", 401, null);
+            }
+            // hitta användaren i users.json
+            let foundUser = null;
+            for (let user of users) {
+                if (user.username == currentUser.username) {
+                    foundUser = user;
+                    break;
+                }
+            }
+            if (!foundUser) {
+                return handleResponse("Unauthorized", 401, null);
+            }
+            // hitta spellistan
+            let foundPlaylist = null;
+            for (let playlist of playlists) {
+                if (playlist.id == playlistId) {
+                    foundPlaylist = playlist;
+                    break;
+                }
+            }
+            if (!foundPlaylist) {
+                return handleResponse("Playlist not found", 404, null);
+            }
+            // kontrollera att användaren är ägaren
+            if (foundPlaylist.ownerId != foundUser.id) {
                 return handleResponse(
-                    "Song not found",
+                    "You are not the owner of this playlist",
+                    403,
+                    null
+                );
+            }
+            // Radera spellistan
+            let deleted = deletePlaylistById(data, playlistId);
+            if (!deleted) {
+                return handleResponse(
+                    "Playlist could not be deleted",
                     404,
                     null
                 );
             }
-            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
-            return handleResponse(
-                JSON.stringify({ message: "Song removed" }), 200, { "Content-Type": "application/json" }
+            // Spara databasen
+            Deno.writeTextFileSync(
+                "../data/database.json",
+                JSON.stringify(data, null, 2)
             );
+            return handleResponse(null, 204, null);
         }
     }
 

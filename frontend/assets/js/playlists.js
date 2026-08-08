@@ -10,12 +10,10 @@ const ui = new UI();
 
 form.addEventListener("submit", async function onSubmit(event) {
     event.preventDefault();
-
     let tag = tagInput.value;
     let sort = sortInput.value;
     let endpoint = "/api/playlists";
     const params = new URLSearchParams();
-
     // Om användaren valt en specifik tag
     if (tag && tag !== "all") {
         // Lägger till tag i URL
@@ -26,7 +24,6 @@ form.addEventListener("submit", async function onSubmit(event) {
         // Lägger till sortering i URL
         params.append("sort", "likes");
     }
-
     // Startvärde för endpointen
     let finalPoint = endpoint;
     // Om parametrar finns
@@ -34,7 +31,6 @@ form.addEventListener("submit", async function onSubmit(event) {
         // Bygger färdig URL
         finalPoint += "?" + params.toString();
     }
-
     // Hämtar spellistor från servern
     let playlists = await api.getRequest(finalPoint);
     // Position där spellistorna ska visas
@@ -74,7 +70,6 @@ clear.addEventListener("click", async function clearFilters(event) {
     form.reset();
     searchBar.reset();
 });
-
 
 ui.getPlaylists();
 ui.dropDownsTags(tagInput);

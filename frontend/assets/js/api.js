@@ -68,24 +68,19 @@ class API {
        }
    }
 
-   async deleteRequest (endpoint) {
-       try {
-           let request = new Request (url + endpoint, {
-               method: "DELETE",
-               headers: {
-                 "Authorization": "Bearer 67"
-               }
-           });
-           let response = await fetch (request);
-           let data = null;
-           if (response.status !== 204) {
-               data = await response.json();
-               return data;
-           }
-           alert("Successfully deleted!");
-       } catch (error) {
-            // position.innerHTML = "Couldn't delete product " + error;
+    async deleteRequest(endpoint) {
+        try {
+            let request = new Request(url + endpoint, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "Bearer 67"
+                }
+            });
+            let response = await fetch(request);
+            return response;
+        } catch (error) {
             console.log(error);
-       }
-   }
+            return;
+        }
+    }
 }

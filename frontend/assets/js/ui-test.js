@@ -96,15 +96,10 @@ class UI {
   }
 
   renderSongs(songs, position, add) {
-
       if (!position) return;
-
       position.innerHTML = "";
-
       for (let song of songs) {
-
           let li = document.createElement("li");
-
           if (add) {
             li.innerHTML = `
                 ${song.name} - ${song.artist}
@@ -116,7 +111,6 @@ class UI {
               <button class="Play StopPlaying"></button>
           `;
           }
-
           position.appendChild(li);
       }
   }

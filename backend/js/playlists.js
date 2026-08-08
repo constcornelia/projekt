@@ -126,49 +126,13 @@ export function getTags(playlists) {
 }
 
 export function deletePlaylistById(database, playlistId) {
-    let newPlaylists = [];
-    let deleted = false;
-    for (let playlist of database.playlists) {
-        if (playlist.id == playlistId) {
-            deleted = true;
-        }
-        else {
-            newPlaylists.push(playlist);
+    for (let i = 0; i < database.playlists.length; i++) {
+        if (database.playlists[i].id == playlistId) {
+            database.playlists.splice(i, 1);
+            return true;
         }
     }
-    database.playlists = newPlaylists;
-    return deleted;
-    // for (let i = 0; i < playlists.length; i++) {
-    //     if (playlists[i].id == playlistId) {
-    //         playlists.splice(i, 1);
-    //         return true;
-    //     }
-
-    // }
-    // return false;
-
-
-
-    // // Ny array som ska innehålla alla spellistor
-    // // förutom den som ska tas bort
-    // let updatedPlaylists = [];
-
-    // let found = false;
-    // for (let playlist of database.playlists) {
-    //     if (playlist.id === playlistId) {
-    //         found = true;
-    //     } else {
-    //         // Alla andra spellistor sparas kvar
-    //         updatedPlaylists.push(playlist);
-    //     }
-    // } 
-    // if (!found) return false;
-
-    // // Ersätter gamla playlist-arrayen med den uppdaterade
-    // database.playlists = updatedPlaylists;
-    // Deno.writeTextFileSync("database.json", JSON.stringify(database));
-    // // Returnerar true om spellistan togs bort
-    // return true;
+    return false;
 }
 
 export function removeSongFromPlaylist(playlists, playlistId, songId) {
@@ -184,25 +148,6 @@ export function removeSongFromPlaylist(playlists, playlistId, songId) {
     }
     return false;
 }
-
-// export function deleteSongFromPlaylist (playlists, playlistId, songId) {
-//     for (let playlist of playlists) {
-
-//         if (playlist.id === playlistId) {
-//             let updatedSongs = [];
-
-//             for (let song of playlist.songs) {
-
-//                 if (song.songId !== songId) {
-//                     updatedSongs.push(song);
-//                 }
-
-//             }
-//             playlist.songs = updatedSongs;
-//         }
-//     }
-//     return playlists;
-// }
 
 // export function editPlaylistById(database, playlistId, body) {
 //     let found = false;
@@ -278,7 +223,7 @@ export function sortPlaylistsByLikes(playlists) {
 }
 
 
-function getNewPlaylistId(playlists) {
+export function getNewPlaylistId(playlists) {
     let highest = 0;
     for (let playlist of playlists) {
         let idNr = playlist.id.substring(2);
