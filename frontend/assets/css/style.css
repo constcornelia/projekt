@@ -259,7 +259,7 @@ footer {
     color: var(--light-text-color);
 }
 
-.Welcome form input:focus-visible {
+.Welcome form input:focus {
     border: solid 2px var(--main-color-light);
 }
 
@@ -277,6 +277,10 @@ footer {
     outline: none;
     background-color: transparent;
     flex: 1;
+    color: var(--main-color);
+    font-weight: 600;
+    font-size: 13px;
+
 }
 #SearchPaylistForm ::placeholder{
     color: var(--main-color);
@@ -302,7 +306,7 @@ footer {
 #SearchPaylistForm:focus-within>button {
     background-image: url("../images/icons/seach-revert.svg");
 }
-#SearchPaylistForm:focus-within>input {
+#SearchPaylistForm>input:focus {
     color: var(--light-text-color);
 }
 
@@ -602,7 +606,6 @@ nav button.LikePlaylist-Button:hover {
 
 /*songs list*/
 ul{
-    margin: 10px 0;
     padding: 0;
 }
 li{
@@ -657,9 +660,12 @@ li:hover button{
 }
 .SearchSongElement>input {
     border: none;
-    outline: none;
     background-color: transparent;
     flex: 1;
+    color: var(--light-text-color);
+    font-weight: 600;
+    font-size: 13px;
+
 }
 .SearchSongElement ::placeholder{
     color: var(--light-text-color);
@@ -678,15 +684,19 @@ li:hover button{
     height: 20px;
     cursor: pointer;
 }
-.SearchSongElement:focus {
+.SearchSongElement:focus-within {
     background-color: var(--light-text-color);
     transition: var(--transition);
+    outline: none;
 }
-.SearchSongElement:focus>button {
+.SearchSongElement:focus-within>button {
     background-image: url("../images/icons/search.svg");
 }
-.SearchSongElement:focus>input {
+.SearchSongElement>input:focus {
     color: var(--main-color);
+    outline: none;
+    border: none;
+    box-shadow: none;
 }
 
 
@@ -731,7 +741,7 @@ li:hover button{
 
 
 
-/*edit and crate playlist*/
+/*edit and create playlist*/
 #EditPlaylist{
     display: none;
     flex: 2;
@@ -753,17 +763,15 @@ li:hover button{
 #CreatePlaylistForm .form-input-area {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 #EditPlaylistForm .form-input-area label,
 #CreatePlaylistForm .form-input-area label {
-    margin-left: 10px;
+    margin: 10px ;
 }
 input[type="text"],
 input[type="file"],
 textarea,
-ul.form-input-area {
-    outline-color: var(--hover-color);
+div.input {
     padding: 10px;
     border: solid 2px var(--hover-color);
     border-radius: 15px;
@@ -771,12 +779,18 @@ ul.form-input-area {
     outline: none;
     color: var(--light-text-color);
 }
-
-#EditPlaylistForm input:focus-visible,
-#CreatePlaylistForm input:focus-visible {
+input[type="text"]:focus,
+input[type="file"]:focus,
+textarea:focus,
+div.input:focus {
     border: solid 2px var(--light-text-color);
 }
-
+#PlaylistDataInputs,
+#AddingSongs{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
 #SearchResultSongs {
     max-height: 300px;
