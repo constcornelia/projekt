@@ -10,8 +10,12 @@ class API {
                }
            });
            let response = await fetch (request);
+           if (response.status === 401) {
+               window.location.href === "/login";
+               return null;
+           }
            if (!response.ok) {
-               throw new Error (response.status);
+            throw new Error (response.status);
            }
            let data = await response.json();
            return data;
