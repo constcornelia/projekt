@@ -96,17 +96,17 @@ export function getPlaylistById(playlists, songs, id) {
 //     return ownedPlaylists;
 // }
 
-// export function getLikedPlaylists(playlists, user) {
-//     let likedPlaylists = [];
+export function getLikedPlaylists(playlists, user) {
+    let likedPlaylists = [];
 
-//     for (let playlist of playlists) {
-//         // Kollar om användarens username finns i likes arrayen
-//         if(playlist.likes.includes(user.username)) {
-//             likedPlaylists.push(playlist);
-//         }
-//     }
-//     return likedPlaylists;
-// }
+    for (let playlist of playlists) {
+        // Kollar om användarens username finns i likes arrayen
+        if(playlist.likes.includes(user.username)) {
+            likedPlaylists.push(playlist);
+        }
+    }
+    return likedPlaylists;
+}
 
 // export function getContributedPlaylists(playlists, user) {
 //     let contributedPlaylists = [];
