@@ -214,29 +214,6 @@ async function handler(request) {
         return handleResponse(body, 200, headers); 
     }
 
-    //????
-    // let profilePage = new URLPattern({ pathname: "/profile/:username" });
-    // if (profilePage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
-
-    // let profileRoute = new URLPattern({ pathname: "/api/profile/:username" });
-    // if (profileRoute.test(request.url)) {
-    //     let match = profileRoute.exec(request.url);
-    //     let username = match.pathname.groups.username;
-
-    //     // Felhantera
-
-    //     let user = getUserByUsername(users, username);
-    //     let body = JSON.stringify(user);
-    //     return handleResponse(body, 200, headers); 
-    // }
-
-
-
-
-
-
-
-
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
         // Hämtar cookie från requesten
