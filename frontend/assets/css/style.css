@@ -29,6 +29,8 @@ body {
     animation: gradient 30s ease infinite;
     margin: 0 30px;
 }
+
+/*background styling*/
 @keyframes gradient {
     0% {
         background-position: 0% 100%;
@@ -55,11 +57,11 @@ p, h1, h2{
 
 .sub-title {
     font-family: "system";
-    font-weight: 600;
+    font-weight: 700;
 }
 .text{
     font-family: "system";
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .title-UI {
@@ -74,8 +76,8 @@ p, h1, h2{
 
 .system-UI-accent {
     font-family: "system";
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 13px;
 }
 
 a {
@@ -263,7 +265,7 @@ footer {
     border: solid 2px var(--main-color-light);
 }
 
-/*search*/
+/*search playlists*/
 #SearchPaylistForm {
     padding: 10px;
     border-radius: 25px;
@@ -310,7 +312,7 @@ footer {
     color: var(--light-text-color);
 }
 
-/*filters*/
+/*filters playlists*/
 #filters{
     box-sizing: border-box;
     padding: 15px;
@@ -338,6 +340,7 @@ footer {
 }
 .Select:hover{
     background-color: var(--main-color);
+    cursor: pointer;
 }
 .Select:hover select{
     color: var(--light-text-color);
@@ -407,7 +410,6 @@ label.Sort-Playlists:has(input:checked) {
 }
 
 /*playlist collection*/
-
 #PublicPlaylistsCollection,
 #PersonalPlaylistsCollection {
     display: grid;
@@ -573,7 +575,7 @@ nav button.LikePlaylist-Button:hover {
     transition: var(--transition);
 }
 
-/*playlist*/
+/*playlist page*/
 .playlist-content{
     display: flex;
     gap: 20px;
@@ -583,7 +585,7 @@ nav button.LikePlaylist-Button:hover {
 .PlaylistData {
     display: flex;
     gap: 40px;
-    flex: 1;
+    flex: 2;
 }
 .PlaylistData>div {
     flex: 1;
@@ -600,13 +602,14 @@ nav button.LikePlaylist-Button:hover {
     margin-top: 20px;
 }
 .PlaylistData button.Play{
-    height: 40px;
+    height: 30px;
 }
 
 
-/*songs list*/
+/*songs*/
 ul{
     padding: 0;
+    margin: 0;
 }
 li{
     padding: 0;
@@ -614,23 +617,26 @@ li{
     display: flex;
     align-items: center;
     gap: 20px;
-    height: 40px;
+    margin: 10px 0;
+    border-radius: 20px;
 }
 li:hover{
     font-size: larger;
+    background-color: var(--light-text-color);
+    padding: 5px 10px;
+    color: var(--main-color);
 }
 li button{
     display: none;
     font-family: "system";
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
 }
 button.AddSongButton, button.RemoveSongButton{
     transition: var(--transition);
-    background-color: var(--light-text-color);
-    color: var(--main-color);
+    background-color: var(--bright-color);
+    color: var(--light-text-color);
     border: none;
-    height: 40px;
     border-radius: 20px;
     padding: 5px 10px;
 }
@@ -645,6 +651,10 @@ li:hover button{
 /*adding songs*/
 #AddSong{
     display: none;
+    flex: 1;
+}
+#AddSongForm{
+    margin: 10px 0;
 }
 
 
@@ -652,14 +662,14 @@ li:hover button{
 .SearchSongElement {
     padding: 10px;
     border-radius: 20px;
-    border: solid 1px var(--light-text-color);
+    border: solid 2px var(--hover-color);
     display: flex;
     align-items: center;
-    margin: 30px 0;
 
 }
 .SearchSongElement>input {
     border: none;
+    outline: none;
     background-color: transparent;
     flex: 1;
     color: var(--light-text-color);
@@ -687,7 +697,6 @@ li:hover button{
 .SearchSongElement:focus-within {
     background-color: var(--light-text-color);
     transition: var(--transition);
-    outline: none;
 }
 .SearchSongElement:focus-within>button {
     background-image: url("../images/icons/search.svg");
@@ -698,9 +707,138 @@ li:hover button{
     border: none;
     box-shadow: none;
 }
+.SearchSongElement:focus-within>input {
+    color: var(--main-color);
+
+}
+
+
+/*edit and create playlist*/
+#EditPlaylist{
+    display: none;
+    flex: 2;
+}
+#EditPlaylistForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 30px 0;
+
+}
+#CreatePlaylistForm{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+#EditPlaylistForm .form-input-area,
+#CreatePlaylistForm .form-input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+#EditPlaylistForm .form-input-area label,
+#CreatePlaylistForm .form-input-area label {
+    margin-left: 10px ;
+}
+input[type="text"],
+input[type="file"],
+textarea,
+.input {
+    padding: 10px;
+    border: solid 2px var(--hover-color);
+    border-radius: 15px;
+    background-color: transparent;
+    outline: none;
+    color: var(--light-text-color);
+}
+input[type="text"]:focus,
+input[type="file"]:focus,
+textarea:focus,
+.input:focus {
+    border: solid 2px var(--light-text-color);
+}
+textarea{
+    resize: none;
+}
+#PlaylistDataInputs,
+#AddingSongs{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#SearchResultSongs {
+    max-height: 400px;
+    overflow: scroll;
+    background-color: var(--hover-color);
+    border: none;
+}
+#SearchResultSongs ul {
+    padding: 0;
+}
+
+
+#SelectedTags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+
+.TagSelector{
+    padding: 10px;
+    display:flex;
+    justify-content: space-between;
+    border-radius: 20px;
+    border: solid 2px var(--hover-color);
+}
+.TagSelector select{
+    color: var(--light-text-color);
+    background-color: transparent;
+    border: none;
+    font: inherit;
+
+}
+.TagSelector button{
+    background-color: var(--light-text-color);
+    color: var(--main-color);
+    border: none;
+    border-radius: 20px;
+    height: 20px;
+    padding: 0 5px;
+}
+.TagSelector select:hover,
+.TagSelector button:hover{
+    cursor: pointer;
+}
+
+
+
+.DeletePlaylistButton {
+    transition: var(--transition);
+    display: inline-block;
+    background-color: var(--main-color-light);
+    color: var(--main-color);
+    border: none;
+    padding: 15px;
+    border-radius: 20px;
+    font-family: "system";
+    margin: 10px;
+}
+
+.DeletePlaylistButton:hover {
+    transition: var(--transition);
+    transform: var(--transform-hover);
+    cursor: pointer;
+    font-weight: 700;
+}
 
 
 /*hidden elements, display:none > display:initial med event listener*/
+.hidden{
+    display: none;
+}
 .hidden-elements{
     display: flex;
     flex-direction: column;
@@ -737,110 +875,4 @@ li:hover button{
     border-radius: 40px;
     padding: 20px;
     color: var(--light-text-color);
-}
-
-
-
-/*edit and create playlist*/
-#EditPlaylist{
-    display: none;
-    flex: 2;
-}
-#EditPlaylistForm {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin: 30px 0;
-
-}
-#CreatePlaylistForm{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-}
-
-#EditPlaylistForm .form-input-area,
-#CreatePlaylistForm .form-input-area {
-    display: flex;
-    flex-direction: column;
-}
-#EditPlaylistForm .form-input-area label,
-#CreatePlaylistForm .form-input-area label {
-    margin: 10px ;
-}
-input[type="text"],
-input[type="file"],
-textarea,
-div.input {
-    padding: 10px;
-    border: solid 2px var(--hover-color);
-    border-radius: 15px;
-    background-color: transparent;
-    outline: none;
-    color: var(--light-text-color);
-}
-input[type="text"]:focus,
-input[type="file"]:focus,
-textarea:focus,
-div.input:focus {
-    border: solid 2px var(--light-text-color);
-}
-#PlaylistDataInputs,
-#AddingSongs{
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#SearchResultSongs {
-    max-height: 300px;
-    overflow: scroll;
-}
-
-#SearchResultSongs ul {
-    padding: 0;
-}
-
-.TagSelector{
-    display:flex;
-    gap:10px;
-    align-items:center;
-}
-
-.TagSelector .Select{
-    flex:1;
-}
-
-#SelectedTags{
-    margin-top:10px;
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    padding:10px;
-    border:solid 2px var(--hover-color);
-    border-radius:15px;
-    min-height:45px;
-}
-
-#SelectedTags li:hover{
-    font-size:larger;
-}
-
-.DeletePlaylistButton {
-    transition: var(--transition);
-    display: inline-block;
-    background-color: var(--main-color-light);
-    color: var(--main-color);
-    border: none;
-    padding: 15px;
-    border-radius: 20px;
-    font-family: "system";
-    margin: 10px;
-}
-
-.DeletePlaylistButton:hover {
-    transition: var(--transition);
-    transform: var(--transform-hover);
-    cursor: pointer;
-    font-weight: 700;
 }

@@ -101,10 +101,18 @@ if (addTagButton) {
     addTagButton.addEventListener("click", function () {
         let selectedTag = tagSelect.value;
         if (selectedTag == "") return;
+        //ny
+        // förslåg att kolla att tag är unik
+        if(selectedTags.includes(selectedTag))return
         selectedTags.push(selectedTag);
-        let list = document.querySelector("#SelectedTags");
-        let li = document.createElement("li");
-        li.textContent = selectedTag;
-        list.append(li);
+        let tagList = document.querySelector("#SelectedTags");
+        let tag = document.createElement("p");
+        tag.textContent = selectedTag;
+        tagList.append(tag);
+        //ny
+        // div id="SearchResultSongs" bli synlig
+        let wrapper = document.getElementById("wrapperForSelectedTags");        
+        wrapper.classList.remove("hidden")
+        wrapper.classList.add("input")
     });
 }

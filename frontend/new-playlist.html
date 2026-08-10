@@ -8,7 +8,7 @@
 </head>
 
 <body>
-<!--sektionen med osynliga elementer som ska visas efter klick-->
+  <!--sektionen med osynliga elementer som ska visas efter klick-->
   <section class="hidden-elements">
     <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
     <div id="AlertDeleteSong" class="edit-elements pop-up">
@@ -49,70 +49,72 @@
   <nav>
     <a href="/" class="home clear-link">
       <img src="/assets/images/icons/logo.svg">
-        <div>YourSound</div>
+      <div>YourSound</div>
     </a>
     <div class="space"></div>
   </nav>
 
-  <section id="NewPlaylist" >
+  <section id="NewPlaylist">
     <div id="CreatePlaylist" class="edit-elements">
       <h1 class="title">Create new playlist</h1>
       <form id="CreatePlaylistForm" class="system-UI">
-    
+
         <div id="PlaylistDataInputs">
           <div class="form-input-area">
-            <label for="add-cover" class="sub-title">Playlist cover:</label>
-            <input type="file" id="add-cover" name="add-cover" >
+            <label for="add-cover" class="system-UI-accent">Playlist cover:</label>
+            <input type="file" id="add-cover" name="add-cover">
           </div>
           <div class="form-input-area">
-            <label for="playlist-name" class="sub-title">Playlist name:</label>
+            <label for="playlist-name" class="system-UI-accent">Playlist name:</label>
             <input type="text" id="playlist-name" name="playlist-name">
           </div>
           <div class="form-input-area">
-            <label for="playlist-description" class="sub-title">Playlist description:</label>
-            <textarea id="playlist-description" name="playlist-description"></textarea>
+            <label for="playlist-description" class="system-UI-accent">Playlist description:</label>
+            <textarea id="playlist-description" name="playlist-description" rows="5"></textarea>
           </div>
-          <label for="playlist-tag" class="sub-title">Playlist tags:</label>
           <div class="form-input-area">
-            <div class="TagSelector">
-              <div class="Select">
-                <select id="playlist-tag" class="system-UI">
-                  <option value="">Select tag</option>
-                </select>
-              </div>             
-              <button type="button" id="AddTagButton" class="ActionButton-light system-UI-accent">Add</button>
+            <label for="playlist-tag" class="system-UI-accent">Playlist tags:</label>
+            <div id="wrapperForSelectedTags" class="hidden">
+              <div id="SelectedTags"></div>
             </div>
-            <ul id="SelectedTags" class="form-input-area"></ul>
+
+            <div class="TagSelector">
+                <select id="playlist-tag">
+                  <option value="">Select tag for your playlist</option>
+                </select>
+              <button type="button" id="AddTagButton" class="system-UI-accent">Add Tag</button>
+            </div>
           </div>
         </div>
 
         <div id="AddingSongs">
           <div class="form-input-area">
-            <label class="sub-title">Added songs</label>
-            <div class="input">
-              <ul>
-                <li>no songs yet</li>
-                 <!--mening att genom search form på höger sidan hit ska läägs till låter
+            <label class="system-UI-accent">Added songs</label>
+            <div id="wrapperForAddedSongsList" class="hidden">
+              <ul id="addedSongsList">
+                <!--mening att genom search form på höger sidan hit ska läägs till låter
                  annars jag kan inte komma på hur ni kan söka låt i samma form-->
               </ul>
             </div>
           </div>
 
           <div class="SearchSongElement">
-            <input type="search" name="SearchSongInput" id="SearchSongInput" placeholder="Search song for your playlist">
+            <input type="search" name="SearchSongInput" id="SearchSongInput"
+              placeholder="Search song for your playlist">
             <button class="ButtonSearchSong" type="button"></button>
           </div>
-            <div id="SearchResultSongs">
-              <ul>
+          <div id="SearchResultSongs" class="hidden">
+            <ul>
               <!--alla li ska aderas genom search
               sen varenda låt kan aderas med knapp vid låtnamn-->
               <!-- <li>song<button type="button" class="AddSongButton">add song</button></li> -->
-              </ul>
-            </div>
+            </ul>
+          </div>
         </div>
         <div class="edit-actions">
           <button type="button" id="CancelCreateButton" class="ActionButton-light system-UI-accent">Cancel</button>
-          <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Create playlist</button>
+          <button type="submit" id="SaveChangesPlaylistButton" class="ActionButton-light system-UI-accent">Create
+            playlist</button>
           <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
         </div>
 
@@ -121,7 +123,7 @@
 
 
 
-</section>
+  </section>
 
 
 

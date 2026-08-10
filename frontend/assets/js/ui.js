@@ -176,11 +176,20 @@ class UI {
                         alert("Ingen inloggad användare");
                         return;
                     }
-                    const addedSongsList = document.querySelector(".songs ul");
+                    const addedSongsList = document.querySelector("#addedSongsList");//bytade selector så att det funkar i bada form create playlist och add song på playlist sidan
                     // Om texten "no songs yet" finns, så töms listan
-                    if (addedSongsList.textContent.includes("no songs yet")) {
-                        addedSongsList.innerHTML = "";
+                    // if (addedSongsList.textContent.includes("no songs yet")) {
+                    //     addedSongsList.innerHTML = "";
+                    // }
+
+                    //ny
+                    //istället tömma ul,  syns det bara när låt aderas
+                    let wrapper = document.getElementById("wrapperForAddedSongsList")
+                    if(wrapper){
+                        wrapper.classList.remove("hidden")
+                        wrapper.classList.add("input")
                     }
+
                     let addedLi = document.createElement("li");
                     addedLi.textContent = `${song.name} - ${song.artist}`;
                     addedSongsList.appendChild(addedLi);
@@ -205,6 +214,17 @@ class UI {
             }
             position.appendChild(li);
         }
+        //ny
+        // div id="SearchResultSongs" bli synlig
+        let container = document.querySelector("#SearchResultSongs");
+        container.classList.remove("hidden")
+        container.classList.add("input")
+
+    
+        if(!position.innerHTML){
+            position.innerHTML = "no song found"
+        };//ny
+
     }
     
     async renderPlaylistInfo(playlist, position) {
