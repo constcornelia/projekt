@@ -196,7 +196,6 @@ class UI {
                     <button class="Play StopPlaying"></button>
                     <button class="RemoveSongButton">Remove</button>
                 `;
-
                 let removeButton = li.querySelector(".RemoveSongButton");
                 removeButton.addEventListener("click", async function () {
                     let playlistId = window.location.pathname.split("/")[2];
@@ -221,7 +220,6 @@ class UI {
                 </button>
             `;
         }
-        console.log(playlist)
         position.innerHTML = `
             <h1 id="PlaylistName" class="title">${playlist.name}</h1>
             <p id="PlaylistDescription" class="system-UI">${playlist.description}</p>

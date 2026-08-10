@@ -209,7 +209,7 @@ async function handler(request) {
 
         // Felhantera
 
-        let playlist = getPlaylistById(playlists, id);
+        let playlist = getPlaylistById(playlists, songs, id);
         let body = JSON.stringify(playlist);
         return handleResponse(body, 200, headers); 
     }

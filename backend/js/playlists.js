@@ -52,14 +52,37 @@ export function getPlaylistsBySearch(playlists, phrase) {
     return playlistsBySearch;
 }
 
-export function getPlaylistById(playlists, id) {
+export function getPlaylistById(playlists, songs, id) {
+    // Sparar spellistan som matchar id:t
+    let foundPlaylist = null;
     for (let playlist of playlists) {
         if (playlist.id == id) {
-            return playlist;
+            foundPlaylist = playlist;
         }
     }
-    return null;
+    if (!foundPlaylist) return null;
+    // Array som ska innehålla alla fullständiga låt-objekt
+    let playlistSongs = [];
+    for (let song of songs) {
+        for (let playlistSong of foundPlaylist.songs) {
+            // Om låtens id matchar songId i spellistan
+            if (song.id === playlistSong.songId) {
+                // Lägg till hela låt-objektet i arrayen
+                playlistSongs.push(song);
+            }
+        }
+    }
+    return { playlist: foundPlaylist, songs: playlistSongs };
 }
+
+// export function getPlaylistById(playlists, id) {
+//     for (let playlist of playlists) {
+//         if (playlist.id == id) {
+//             return playlist;
+//         }
+//     }
+//     return null;
+// }
 
 
 // export function getOwnedPlaylists(playlists, user) {
@@ -114,53 +137,6 @@ export function getPlaylistById(playlists, id) {
 //     return filteredPlaylists;
 // }
 
-// // Hämtar en specifik spellista och alla låtar som tillhör den
-// export function getPlaylistById(playlists, songs, id) {
-//     // Sparar spellistan som matchar id:t
-//     let foundPlaylist = null;
-//     for (let playlist of playlists) {
-//         if (playlist.id == id) {
-//             foundPlaylist = playlist;
-//         }
-//     }
-//     if (!foundPlaylist) return null;
-//     // Array som ska innehålla alla fullständiga låt-objekt
-//     let playlistSongs = [];
-//     for (let song of songs) {
-//         for (let playlistSong of foundPlaylist.songs) {
-//             // Om låtens id matchar songId i spellistan
-//             if (song.id === playlistSong.songId) {
-//                 // Lägg till hela låt-objektet i arrayen
-//                 playlistSongs.push(song);
-//             }
-//         }
-//     }
-//     return {
-//         playlist: foundPlaylist,
-//         songs: playlistSongs
-//     };
-// }
-
-// // export function getPlaylistById(playlists, songs, id) {
-// //     let playlist;
-// //     for (let playlist of playlists) {
-// //         if (playlist.id == id) {
-// //             playlist = playlist;
-// //         }
-// //     }
-
-// //     let playlistSongs = [];
-// //     for (let song of songs) {
-// //         for (let playlistSong of playlist.songs) {
-// //             if (song.id == playlistSong.songId) {
-// //                 playlistSongs.push(song);
-// //             }
-// //         }
-// //     }
-
-// //     let playlistData = { playlist: playlist, songs: playlistSongs};
-// //     return playlistData;
-// // }
 
 
 // export function deletePlaylistById(database, playlistId) {
