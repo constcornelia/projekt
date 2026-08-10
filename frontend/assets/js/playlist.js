@@ -14,7 +14,7 @@ async function loadPlaylist() {
     // Hämtar positionen där spellistans info ska visas
     const positionInfo = document.querySelector(".info");
     // Renderar spellistans information
-    ui.renderPlaylistInfo(playlistData, positionInfo);
+    ui.renderPlaylistInfo(playlistData.playlist, positionInfo);
 }
 
 const showAddSong = document.querySelector(".SongToPlaylist-Button");
