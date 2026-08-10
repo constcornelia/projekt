@@ -60,7 +60,7 @@ class UI {
           <h1 class="title-UI">${playlist.name} </h1>
           <p>${ownerName}</p>
           <div class="playlist-actions">
-            <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
+            <button class="LikePlaylist-Button WhiteLike system-UI"><span>${playlist.likes.length}</span></button>
             <button class="Play"></button>
           </div>
           <p class="system-UI-accent">#${playlist.tags}</p>
@@ -122,7 +122,7 @@ class UI {
           <h1 class="title-UI">${playlist.name}</h1>
           <p>${ownerName}</p>
           <div class="playlist-actions">
-            <button class="LikePlaylist-Button system-UI">
+            <button class="LikePlaylist-Button WhiteLike system-UI">
               <span>${playlist.likes.length}</span>
             </button>
             <button class="Play StopPlaying"></button>
@@ -164,7 +164,7 @@ class UI {
             if (add) {
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
-                    <button type="button" class="AddSongButton">
+                    <button type="button" class="AddSongButton WhiteButton">
                         Add song
                     </button>
                 `;
@@ -191,7 +191,11 @@ class UI {
                     }
 
                     let addedLi = document.createElement("li");
-                    addedLi.textContent = `${song.name} - ${song.artist}`;
+                    addedLi.innerHTML = `
+                    ${song.name} - ${song.artist}
+                    <button class="Play StopPlaying"></button>
+                    <button class="RemoveSongButton WhiteButton">Remove Song</button>
+                `;
                     addedSongsList.appendChild(addedLi);
                     addedSongs.push({
                         songId: song.id,
@@ -203,7 +207,7 @@ class UI {
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
                     <button class="Play StopPlaying"></button>
-                    <button class="RemoveSongButton">Remove</button>
+                    <button class="RemoveSongButton WhiteButton">Remove Song</button>
                 `;
                 let removeButton = li.querySelector(".RemoveSongButton");
                 removeButton.addEventListener("click", async function () {
@@ -235,20 +239,23 @@ class UI {
         let deleteButton = "";
         if (currentUser && currentUser.id == playlist.ownerId) {
             deleteButton = `
-                <button class="DeletePlaylistButton">
+                <button class="DeletePlaylistButton OrangeButton">
                     Delete playlist
                 </button>
             `;
+            let deletePlaceholder = document.querySelector("div.edit-actions")
+            deletePlaceholder.innerHTML = `${deleteButton}`
         }
         position.innerHTML = `
             <h1 id="PlaylistName" class="title">${playlist.name}</h1>
             <p id="PlaylistDescription" class="system-UI">${playlist.description}</p>
             <p id="PlaylistTag" class="system-UI-accent">${playlist.tags}</p>
             <img src="${playlist.imgUrl}">
-            ${deleteButton}
         `;
         // delete knappen finns bara för ägaren
-        let deleteButtonElement = position.querySelector(".DeletePlaylistButton");
+        let deleteButtonElement = document.querySelector(".DeletePlaylistButton");
+        console.log(deleteButtonElement);
+        
         if (deleteButtonElement) {
             deleteButtonElement.addEventListener("click", async function () {
                 let playlistId = playlist.id;

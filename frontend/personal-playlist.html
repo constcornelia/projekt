@@ -57,9 +57,13 @@
     </a>
 
     <div class="space"></div>
-    <button id="EditPlaylist-Button" class="ActionButton">Edit playlist details</button>
+    <button id="EditPlaylist-Button" class="ActionButton">
+      <span>Edit playlist details</span>
+    </button>
     <!--listener på EditPlaylistButton så EditPlaylist bli synlig-->
-    <button id="AddSong-Button" class="ActionButton system-UI-accent">Add song to playlist</button>
+      <button class="SongToPlaylist-Button system-UI-accent">
+        <span>Add song</span>
+      </button>
     <!--listener på AddSongButton så AddSong div bli synlig-->
   </nav>
 
@@ -108,8 +112,6 @@
         </div>
     </div>
 
-    <div class="songs">
-    </div>
     <!--osynlig nu ska visas när add song knapp klickad-->
     <div id="AddSong" class="edit-elements">
       <h1 class="title">Add song to playlist</h1>
