@@ -169,7 +169,14 @@ async function handler(request) {
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
 
+<<<<<<< Updated upstream
             // Felhantera?
+=======
+            if (!user) {
+                let body = JSON.stringify({ error: "Unauthorized" });
+                return handleResponse(body, 401, headers);
+            }
+>>>>>>> Stashed changes
 
             let body = JSON.stringify(user);
             return handleResponse(body, 303, headers);
