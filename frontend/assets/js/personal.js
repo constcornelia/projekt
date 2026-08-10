@@ -92,6 +92,6 @@ async function showLikedPlaylists() {
     let section = document.querySelector("#PersonalPlaylistsCollection");
     ui.renderPersonalPlaylists(playlists, section);
 }
-
+ui.showProfile();
 showLikedPlaylists();
 ui.dropDownsTags(tagInput);
