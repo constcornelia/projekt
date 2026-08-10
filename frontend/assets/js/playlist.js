@@ -5,7 +5,6 @@ async function loadPlaylist() {
     // Hämtar spellistans id från URL:en
     // Exempel: /playlists/p-1 -> "p-1"
     const playlistId = window.location.pathname.split("/")[2];
-    console.log(playlistId)
     // Hämtar spellistans data från servern
     let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
     // Hämtar positionen där låtarna ska visas
