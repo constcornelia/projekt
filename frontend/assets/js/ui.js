@@ -26,6 +26,17 @@ let sections = [
     document.querySelector("#PersonalPlaylistsCollection")
 ];
 
+function formatTags(tags) {
+    let result = "";
+    for (let tag of tags) {
+        if (result != "") {
+            result += " ";
+        }
+        result += "#" + tag;
+    }
+    return result;
+}
+
 class UI {
   async getPlaylists() {
       let playlists = await api.getRequest("/api/playlists");
@@ -63,7 +74,7 @@ class UI {
             <button class="LikePlaylist-Button WhiteLike system-UI"><span>${playlist.likes.length}</span></button>
             <button class="Play"></button>
           </div>
-          <p class="system-UI-accent">#${playlist.tags}</p>
+          <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
           <img src="${playlist.imgUrl}">
         </div>
         `;
@@ -127,7 +138,7 @@ class UI {
             </button>
             <button class="Play StopPlaying"></button>
           </div>
-          <p class="system-UI-accent">#${playlist.tags}</p>
+          <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
           <img src="${playlist.imgUrl}">
         </div>
         `;
@@ -275,7 +286,7 @@ class UI {
         position.innerHTML = `
             <h1 id="PlaylistName" class="title">${playlist.name}</h1>
             <p id="PlaylistDescription" class="system-UI">${playlist.description}</p>
-            <p id="PlaylistTag" class="system-UI-accent">${playlist.tags}</p>
+            <p id="PlaylistTag" class="system-UI-accent">${formatTags(playlist.tags)}</p>
             <img src="${playlist.imgUrl}">
         `;
         // delete knappen finns bara för ägaren
