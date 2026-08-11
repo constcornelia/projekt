@@ -12,21 +12,25 @@
     <nav>
         <a href="/welcome" class="home clear-link">
             <img src="/assets/images/icons/logo.svg">
-              <div>YourSound</div>
-          </a>
-      
+            <div>YourSound</div>
+        </a>
+
     </nav>
-    <section class="Welcome">
+    <section class="Welcome edit-elements">
         <div class="title">Welcome to YourSound</div>
-       <!--  <form id="image-upload" class="system-UI">
-           <button type="submit" class="ActionButton-light">Use this image for profile</button>
+        <!--  <form id="image-upload" class="system-UI">
+           <button type="submit" class="WhiteButton">Use this image for profile</button>
            
            <div class="error-note"></div>
         </form> -->
-        <form id="signup" class="system-UI">
+        <form id="signup" class="system-UI form-flex">
             <div class="form-input-area" id="profile-image">
                 <label for="profile" class="sub-title">Profile picture:</label>
-                <input type="file" id="profile" name="profile">
+                <div class="fileUploadInput">
+                    <label for="profile" class="system-UI-accent WhiteButton FakeUploadButton">Upload profile
+                        picture</label>
+                    <input type="file" id="profile" name="profile">
+                </div>
             </div>
             <div class="form-input-area">
                 <label for="username" class="sub-title">Username:</label>
@@ -38,7 +42,7 @@
             </div>
             <div class="error-note"></div>
 
-            <button type="submit" class="ActionButton-light">Sign up</button>
+            <button type="submit" class="WhiteButton system-UI-accent">Sign up</button>
         </form>
         <div>
             <p class="sub-title">Already a member? <a href="/login">Log in</a></p>
@@ -47,18 +51,18 @@
 
     <footer>
         <div>
-          <p class="sub-title">Digital design och utveckling III</p>
-          <p class="sub-title">Projekt, Grupp 5</p>
-          <p class="sub-title">&copy; 2026</p>
+            <p class="sub-title">Digital design och utveckling III</p>
+            <p class="sub-title">Projekt, Grupp 5</p>
+            <p class="sub-title">&copy; 2026</p>
         </div>
         <div>
-          <p class="sub-title">Developers</p>
-          <p class="text">Cornelia Rönnemyr Papic</p>
-          <p class="text">Dilara Kinali</p>
-          <p class="text">Elena Khusanova</p>
+            <p class="sub-title">Developers</p>
+            <p class="text">Cornelia Rönnemyr Papic</p>
+            <p class="text">Dilara Kinali</p>
+            <p class="text">Elena Khusanova</p>
         </div>
-      </footer>
-            <script src="/assets/js/signup.js"></script>
+    </footer>
+    <script src="/assets/js/signup.js"></script>
 </body>
 
 </html>

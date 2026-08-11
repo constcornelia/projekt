@@ -10,46 +10,47 @@
 
 <body>
 
-    <nav>
-      <a href="/" class="home clear-link">
-        <img src="/assets/images/icons/logo.svg">
-          <div>YourSound</div>
-      </a>
-      <div class="space">
-        <form action="" id="SearchPaylistForm">
-          <input type="search" name="SearchInput" id="SearchInput" class="system-UI" placeholder="Search by playlist name, owner or genre">
-          <button id="ButtonSearch" type="submit"></button>
-        </form>
-      </div>
-      <a href="/edit.html" class="SecondaryBlackButton system-UI-accent clear-link">Edit account</a>
-    </nav>
-  
-    <section id="filters">
-      <h1 class="title-UI">Find your best playlist</h1>
-  
-        <form id="FilterForm" class="FilterForm system-UI">
-          <div>
-            <div class="Select">
-              <select id="SelectGenre" class="system-UI"  name="genre">
-                <option value="">Select tag</option>
-                <option value="ShowAll">all</option>
-              </select>
-            </div>
-            <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
-              <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists"  value="Sort-Liked-playlists">
-            </label>
-          </div>
-          <div>
-            <button id="FiltersReset" type="reset" class="SecondaryOrangeButton system-UI">Clear filters</button>
-            <button id="FiltersSubmit" type="submit" class="OrangeButton system-UI">Sort playlists</button>
-          </div>
-  
-    
+  <nav>
+    <a href="/" class="home clear-link">
+      <img src="/assets/images/icons/logo.svg">
+      <div>YourSound</div>
+    </a>
+    <div class="space">
+      <form action="" id="SearchPaylistForm">
+        <input type="search" name="SearchInput" id="SearchInput" class="system-UI"
+          placeholder="Search by playlist name, owner or genre">
+        <button id="ButtonSearch" type="submit"></button>
       </form>
-  
-    </section>
-  
-<section id="PersonalPlaylistsCollection">
+    </div>
+    <a href="/edit.html" class="SecondaryBlackButton system-UI-accent clear-link">Edit account</a>
+  </nav>
+
+  <section id="filters">
+    <h1 class="title-UI">Find your best playlist</h1>
+
+    <form id="FilterForm" class="FilterForm system-UI">
+      <div>
+        <div class="Select">
+          <select id="SelectGenre" class="system-UI" name="genre">
+            <option value="">Select tag</option>
+            <option value="ShowAll">all</option>
+          </select>
+        </div>
+        <label class="Sort-Playlists" for="Sort-Liked-playlists">Most popular playlists
+          <input type="radio" id="Sort-Liked-playlists" name="Sort-Liked-playlists" value="Sort-Liked-playlists">
+        </label>
+      </div>
+      <div>
+        <button id="FiltersReset" type="reset" class="SecondaryOrangeButton system-UI">Clear filters</button>
+        <button id="FiltersSubmit" type="submit" class="OrangeButton system-UI">Sort playlists</button>
+      </div>
+
+
+    </form>
+
+  </section>
+
+  <section id="PersonalPlaylistsCollection">
     <a href="/new-playlist" class="clear-link">
       <div id="CreatePlaylistLink" class="add-playlist-card system-UI-accent">
         <img src="/assets/images/icons/add.svg">
@@ -69,8 +70,8 @@
         <p class="system-UI-accent">tags</p>
       </div>
     </a>
-    
-    </section>
+
+  </section>
 
 
 
