@@ -546,7 +546,9 @@
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
       "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
-      "likes": [],
+      "likes": [
+        "yourtomboi"
+      ],
       "tags": [
         "workout",
         "hype"
@@ -602,17 +604,14 @@
       "name": "Focus Mode",
       "description": "För plugg och jobb",
       "imgUrl": "https://i.pinimg.com/736x/cb/2c/f4/cb2cf4309fc100624b0cc77f8663abe4.jpg",
-      "likes": [],
+      "likes": [
+        "yourtomboi"
+      ],
       "tags": [
         "lofi",
         "chill"
       ],
-      "songs": [
-        {
-          "songId": "s-43",
-          "editorId": "u-1"
-        }
-      ]
+      "songs": []
     },
     {
       "id": "p-7",
@@ -627,10 +626,6 @@
       ],
       "songs": [
         {
-          "songId": "s-5",
-          "editorId": "u-1"
-        },
-        {
           "songId": "s-92",
           "editorId": "u-3"
         }
@@ -643,7 +638,8 @@
       "description": "Sol, värme och semester",
       "imgUrl": "https://i.pinimg.com/736x/de/f0/e6/def0e6a60a8b9bd2bc3eec453ff4430c.jpg",
       "likes": [
-        "dilara"
+        "dilara",
+        "yourtomboi"
       ],
       "tags": [
         "summer",
@@ -664,6 +660,23 @@
       "songs": [
         {
           "songId": "s-17",
+          "editorId": "u-1"
+        }
+      ]
+    },
+    {
+      "id": "p-10",
+      "ownerId": "u-1",
+      "name": "",
+      "description": "",
+      "imgUrl": "/uploads/65d9c569-a433-4791-a730-ea5b6b1f9d6b.jpg",
+      "likes": [],
+      "tags": [
+        "emo"
+      ],
+      "songs": [
+        {
+          "songId": "s-2",
           "editorId": "u-1"
         }
       ]
