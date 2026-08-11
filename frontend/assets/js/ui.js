@@ -254,6 +254,7 @@ class UI {
         `;
         // delete knappen finns bara för ägaren
         let deleteButtonElement = document.querySelector(".DeletePlaylistButton");
+        console.log(deleteButtonElement);
         
         if (deleteButtonElement) {
             deleteButtonElement.addEventListener("click", async function () {
