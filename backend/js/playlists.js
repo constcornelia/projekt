@@ -147,7 +147,6 @@ export function deletePlaylistById(database, playlistId) {
 
     // Ersätter gamla playlist-arrayen med den uppdaterade
     database.playlists = updatedPlaylists;
-    Deno.writeTextFileSync("database.json", JSON.stringify(database));
     // Returnerar true om spellistan togs bort
     return true;
 }
