@@ -807,11 +807,12 @@ button.AddSongButton, button.RemoveSongButton{
     gap: 20px;
 }
 
-
-/*hidden elements, display:none > display:initial med event listener*/
 .hidden{
     display: none;
 }
+
+/*hidden elements, display:none > display:initial med event listener*/
+/*ta bort om inte använder för slutversion*/
 .hidden-elements{
     display: flex;
     flex-direction: column;
