@@ -679,7 +679,7 @@ async function handler(request) {
         }
         // delete playlist if owner
         let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
-        if (request.method == "GET" && playlistRoute.test(request.url)) {
+        if (playlistRoute.test(request.url)) {
             let match = playlistRoute.exec(request.url);
             let playlistId = match.pathname.groups.id;
             // kontrollera att användaren är inloggad
