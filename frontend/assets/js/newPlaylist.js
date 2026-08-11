@@ -24,15 +24,7 @@ createPlaylistForm.addEventListener("submit", async function (event) {
     formData.append("name", nameInput.value);
     // Lägger till spellistans beskrivning
     formData.append("description", descriptionInput.value);
-    // Lägger till vald tag
-    formData.append("tag", tagInput.value);
-    // Lägger till omslagsbild
-    formData.append("cover", coverInput.files[0]);
-    // Lägger till alla sparade låtar
-    // JSON.stringify gör arrayen till text så att den kan skickas
-    formData.append("songs", JSON.stringify(addedSongs));
-
-
+    
     // Gör om alla valda tags till en sträng
     let tagString = "";
     for (let tag of selectedTags) {
@@ -41,6 +33,14 @@ createPlaylistForm.addEventListener("submit", async function (event) {
         }
         tagString += tag;
     }
+
+    // Lägger till vald tag
+    formData.append("tag", tagString);
+    // Lägger till omslagsbild
+    formData.append("cover", coverInput.files[0]);
+    // Lägger till alla sparade låtar
+    // JSON.stringify gör arrayen till text så att den kan skickas
+    formData.append("songs", JSON.stringify(addedSongs));
 
     // Skickar spellistan till servern
     await fetch("/api/playlists", {
@@ -63,31 +63,30 @@ cancelButton.addEventListener("click", async function () {
 });
 
 
-const searchSongButton = document.querySelector(".ButtonSearchSong");
-searchSongButton.addEventListener("click", async function (event) {
-    event.preventDefault();
-    // Hämtar söktexten
-    let input = document.querySelector("#SearchSongInput").value;
-    // Hämtar matchande låtar från servern
+const searchInput = document.querySelector("#SearchSongInput");
+async function searchSongs() {
+    // Hämtar texten 
+    let input = searchInput.value;
+    // Hämtar matchande låtar
     let songs = await api.getRequest("/api/songs/search?q=" + input);
     // Position där låtarna ska visas
     let position = document.querySelector("#SearchResultSongs ul");
     // Renderar sökresultatet
     ui.renderSongs(songs, position, true);
-});
+}
 
-
-const searchInput = document.querySelector("#SearchSongInput");
+// När användaren klickar i sökfältet
 searchInput.addEventListener("click", async function (event) {
     event.preventDefault();
-    // Hämtar texten användaren skrev in
-    let input = document.querySelector("#SearchSongInput").value;
-    // Hämtar matchande låtar från servern
-    let songs = await api.getRequest("/api/songs/search?q=" + input);
-    // Position där låtarna ska visas
-    let position = document.querySelector("#SearchResultSongs ul");
-    // Renderar sökresultatet
-    ui.renderSongs(songs, position, true);
+    await searchSongs();
+});
+// När användaren trycker Enter
+searchInput.addEventListener("keydown", async function (event) {
+    if (event.key === "Enter") {
+        // Förhindrar att hela CreatePlaylistForm skickas
+        event.preventDefault();
+        await searchSongs();
+    }
 });
 
 const addTagButton = document.querySelector("#AddTagButton");

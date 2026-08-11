@@ -667,6 +667,30 @@
           "editorId": "u-1"
         }
       ]
+    },
+    {
+      "id": "p-10",
+      "ownerId": "u-3",
+      "name": "XO",
+      "description": "Til I overdose",
+      "imgUrl": "/uploads/4d4cff20-7cdb-4360-af9d-ad3263aa09c9.png",
+      "likes": [
+        "dilara"
+      ],
+      "tags": [
+        "chill",
+        "sad"
+      ],
+      "songs": [
+        {
+          "songId": "s-6",
+          "editorId": "u-3"
+        },
+        {
+          "songId": "s-1",
+          "editorId": "u-3"
+        }
+      ]
     }
   ]
 }

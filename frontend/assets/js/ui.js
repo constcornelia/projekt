@@ -184,6 +184,18 @@ class UI {
 
                     //ny
                     //istället tömma ul,  syns det bara när låt aderas
+                    let alreadyAdded = false;
+                    for (let addedSong of addedSongs) {
+                        if (addedSong.songId === song.id) {
+                            alreadyAdded = true;
+                            break;
+                        }
+                    }
+                    if (alreadyAdded) {
+                        alert("Den låten är redan tillagd!");
+                        return;
+                    }
+
                     let wrapper = document.getElementById("wrapperForAddedSongsList")
                     if(wrapper){
                         wrapper.classList.remove("hidden")
@@ -193,9 +205,19 @@ class UI {
                     let addedLi = document.createElement("li");
                     addedLi.innerHTML = `
                     ${song.name} - ${song.artist}
-                    <button class="Play StopPlaying"></button>
-                    <button class="RemoveSongButton WhiteButton">Remove Song</button>
-                `;
+                    <button type="button" class="Play StopPlaying"></button>
+                    <button type="button" class="RemoveSongButton WhiteButton">Remove Song</button>
+                    `;
+                    let removeButton = addedLi.querySelector(".RemoveSongButton");
+                    removeButton.addEventListener("click", function () {
+                        for (let i = 0; i < addedSongs.length; i++) {
+                            if (addedSongs[i].songId === song.id) {
+                                addedSongs.splice(i, 1);
+                                break;
+                            }
+                        }
+                        addedLi.remove();
+                    });
                     if (addedSongsList) {
                         addedSongsList.appendChild(addedLi);
                     }
