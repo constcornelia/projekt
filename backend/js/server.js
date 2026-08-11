@@ -445,24 +445,6 @@ async function handler(request) {
         // let playlistReq = await request.json();
     }
     if (request.method == "POST") {
-
-        // // Lägg till spellista
-        // if (url.pathname == "/new-playlist") {
-        //     let playlistReq = await request.json();
-
-        //     const file = playlistReq.get("add-cover");
-        //     const title = playlistReq.get("playlist-name");
-        //     const description = playlistReq.get("playlist-description");
-
-        //     const fileStr = createRandomString();
-        //     const extension = extname(file.name);
-        //     const filename = fileStr + extension;
-
-        //     if (!file) return handleResponse("Playlist cover is missing", 400);
-
-        //     createPlaylist(playlists, file, title, description);
-        // }
-
          // Skapar ny spellista
         if (url.pathname == "/api/playlists") {
             // Hämtar all formdata från requesten
