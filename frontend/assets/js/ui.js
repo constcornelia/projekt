@@ -196,11 +196,21 @@ class UI {
                     <button class="Play StopPlaying"></button>
                     <button class="RemoveSongButton WhiteButton">Remove Song</button>
                 `;
-                    addedSongsList.appendChild(addedLi);
-                    addedSongs.push({
-                        songId: song.id,
-                        editorId: currentUser.id
-                    });
+                    if (addedSongsList) {
+                        addedSongsList.appendChild(addedLi);
+                    }
+                    let playlistId = window.location.pathname.split("/")[2];
+                    if (playlistId) {
+                        await api.patchRequest(`/api/playlists/${playlistId}/songs`, {
+                            songId: song.id,
+                            editorId: currentUser.id
+                        });
+                    } else {
+                        addedSongs.push({
+                            songId: song.id,
+                            editorId: currentUser.id
+                        });
+                    }
                 });
             } else {
                 // Vanlig rendering av låtar i spellistor

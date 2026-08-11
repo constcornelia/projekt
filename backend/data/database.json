@@ -678,7 +678,16 @@
       "tags": [
         "chill"
       ],
-      "songs": []
+      "songs": [
+        {
+          "songId": "s-6",
+          "editorId": "u-3"
+        },
+        {
+          "songId": "s-5",
+          "editorId": "u-3"
+        }
+      ]
     }
   ]
 }

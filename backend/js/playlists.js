@@ -75,17 +75,16 @@ export function getPlaylistById(playlists, songs, id) {
     return { playlist: foundPlaylist, songs: playlistSongs };
 }
 
+export function getOwnedPlaylists(playlists, user) {
+    let ownedPlaylists = [];
 
-// export function getOwnedPlaylists(playlists, user) {
-//     let ownedPlaylists = [];
-
-//     for (let playlist of playlists) {
-//         if(playlist.ownerId == user.id) {
-//             ownedPlaylists.push(playlist)
-//         }
-//     }
-//     return ownedPlaylists;
-// }
+    for (let playlist of playlists) {
+        if(playlist.ownerId == user.id) {
+            ownedPlaylists.push(playlist)
+        }
+    }
+    return ownedPlaylists;
+}
 
 export function getLikedPlaylists(playlists, user) {
     let likedPlaylists = [];
@@ -99,19 +98,19 @@ export function getLikedPlaylists(playlists, user) {
     return likedPlaylists;
 }
 
-// export function getContributedPlaylists(playlists, user) {
-//     let contributedPlaylists = [];
+export function getContributedPlaylists(playlists, user) {
+    let contributedPlaylists = [];
 
-//     for (let playlist of playlists) {
-//         for (let song of playlist.songs) {
-//             if (song.editorId == user.id) {
-//                 contributedPlaylists.push(playlist);
-//                 break;
-//             }
-//         }
-//     }
-//     return contributedPlaylists;
-// }
+    for (let playlist of playlists) {
+        for (let song of playlist.songs) {
+            if (song.editorId == user.id) {
+                contributedPlaylists.push(playlist);
+                break;
+            }
+        }
+    }
+    return contributedPlaylists;
+}
 
 
 
