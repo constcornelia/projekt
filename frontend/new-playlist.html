@@ -9,44 +9,7 @@
 </head>
 
 <body>
-  <!--sektionen med osynliga elementer som ska visas efter klick-->
-  <section class="hidden-elements">
-    <!--osynlig nu ska visas när låt aderas listener på add song knappen-->
-    <div id="AlertDeleteSong" class="edit-elements pop-up">
-      <h1 class="title">the song</h1>
-      <div class="pop-up-action system-UI-accent">
-        <p class="text">Delete from playlist?</p>
-        <div>
-          <button id="UndoDeleteSong" type="reset" class="ActionButton-light system-UI-accent">Undo</button>
-          <button id="ConfirmDeleteSong" type="submit" class="ActionButton-light system-UI-accent">OK</button>
-        </div>
-      </div>
-    </div>
-    <!--osynlig nu ska visas när låt aderas
-    listener på add song knappen-->
-    <div id="AlertAddSong" class="edit-elements pop-up">
-      <h1 class="title">song name</h1>
-      <div class="pop-up-action system-UI-accent">
-        <p>is added to your playlist</p>
-        <div>
-          <button id="UndoAddSong" type="button" class="ActionButton-light">Undo</button>
-          <button id="ConfirmAddSong" type="button" class="ActionButton-light">OK</button>
-        </div>
-      </div>
-    </div>
-    <!--osynlig nu ska visas när liked-->
-    <div id="AlertLikePlaylist" class="edit-elements pop-up">
-      <h1 class="title">playlist name</h1>
-      <div class="pop-up-action system-UI-accent">
-        <p> is added to your liked playlist</p>
-        <div>
-          <button id="UndoLike" type="button" class="ActionButton-light">Undo</button>
-          <button id="ConfirmLike" type="button" class="ActionButton-light">OK</button>
-        </div>
-      </div>
-    </div>
 
-  </section>
   <nav>
     <a href="/" class="home clear-link">
       <img src="/assets/images/icons/logo.svg">
@@ -58,12 +21,16 @@
   <section id="NewPlaylist">
     <div id="CreatePlaylist" class="edit-elements">
       <h1 class="title">Create new playlist</h1>
-      <form id="CreatePlaylistForm" class="system-UI">
+      <form id="CreatePlaylistForm" class="system-UI form-flex">
 
-        <div id="PlaylistDataInputs">
-          <div class="form-input-area" id="coverUploadInput">
-            <label for="add-cover" class="system-UI-accent">Upload image for playlist cover:</label>
-            <input type="file" id="add-cover" name="add-cover">
+        <div id="PlaylistDataInputs" class="form-flex">
+          <div class="form-input-area">
+            <label for="add-cover" class="system-UI-accent">Playlist cover:</label>
+            <div class="fileUploadInput">
+              <label for="add-cover" class="system-UI-accent WhiteButton FakeUploadButton">Upload picture for your
+                playlist</label>
+              <input type="file" id="add-cover" name="add-cover">
+            </div>
           </div>
           <div class="form-input-area">
             <label for="playlist-name" class="system-UI-accent">Playlist name:</label>
@@ -80,10 +47,10 @@
             </div>
 
             <div class="TagSelector">
-                <select id="playlist-tag">
-                  <option value="">Select tag for your playlist</option>
-                </select>
-              <button type="button" id="AddTagButton" class="system-UI-accent">Add Tag</button>
+              <select id="playlist-tag">
+                <option value="">Select tag for your playlist</option>
+              </select>
+              <button type="button" id="AddTagButton" class="system-UI-accent WhiteButton">Add Tag</button>
             </div>
           </div>
         </div>
@@ -114,8 +81,7 @@
         </div>
         <div class="edit-actions">
           <button type="button" id="CancelCreateButton" class="SecondaryOrangeButton system-UI-accent">Cancel</button>
-          <button type="submit" id="SaveChangesPlaylistButton" class="OrangeButton system-UI-accent">Create
-            playlist</button>
+          <button type="submit" id="SaveChangesPlaylistButton" class="OrangeButton system-UI-accent">Create playlist</button>
           <!--SaveChangesPlaylistButton kan leda till playlist sidan New-playlist.html och därifrån låter aderas-->
         </div>
 
