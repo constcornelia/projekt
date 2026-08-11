@@ -28,7 +28,6 @@ createPlaylistForm.addEventListener("submit", async function (event) {
     formData.append("tag", tagInput.value);
     // Lägger till omslagsbild
     formData.append("cover", coverInput.files[0]);
-
     // Lägger till alla sparade låtar
     // JSON.stringify gör arrayen till text så att den kan skickas
     formData.append("songs", JSON.stringify(addedSongs));
@@ -42,12 +41,7 @@ createPlaylistForm.addEventListener("submit", async function (event) {
         }
         tagString += tag;
     }
-    // Skickar alla tags
-    formData.append("tag", tagString);
-    // Lägger till omslagsbild
-    formData.append("cover", coverInput.files[0]);
-    // Lägger till alla sparade låtar
-    formData.append("songs", JSON.stringify(addedSongs));
+
     // Skickar spellistan till servern
     await fetch("/api/playlists", {
         method: "POST",

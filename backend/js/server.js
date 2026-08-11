@@ -2,7 +2,7 @@ import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 
 import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
-import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getLikedPlaylists, /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getContributedPlaylists */ } from "./playlists.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getLikedPlaylists,  deletePlaylistById, deleteSongFromPlaylist, /* getOwnedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -481,7 +481,7 @@ async function handler(request) {
             // Kör bara om en fil finns
             if (file && file.name) {
                 // Skapar slumpmässigt filnamn
-                const fileStr = createRandomString();
+                const fileStr = crypto.randomUUID();;
                 // Hämtar filens ändelse
                 // Exempel:
                 // ".png"
@@ -520,6 +520,7 @@ async function handler(request) {
                     foundUser = user;
                 }
             }
+            if (!foundUser) return handleResponse("Unauthorized", 401, null);
             // Skapar nytt playlist-id
             // Exempel:
             // "p-9"
@@ -669,7 +670,7 @@ async function handler(request) {
             let match = songRoute.exec(request.url);
             let playlistId = match.pathname.groups.id;
             let songId = match.pathname.groups.songId;
-            let removed = removeSongFromPlaylist(playlists, playlistId, songId);
+            let removed = deleteSongFromPlaylist(playlists, playlistId, songId);
             if (!removed) {
                 return handleResponse("Song not found", 404, null);
             }
@@ -764,7 +765,7 @@ async function handler(request) {
             let playlistId = pathname.groups.id;
             let songId = pathname.groups.songId;
 
-            removeSongFromPlaylist(playlists, playlistId, songId);
+            deleteSongFromPlaylist(playlists, playlistId, songId);
 
             return new Response(null, {});
         }
