@@ -202,18 +202,7 @@ async function handler(request) {
     let playlistPage = new URLPattern({ pathname: "/playlists/:id" });
     if (playlistPage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
 
-    let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
-    if (playlistRoute.test(request.url)) {
-        let match = playlistRoute.exec(request.url);
-        let id = match.pathname.groups.id;
-
-        // Felhantera
-
-        let playlist = getPlaylistById(playlists, songs, id);
-        let body = JSON.stringify(playlist);
-        return handleResponse(body, 200, headers); 
-    }
-
+    
     if (request.method == "GET") {
         let headers = { "Content-Type": "application/json" };
         // Hämtar cookie från requesten
@@ -238,13 +227,25 @@ async function handler(request) {
                     // Sparar användaren som är inloggad
                     // Exempel:
                     // {
-                    //   username: "cornelia",
-                    //   cookie: "abc123"
-                    // }
-                    currentUser = cookies[i];
+                        //   username: "cornelia",
+                        //   cookie: "abc123"
+                        // }
+                        currentUser = cookies[i];
+                    }
                 }
             }
-        }
+            
+            let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
+            if (playlistRoute.test(request.url)) {
+                let match = playlistRoute.exec(request.url);
+                let id = match.pathname.groups.id;
+        
+                // Felhantera
+        
+                let playlist = getPlaylistById(playlists, songs, id);
+                let body = JSON.stringify(playlist);
+                return handleResponse(body, 200, headers); 
+            }
 
         if (url.pathname == "/api/playlists") {
             let tag = url.searchParams.get("tag");
@@ -748,28 +749,28 @@ async function handler(request) {
         }
     }
 
-    if (request.method == "DELETE") {
-        // Delete playlist if owner
-        let route = new URLPattern({ pathname: "/user/playlists/:id" });
-        if (route.test(request.url)) {
-            let match = route.exec(request.url);
-            let id = pathname.groups.id
-            deletePlaylistById(playlists, id);
-            return new Response(null, {});
-        }
+    // if (request.method == "DELETE") {
+    //     // Delete playlist if owner
+    //     let route = new URLPattern({ pathname: "/user/playlists/:id" });
+    //     if (route.test(request.url)) {
+    //         let match = route.exec(request.url);
+    //         let id = pathname.groups.id
+    //         deletePlaylistById(playlists, id);
+    //         return new Response(null, {});
+    //     }
 
-        // Delete song from playlist if owner FRÅGA OM DETTA SKA VA I PATCH ELLER DELETE
-        let songRoute = new URLPattern({ pathname: "/user/playlists/:id/:songId" });
-        if (route.test(request.url)) {
-            let match = songRoute.exec(request.url);
-            let playlistId = pathname.groups.id;
-            let songId = pathname.groups.songId;
+    //     // Delete song from playlist if owner FRÅGA OM DETTA SKA VA I PATCH ELLER DELETE
+    //     let songRoute = new URLPattern({ pathname: "/user/playlists/:id/:songId" });
+    //     if (route.test(request.url)) {
+    //         let match = songRoute.exec(request.url);
+    //         let playlistId = pathname.groups.id;
+    //         let songId = pathname.groups.songId;
 
-            deleteSongFromPlaylist(playlists, playlistId, songId);
+    //         deleteSongFromPlaylist(playlists, playlistId, songId);
 
-            return new Response(null, {});
-        }
-    }
+    //         return new Response(null, {});
+    //     }
+    // }
 
     if (url.pathname.startsWith("/uploads/")) {
     return serveDir(request, {
