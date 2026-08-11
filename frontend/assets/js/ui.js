@@ -176,24 +176,30 @@ class UI {
                         alert("Ingen inloggad användare");
                         return;
                     }
-                    const addedSongsList = document.querySelector("#addedSongsList");//bytade selector så att det funkar i bada form create playlist och add song på playlist sidan
-                    // Om texten "no songs yet" finns, så töms listan
-                    // if (addedSongsList.textContent.includes("no songs yet")) {
-                    //     addedSongsList.innerHTML = "";
-                    // }
 
-                    //ny
-                    //istället tömma ul,  syns det bara när låt aderas
-                    let alreadyAdded = false;
-                    for (let addedSong of addedSongs) {
-                        if (addedSong.songId === song.id) {
-                            alreadyAdded = true;
-                            break;
+                    let playlistId = window.location.pathname.split("/")[2];
+                    if (playlistId) {
+                        let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
+                        let alreadyAdded = false;
+                        for (let playlistSong of playlistData.playlist.songs) {
+                            if (playlistSong.songId === song.id) {
+                                alreadyAdded = true;
+                                break;
+                            }
                         }
-                    }
-                    if (alreadyAdded) {
-                        alert("Den låten är redan tillagd!");
-                        return;
+                        if (alreadyAdded) {
+                            alert("Den låten är redan tillagd!");
+                            return;
+                        }
+                        await api.patchRequest(`/api/playlists/${playlistId}/songs`, {
+                            songId: song.id,
+                            editorId: currentUser.id
+                        });
+                    } else {
+                        addedSongs.push({
+                            songId: song.id,
+                            editorId: currentUser.id
+                        });
                     }
 
                     let wrapper = document.getElementById("wrapperForAddedSongsList")
@@ -201,7 +207,7 @@ class UI {
                         wrapper.classList.remove("hidden")
                         wrapper.classList.add("input")
                     }
-
+                    const addedSongsList = document.querySelector("#addedSongsList");
                     let addedLi = document.createElement("li");
                     addedLi.innerHTML = `
                     ${song.name} - ${song.artist}
@@ -220,18 +226,6 @@ class UI {
                     });
                     if (addedSongsList) {
                         addedSongsList.appendChild(addedLi);
-                    }
-                    let playlistId = window.location.pathname.split("/")[2];
-                    if (playlistId) {
-                        await api.patchRequest(`/api/playlists/${playlistId}/songs`, {
-                            songId: song.id,
-                            editorId: currentUser.id
-                        });
-                    } else {
-                        addedSongs.push({
-                            songId: song.id,
-                            editorId: currentUser.id
-                        });
                     }
                 });
             } else {

@@ -666,18 +666,25 @@
     },
     {
       "id": "p-10",
-      "ownerId": "u-1",
-      "name": "",
-      "description": "",
-      "imgUrl": "/uploads/65d9c569-a433-4791-a730-ea5b6b1f9d6b.jpg",
-      "likes": [],
+      "ownerId": "u-3",
+      "name": "XO",
+      "description": "Til I Overdose",
+      "imgUrl": "/uploads/4d3b2432-972f-4fa3-a445-39742773cc2f.png",
+      "likes": [
+        "dilara"
+      ],
       "tags": [
-        "emo"
+        "chill",
+        "sad"
       ],
       "songs": [
         {
-          "songId": "s-2",
-          "editorId": "u-1"
+          "songId": "s-6",
+          "editorId": "u-3"
+        },
+        {
+          "songId": "s-63",
+          "editorId": "u-3"
         }
       ]
     }
