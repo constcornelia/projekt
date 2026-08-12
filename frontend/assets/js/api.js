@@ -84,7 +84,6 @@ class API {
             return response;
         } catch (error) {
             console.log(error);
-            return;
         }
     }
 }
