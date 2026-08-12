@@ -207,6 +207,17 @@ class UI {
                             editorId: currentUser.id
                         });
                     } else {
+                        let alreadyAdded = false;
+                        for (let addedSong of addedSongs) {
+                            if (addedSong.songId === song.id) {
+                                alreadyAdded = true;
+                                break;
+                            }
+                        }
+                        if (alreadyAdded) {
+                            alert("Den låten är redan tillagd!");
+                            return;
+                        }
                         addedSongs.push({
                             songId: song.id,
                             editorId: currentUser.id
