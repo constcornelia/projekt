@@ -73,4 +73,3 @@ clear.addEventListener("click", async function clearFilters(event) {
 
 ui.getPlaylists();
 ui.dropDownsTags(tagInput);
-ui.showProfile();
