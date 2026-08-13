@@ -265,17 +265,12 @@ class UI {
             }
             position.appendChild(li);
         }
-        //ny
-        // div id="SearchResultSongs" bli synlig
         let container = document.querySelector("#SearchResultSongs");
         container.classList.remove("hidden")
         container.classList.add("input")
-
-    
         if(!position.innerHTML){
             position.innerHTML = "no song found"
-        };//ny
-
+        };
     }
     
     async renderPlaylistInfo(playlist, position) {
