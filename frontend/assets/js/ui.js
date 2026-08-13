@@ -172,7 +172,7 @@ class UI {
         for (let song of songs) {
             let li = document.createElement("li");
             // Om låtarna ska kunna läggas till i en spellista
-            if (add) {
+            if (add) { //true, låtar ska läggas till 
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
                     <button type="button" class="AddSongButton WhiteButton">
@@ -189,7 +189,7 @@ class UI {
                     }
 
                     let playlistId = window.location.pathname.split("/")[2];
-                    if (playlistId) {
+                    if (playlistId) { //låtar ska läggas till i ett befintligt playlist, ex add songs i playlist.js 
                         let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
                         let alreadyAdded = false;
                         for (let playlistSong of playlistData.playlist.songs) {
@@ -206,7 +206,7 @@ class UI {
                             songId: song.id,
                             editorId: currentUser.id
                         });
-                    } else {
+                    } else { //låtar ska läggas till i ett nytt playlist, ex add songs i newPlaylist.js 
                         let alreadyAdded = false;
                         for (let addedSong of addedSongs) {
                             if (addedSong.songId === song.id) {
@@ -222,7 +222,7 @@ class UI {
                             songId: song.id,
                             editorId: currentUser.id
                         });
-                    }
+                    } //vanlig rendering av befintliga låtar
 
                     let wrapper = document.getElementById("wrapperForAddedSongsList")
                     if(wrapper){
