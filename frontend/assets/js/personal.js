@@ -37,13 +37,13 @@ const ui = new UI();
 form.addEventListener("submit", async function onSubmit(event) {
     event.preventDefault();
     let tag = tagInput.value;
-    let sort = sortInput.checked;
+    let sort = sortInput.value;
     let endpoint = "/api/profile/playlists/liked";
     const params = new URLSearchParams();
     if (tag && tag !== "ShowAll") {
         params.append("tag", tag);
     }
-    if (sort) {
+    if (sort === "Sort-Liked-playlists") {
         params.append("sort", "likes");
     }
     let finalPoint = endpoint;

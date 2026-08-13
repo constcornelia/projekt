@@ -96,7 +96,7 @@ if (addTagButton) {
         if (selectedTag == "") return;
         //ny
         // förslåg att kolla att tag är unik
-        if(selectedTags.includes(selectedTag))return
+        if(selectedTags.includes(selectedTag)) return;
         selectedTags.push(selectedTag);
         let tagList = document.querySelector("#SelectedTags");
         let tag = document.createElement("p");
