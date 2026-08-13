@@ -11,7 +11,7 @@ const ui = new UI();
 form.addEventListener("submit", async function onSubmit(event) {
     event.preventDefault();
     let tag = tagInput.value;
-    let sort = sortInput.value;
+    let sort = sortInput.checked;
     let endpoint = "/api/playlists";
     const params = new URLSearchParams();
     // Om användaren valt en specifik tag
