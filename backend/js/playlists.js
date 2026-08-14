@@ -60,6 +60,7 @@ export function getPlaylistById(playlists, songs, id) {
             foundPlaylist = playlist;
         }
     }
+
     if (!foundPlaylist) return null;
     // Array som ska innehålla alla fullständiga låt-objekt
     let playlistSongs = [];
@@ -74,6 +75,95 @@ export function getPlaylistById(playlists, songs, id) {
     }
     return { playlist: foundPlaylist, songs: playlistSongs };
 }
+
+export function getSpecifiedPlaylists(playlists, user, specification) {
+    let specifiedPlaylists = [];
+
+    for (let playlist of playlists) {
+        if (specification == "liked") {
+            for (let like of playlist.likes) {
+                if (like == user.id) {
+                    specifiedPlaylists.push(playlist);
+                }
+            }
+        }
+
+        if (specification == "owned") {
+            if (ownerId == user.id) {
+                specifiedPlaylists.push(playlist);
+            }
+        }
+
+        if (specification == "edited") {
+            for (let editor of playlist.songs) {
+                if (editor.editorId == user.id) {
+                    specifiedPlaylists.push(playlist);
+                }
+            }
+        }
+    }
+
+    return specifiedPlaylists;
+}
+
+export function likePlaylist(playlist, user) {
+    let liked = false;
+
+    for (let i = 0; i < playlist.likes.length; i++) {
+        if (playlist.likes[i] == user.id) {
+            liked = true;
+            playlist.likes.splice(i, 1);
+            break;
+        }
+    }
+
+    if (!liked) playlist.likes.push(user.id);
+    return playlist;
+}
+
+export function addSongToPlaylist(playlists, id, user, song) {
+    let foundPlaylist = null;
+    for (let playlist of playlists) {
+        if (playlist.id == id) {
+            foundPlaylist = playlist; 
+        }
+    }
+
+    let songAdded = { songId: song.songId, editorId: user.id };
+    foundPlaylist.songs.push(songAdded);
+    return foundPlaylist;
+}
+
+
+    // if (request.method == "PATCH") {
+    //     let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs" });
+    //     if (songRoute.test(request.url)) {
+    //         let match = songRoute.exec(request.url);
+    //         let playlistId = match.pathname.groups.id;
+    //         let body = await request.json();
+    //         let playlist = null;
+    //         for (let p of playlists) {
+    //             if (p.id == playlistId) {
+    //                 playlist = p;
+    //             }
+    //         }
+    //         if (!playlist) {
+    //             return handleResponse("Playlist not found", 404, null);
+    //         }
+    //         playlist.songs.push({
+    //             songId: body.songId,
+    //             editorId: body.editorId
+    //         });
+    //         Deno.writeTextFileSync(
+    //             "../data/database.json",
+    //             JSON.stringify(data, null, 2)
+    //         );
+    //         return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
+    //         );
+    //     }
+    // }
+
+
 
 // export function getPlaylistById(playlists, id) {
 //     for (let playlist of playlists) {

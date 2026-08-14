@@ -1,8 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-
 import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
-import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -168,26 +167,18 @@ async function handler(request) {
         if (request.method == "GET") {
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
-
+            
             if (!user) {
                 let body = JSON.stringify({ error: "Unauthorized" });
                 return handleResponse(body, 401, headers);
-            }
-
-            if (!user) {
-                return handleResponse(JSON.stringify({error: "Unauthorized"}), 401, headers);
             }
 
             let body = JSON.stringify(user);
             return handleResponse(body, 200, headers);
         }
 
-        if (request.method == "POST") {
-            // Skapa spellista?
-        }
-
         if (request.method == "PATCH") {
-            // Redigera profil?
+            // Redigera profilbild
         }
     }
 
@@ -202,7 +193,6 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-
     let playlistPage = new URLPattern({ pathname: "/playlists/:id" });
     if (playlistPage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
 
@@ -211,15 +201,61 @@ async function handler(request) {
         let match = playlistRoute.exec(request.url);
         let id = match.pathname.groups.id;
 
-        // Felhantera
+        if (request.method == "GET") {
+            let playlist = getPlaylistById(playlists, songs, id);
+    
+            // Felhantera
+    
+            let body = JSON.stringify(playlist);
+            return handleResponse(body, 200, headers); 
+        }
 
-        let playlist = getPlaylistById(playlists, songs, id);
-        let body = JSON.stringify(playlist);
-        return handleResponse(body, 200, headers); 
+        if (request.method == "PATCH") {
+            let songReq = await request.json();
+            console.log(songReq);
+
+            const activeCookie = request.headers.get("cookie");
+            let user = getActiveUser(activeCookie, cookies, users);
+
+            let playlist = addSongToPlaylist(playlists, id, user, songReq);
+            Deno.writeTextFileSync("../data/databse.json", JSON.stringify(data, null, 2));
+
+            let body = JSON.stringify(playlist);
+            return handleResponse(body, 200, headers);
+        }
     }
 
+
+    // if (request.method == "PATCH") {
+    //     let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs" });
+    //     if (songRoute.test(request.url)) {
+    //         let match = songRoute.exec(request.url);
+    //         let playlistId = match.pathname.groups.id;
+    //         let body = await request.json();
+    //         let playlist = null;
+    //         for (let p of playlists) {
+    //             if (p.id == playlistId) {
+    //                 playlist = p;
+    //             }
+    //         }
+    //         if (!playlist) {
+    //             return handleResponse("Playlist not found", 404, null);
+    //         }
+    //         playlist.songs.push({
+    //             songId: body.songId,
+    //             editorId: body.editorId
+    //         });
+    //         Deno.writeTextFileSync(
+    //             "../data/database.json",
+    //             JSON.stringify(data, null, 2)
+    //         );
+    //         return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
+    //         );
+    //     }
+    // }
+
     let profilePage = new URLPattern({ pathname: "/profile/:username" });
-    if (profilePage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
+    if (profilePage.test(request.url)) return serveFile(request, "../../frontend/personal.html");
 
     let profileRoute = new URLPattern({ pathname: "/api/profile/:username" });
     if (profileRoute.test(request.url)) {
@@ -234,94 +270,167 @@ async function handler(request) {
     }
 
 
+    if (url.pathname == "/api/songs" && request.method == "GET") {
+        let body = JSON.stringify(songs);
+        return handleResponse(body, 200, headers);
+    }
+
+    // Inte klar
+    if (url.pathname == "/api/profile/playlists" && request.method == "GET") {
+        const activeCookie = request.headers.get("cookie");
+        let user = getActiveUser(cookies, activeCookie, users);
+
+        let liked = url.searchParams.get("liked");
+        if (liked == 1) {
+            let likedPlaylists = getSpecifiedPlaylists(playlists, user, "liked");
+
+            if (!likedPlaylists) {
+                let body = JSON.stringify({ error: "Not Found" });
+                return handleResponse(body, 404, headers);
+            }
+
+            let body = JSON.stringify(likedPlaylists);
+            return handleResponse(body, 200, headers);
+        }
+        
+    } 
+
+    let likeRoute = new URLPattern({ pathname: "api/playlists/:id/like" });
+    if (likeRoute.test(request.url)) {
+        let match = likeRoute.exec(request.url);
+        let id = match.pathname.groups.id;
+
+        if (request.method == "POST") {
+            const activeCookie = request.headers.get("cookie");
+            let user = getActiveUser(activeCookie, cookies, users);
+    
+            let playlist = getPlaylistById(playlists, songs, id);
+            if (!playlist) {
+                let body = JSON.stringify({ error: "Playlist Not Found" });
+                return handleResponse(body, 404, null);
+            }
+    
+            likePlaylist(playlist, user);
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            
+            let body = JSON.stringify(playlist);
+            return handleResponse(body, 200, headers);
+        }
+        let body = JSON.stringify({ error: "Method not allowed" });
+        return handleResponse(body, 405, null);
+    }
 
 
+    
+
+    /* 
+    if (request.method == "PATCH") {
+            let playlistId = match.pathname.groups.id;
+            let body = await request.json();
+            let playlist = null;
+            for (let p of playlists) {
+                if (p.id == playlistId) {
+                    playlist = p;
+                }
+            }
+            if (!playlist) {
+                return handleResponse("Playlist not found", 404, null);
+            }
+            playlist.songs.push({
+                songId: body.songId,
+                editorId: body.editorId
+            });
+            Deno.writeTextFileSync(
+                "../data/database.json",
+                JSON.stringify(data, null, 2)
+            );
+            return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
+            );
+        }
+    }
+    */
 
 
+    /* 
+
+            let alreadyLiked = false;
+            // Sparar vilken plats i arrayen användaren finns på och -1 betyder "inte hittad"
+            let likeIndex = -1;
+            // Loopar igenom alla användare som har likat spellistan
+            for (let i = 0; i < playlist.likes.length; i++) {
+                // Kollar om användaren i arrayen är samma som den inloggade användaren
+                if (playlist.likes[i] == currentUser) {
+                    // Om användaren hittas betyder det att den redan har likat
+                    alreadyLiked = true;
+                    // Sparar vilken position användaren finns på i arrayen
+                    // Exempel:
+                    // ["dilara", "cornelia", "elena"]
+                    // Om currentUser är "cornelia" blir likeIndex = 1
+                    likeIndex = i;
+                }
+            }
+            if (alreadyLiked) {
+                // Första värdet är positionen
+                // Andra värdet är hur många element som ska tas bort
+
+                // Exempel:
+                // ["dilara", "cornelia", "elena"]
+                // splice(1, 1)
+                // Resultat:
+                // ["dilara", "elena"]
+                playlist.likes.splice(likeIndex, 1);
+            } else {
+                // Om användaren INTE redan finns i likes-arrayen
+                // läggs användaren till sist i arrayen
+
+                // Exempel:
+                // ["dilara", "cornelia"]
+                // push("elena")
+                // Resultat:
+                // ["dilara", "cornelia", "elena"]
+                playlist.likes.push(currentUser);
+
+            }
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            let body = JSON.stringify(playlist);
+            return handleResponse(body, 200, headers);
+        }
+    
+    */
 
 
     if (request.method == "GET") {
-        let headers = { "Content-Type": "application/json" };
-        // Hämtar cookie från requesten
-        // Exempel: "session_id=abc123"
-        let cookie = request.headers.get("cookie");
-        // Sparar den inloggade användaren
-        let currentUser = null;
-        // Kör bara om en cookie finns
-        if (cookie) {
-            // Delar upp cookie-strängen vid "="
-            // Exempel:
-            // ["session_id", "abc123"]
-            let parts = cookie.split("=");
-            // Hämtar själva cookie-id:t
-            // Exempel:
-            // "abc123"
-            let cookieId = parts[1];
-            // Loopar igenom alla sparade sessions-cookies
-            for (let i = 0; i < cookies.length; i++) {
-                // Om cookie-id:t matchar en sparad cookie
-                if (cookies[i].cookie == cookieId) {
-                    // Sparar användaren som är inloggad
-                    // Exempel:
-                    // {
-                    //   username: "cornelia",
-                    //   cookie: "abc123"
-                    // }
-                    currentUser = cookies[i];
-                }
-            }
-        }
+        // let headers = { "Content-Type": "application/json" };
+        // // Hämtar cookie från requesten
+        // // Exempel: "session_id=abc123"
+        // let cookie = request.headers.get("cookie");
+        // // Sparar den inloggade användaren
+        // let currentUser = null;
+        // // Kör bara om en cookie finns
+        // if (cookie) {
+        //     // Delar upp cookie-strängen vid "="
+        //     // Exempel:
+        //     // ["session_id", "abc123"]
+        //     let parts = cookie.split("=");
+        //     // Hämtar själva cookie-id:t
+        //     // Exempel:
+        //     // "abc123"
+        //     let cookieId = parts[1];
+        //     // Loopar igenom alla sparade sessions-cookies
+        //     for (let i = 0; i < cookies.length; i++) {
+        //         // Om cookie-id:t matchar en sparad cookie
+        //         if (cookies[i].cookie == cookieId) {
+        //             // Sparar användaren som är inloggad
+        //             // Exempel:
+        //             // {
+        //             //   username: "cornelia",
+        //             //   cookie: "abc123"
+        //             // }
+        //             currentUser = cookies[i];
+        //         }
+        //     }
+        // }
 
-        if (url.pathname == "/api/playlists") {
-            let tag = url.searchParams.get("tag");
-            if (tag) playlists = filterPlaylistsByTag(playlists, tag);
-
-            let sort = url.searchParams.get("sort");
-            if (sort === "likes") playlists = sortPlaylistsByLikes(playlists);
-            
-            let body = JSON.stringify(playlists);
-            return handleResponse(body, 200, headers);
-        }
-
-        // Get all users OBS: TROR INTE VI BEHÖVER DEN HÄR
-        if (url.pathname == "/api/users") {
-            users = JSON.stringify(users);
-            return new Response(users, {
-                status: 200,
-                headers: headers
-            });
-        }
-
-        if (url.pathname == "/api/songs") {
-            let body = JSON.stringify(songs);
-            return handleResponse(body, 200, headers);
-        }
-
-        // Search for a playlist by name and description
-        if (url.pathname == "/api/playlists/search") {
-            let phrase = url.searchParams.get("q");
-            if (phrase) playlists = getPlaylistBySearch(playlists, phrase);
-            
-            let body = JSON.stringify(playlists);
-            return handleResponse(body, 200, headers);
-        }
-
-        // Search for a song by artist or title to add to a playlist
-        if (url.pathname == "/api/songs/search") {
-            let phrase = url.searchParams.get("q");
-            if (phrase) songs = getSongsBySearch(songs, phrase);
-            
-            let body = JSON.stringify(songs);
-            return handleResponse(body, 200, headers);
-        }
-
-        // Get all tags (for "select genre")
-        if (url.pathname == "/api/tags") {
-            let tags = getTags(playlists);
-            
-            let body = JSON.stringify(tags);
-            return handleResponse(body, 200, headers);
-        }
 
         // const cookie = request.headers.get("cookie");
         // let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
@@ -334,52 +443,15 @@ async function handler(request) {
         //     // Get users name + pfp
         // }
 
-        if (url.pathname == "/api/profile/info") {
-            // Exempel: "session_id=abc123"
-            let cookie = request.headers.get("cookie");
-            // Om ingen cookie finns så är användaren är inte inloggad
-            if (!cookie) {
-                return new Response(null, { status: 401 });
-            }
-            // Delar upp texten vid "="
-            // Exempel: ["session_id", "abc123"]
-            let parts = cookie.split("=");
-            let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
 
-            // Sparar användaren om det hittar rätt cookie
-            let user = null;
-            for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
-                if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
-                    let foundUser = null;
-                    for (let u of users) {
-                        if (u.username == cookies[i].username) {
-                            foundUser = u; //hittar user som lagt till en låt
-                        }
-                    }
-                    user = {
-                        id: foundUser.id,
-                        username: foundUser.username
-                    };
-                    break;
-                }
-            }
-            if (!user) { // Om ingen användare
-                return new Response(null, { status: 404 });
-            }
-            return new Response(JSON.stringify(user), {
-                status: 200,
-                headers: { "Content-Type": "application/json" }
-            });
-        }
-
-        if (url.pathname == "/api/profile/playlists/owned") {
-            let ownedPlaylists = getOwnedPlaylists(playlists, user);
-            let body = JSON.stringify(ownedPlaylists);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
-        }
+        // if (url.pathname == "/api/profile/playlists/owned") {
+        //     let ownedPlaylists = getOwnedPlaylists(playlists, user);
+        //     let body = JSON.stringify(ownedPlaylists);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers
+        //     });
+        // }
 
         // if (url.pathname == "/api/profile/playlists/liked") {
         //     let likedPlaylists = getLikedPlaylists(playlists, user);
@@ -390,80 +462,45 @@ async function handler(request) {
         //     });
         // }
 
-        if (url.pathname == "/api/profile/playlists/liked") {
-            if (!currentUser) return handleResponse("Unauthorized", 401, null);
-            let foundUser = null;
-            for (let user of users) {
-                if (user.username == currentUser.username) {
-                    foundUser = user;
-                }
-            }
-            let likedPlaylists = getLikedPlaylists(playlists, foundUser);
-            let tag = url.searchParams.get("tag");
-            if (tag) {
-                likedPlaylists = filterPlaylistsByTag(likedPlaylists, tag);
-            }
-            let sort = url.searchParams.get("sort");
-            if (sort === "likes") {
-                likedPlaylists = sortPlaylistsByLikes(likedPlaylists);
-            }
-            let body = JSON.stringify(likedPlaylists);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
-        }
+        // if (url.pathname == "/api/profile/playlists/liked") {
+        //     if (!currentUser) return handleResponse("Unauthorized", 401, null);
+        //     let foundUser = null;
+        //     for (let user of users) {
+        //         if (user.username == currentUser.username) {
+        //             foundUser = user;
+        //         }
+        //     }
+        //     let likedPlaylists = getLikedPlaylists(playlists, foundUser);
+        //     let tag = url.searchParams.get("tag");
+        //     if (tag) {
+        //         likedPlaylists = filterPlaylistsByTag(likedPlaylists, tag);
+        //     }
+        //     let sort = url.searchParams.get("sort");
+        //     if (sort === "likes") {
+        //         likedPlaylists = sortPlaylistsByLikes(likedPlaylists);
+        //     }
+        //     let body = JSON.stringify(likedPlaylists);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers
+        //     });
+        // }
         
-        if (url.pathname == "/api/profile/playlists/contributed") {
-            let contributedPlaylist = getContributedPlaylists(playlists, user);
-            let body = JSON.stringify(contributedPlaylist);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
-        }
-        
-        let profileRoute = new URLPattern({ pathname: "/profile/:username" }); 
-        if (profileRoute.test(request.url)) return serveFile(request, "../../frontend/personal.html");
+        // if (url.pathname == "/api/profile/playlists/contributed") {
+        //     let contributedPlaylist = getContributedPlaylists(playlists, user);
+        //     let body = JSON.stringify(contributedPlaylist);
+        //     return new Response(body, {
+        //         status: 200,
+        //         headers: headers
+        //     });
+        // }
 
-
-        let profileApiRoute = new URLPattern({ pathname: "/api/profile/:username" });
-        if (profileApiRoute.test(request.url)) {
-            let match = profileApiRoute.exec(request.url);
-            let username = match.pathname.groups.username;
-
-            let user = getUserByUsername(users, username);
-            console.log(user);
-
-            let body = JSON.stringify(user);
-            return new Response(body, {
-                status: 200,
-                headers: headers
-            });
-        }
 
         // Get active user
             // Get owned playlists
             // Get liked playlists
 
         // Get playlist by id
-
-        let playlistPageRoute = new URLPattern({ pathname: "/playlists/:id" });
-        if (playlistPageRoute.test(request.url)) {
-            return serveFile(request, "../../frontend/public-playlist.html");
-        };
-
-        let route = new URLPattern({ pathname: "/api/playlists/:id" });
-        if (route.test(request.url)) {
-            let match = route.exec(request.url);
-            let id = match.pathname.groups.id;
-
-            let playlist = getPlaylistById(playlists, songs, id);
-            
-            let body = JSON.stringify(playlist);
-            return handleResponse(body, 200, headers); 
-        }
-    }
     
     // Lägg till spellista
     if (url.pathname == "/new-playlist") {
@@ -591,111 +628,33 @@ async function handler(request) {
         }
     }
     
-    if (request.method == "PATCH") {
-        let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
-        if (likeRoute.test(request.url)) {
-            let match = likeRoute.exec(request.url);
-            let playlistId = match.pathname.groups.id;
-            let cookie = request.headers.get("cookie");
-            // Om ingen cookie finns är användaren inte inloggad
-            if (!cookie) return handleResponse("Unauthorized", 401, null);
-
-            // Delar upp cookie strängen vid "="
-            let parts = cookie.split("=");
-            // Hämtar själva cookie-id:t
-            let cookieId = parts[1];
-
-            let currentUser = null;
-            // Loopar igenom sparade cookies för att hitta rätt användare
-            for (let i = 0; i < cookies.length; i++) {
-                // Om cookie id:t matchar
-                if (cookies[i].cookie == cookieId) {
-                    // Sparar användarens username
-                    currentUser = cookies[i].username;
-                }
-            }
-            // Om ingen användare hittades
-            if (!currentUser) return handleResponse("Unauthorized", 401, null);
-            let playlist = null;
-            // Loopar igenom alla spellistor
-            for (let i = 0; i < playlists.length; i++) {
-                // Om spellistans id matchar
-                if (playlists[i].id == playlistId) {
-                    // Sparar rätt spellista
-                    playlist = playlists[i];
-                }
-            }
-            // Om spellistan inte finns
-            if (!playlist) return handleResponse("Playlist not found", 404, null);
-            let alreadyLiked = false;
-            // Sparar vilken plats i arrayen användaren finns på och -1 betyder "inte hittad"
-            let likeIndex = -1;
-            // Loopar igenom alla användare som har likat spellistan
-            for (let i = 0; i < playlist.likes.length; i++) {
-                // Kollar om användaren i arrayen är samma som den inloggade användaren
-                if (playlist.likes[i] == currentUser) {
-                    // Om användaren hittas betyder det att den redan har likat
-                    alreadyLiked = true;
-                    // Sparar vilken position användaren finns på i arrayen
-                    // Exempel:
-                    // ["dilara", "cornelia", "elena"]
-                    // Om currentUser är "cornelia" blir likeIndex = 1
-                    likeIndex = i;
-                }
-            }
-            if (alreadyLiked) {
-                // Första värdet är positionen
-                // Andra värdet är hur många element som ska tas bort
-
-                // Exempel:
-                // ["dilara", "cornelia", "elena"]
-                // splice(1, 1)
-                // Resultat:
-                // ["dilara", "elena"]
-                playlist.likes.splice(likeIndex, 1);
-            } else {
-                // Om användaren INTE redan finns i likes-arrayen
-                // läggs användaren till sist i arrayen
-
-                // Exempel:
-                // ["dilara", "cornelia"]
-                // push("elena")
-                // Resultat:
-                // ["dilara", "cornelia", "elena"]
-                playlist.likes.push(currentUser);
-
-            }
-            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
-            let headers = { "Content-Type": "application/json"};
-            let body = JSON.stringify(playlist);
-            return handleResponse(body, 200, headers);
-        }
-        let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs" });
-        if (songRoute.test(request.url)) {
-            let match = songRoute.exec(request.url);
-            let playlistId = match.pathname.groups.id;
-            let body = await request.json();
-            let playlist = null;
-            for (let p of playlists) {
-                if (p.id == playlistId) {
-                    playlist = p;
-                }
-            }
-            if (!playlist) {
-                return handleResponse("Playlist not found", 404, null);
-            }
-            playlist.songs.push({
-                songId: body.songId,
-                editorId: body.editorId
-            });
-            Deno.writeTextFileSync(
-                "../data/database.json",
-                JSON.stringify(data, null, 2)
-            );
-            return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
-            );
-        }
-    }
+    // if (request.method == "PATCH") {
+    //     let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs" });
+    //     if (songRoute.test(request.url)) {
+    //         let match = songRoute.exec(request.url);
+    //         let playlistId = match.pathname.groups.id;
+    //         let body = await request.json();
+    //         let playlist = null;
+    //         for (let p of playlists) {
+    //             if (p.id == playlistId) {
+    //                 playlist = p;
+    //             }
+    //         }
+    //         if (!playlist) {
+    //             return handleResponse("Playlist not found", 404, null);
+    //         }
+    //         playlist.songs.push({
+    //             songId: body.songId,
+    //             editorId: body.editorId
+    //         });
+    //         Deno.writeTextFileSync(
+    //             "../data/database.json",
+    //             JSON.stringify(data, null, 2)
+    //         );
+    //         return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
+    //         );
+    //     }
+    // }
 
     if (url.pathname == "/api/add-song") {
         // Nog smartast om songreq innehåller id:et från usern, låten och spellistan
@@ -822,4 +781,5 @@ async function handler(request) {
 }
     return serveDir(request, { fsRoot: "../../frontend" });
     }
+}
 Deno.serve(handler);

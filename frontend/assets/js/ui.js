@@ -158,6 +158,7 @@ class UI {
         if (!position) return;
         position.innerHTML = "";
 
+        let addedSongs = [];
         for (let song of songs) {
             let li = document.createElement("li");
             // Om låtarna ska kunna läggas till i en spellista
@@ -210,10 +211,10 @@ class UI {
     async renderPlaylistInfo(playlist, position) {
         if (!position) return;
         // hämtar den inloggade användaren
-        let currentUser = await api.getRequest("/api/profile/info");
+        // let currentUser = await api.getRequest("/api/profile/info");
         // skapar delete knappen bara om användaren äger spellistan
         let deleteButton = "";
-        if (currentUser && currentUser.id == playlist.ownerId) {
+        if (/* currentUser && currentUser.id ==  */playlist.ownerId) {
             deleteButton = `
                 <button class="DeletePlaylistButton">
                     Delete playlist

@@ -50,12 +50,13 @@ export function getActiveUser(activeCookie, cookies, users) {
 }
 
 export function getUserByUsername(users, username) {
+    let foundUser = null;
     for (let user of users) {
-        if (user.usename == username) {
-            return user;
+        if (user.username == username) {
+            foundUser = user;
         }
     }
-    return null;
+    return foundUser;
 }
 
 
