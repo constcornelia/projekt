@@ -212,10 +212,11 @@ async function handler(request) {
 
         if (request.method == "PATCH") {
             let songReq = await request.json();
-            console.log(songReq);
 
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
+
+            // Felhantera
 
             let playlist = addSongToPlaylist(playlists, id, user, songReq);
             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
@@ -224,35 +225,6 @@ async function handler(request) {
             return handleResponse(body, 200, headers);
         }
     }
-
-
-    // if (request.method == "PATCH") {
-    //     let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs" });
-    //     if (songRoute.test(request.url)) {
-    //         let match = songRoute.exec(request.url);
-    //         let playlistId = match.pathname.groups.id;
-    //         let body = await request.json();
-    //         let playlist = null;
-    //         for (let p of playlists) {
-    //             if (p.id == playlistId) {
-    //                 playlist = p;
-    //             }
-    //         }
-    //         if (!playlist) {
-    //             return handleResponse("Playlist not found", 404, null);
-    //         }
-    //         playlist.songs.push({
-    //             songId: body.songId,
-    //             editorId: body.editorId
-    //         });
-    //         Deno.writeTextFileSync(
-    //             "../data/database.json",
-    //             JSON.stringify(data, null, 2)
-    //         );
-    //         return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
-    //         );
-    //     }
-    // }
 
     let profilePage = new URLPattern({ pathname: "/profile/:username" });
     if (profilePage.test(request.url)) return serveFile(request, "../../frontend/personal.html");
