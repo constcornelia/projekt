@@ -20,11 +20,21 @@ AddSongForm.addEventListener("submit", function (event) {
 // Brand     =   Song 
 // Category  =   Tags
 
-
 let sections = [
     document.querySelector("#PublicPlaylistsCollection"),
     document.querySelector("#PersonalPlaylistsCollection")
 ];
+
+function formatTags(tags) {
+    let result = "";
+    for (let tag of tags) {
+        if (result != "") {
+            result += " ";
+        }
+        result += "#" + tag;
+    }
+    return result;
+}
 
 class UI {
   async getPlaylists() {
@@ -60,10 +70,10 @@ class UI {
           <h1 class="title-UI">${playlist.name} </h1>
           <p>${ownerName}</p>
           <div class="playlist-actions">
-            <button class="LikePlaylist-Button system-UI"><span>${playlist.likes.length}</span></button>
+            <button class="LikePlaylist-Button WhiteLike system-UI"><span>${playlist.likes.length}</span></button>
             <button class="Play"></button>
           </div>
-          <p class="system-UI-accent">#${playlist.tags}</p>
+          <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
           <img src="${playlist.imgUrl}">
         </div>
         `;
@@ -122,12 +132,12 @@ class UI {
           <h1 class="title-UI">${playlist.name}</h1>
           <p>${ownerName}</p>
           <div class="playlist-actions">
-            <button class="LikePlaylist-Button system-UI">
+            <button class="LikePlaylist-Button WhiteLike system-UI">
               <span>${playlist.likes.length}</span>
             </button>
             <button class="Play StopPlaying"></button>
           </div>
-          <p class="system-UI-accent">#${playlist.tags}</p>
+          <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
           <img src="${playlist.imgUrl}">
         </div>
         `;
@@ -158,14 +168,13 @@ class UI {
         if (!position) return;
         position.innerHTML = "";
 
-        let addedSongs = [];
         for (let song of songs) {
             let li = document.createElement("li");
             // Om låtarna ska kunna läggas till i en spellista
-            if (add) {
+            if (add) { //true, låtar ska läggas till 
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
-                    <button type="button" class="AddSongButton">
+                    <button type="button" class="AddSongButton WhiteButton">
                         Add song
                     </button>
                 `;
@@ -177,25 +186,74 @@ class UI {
                         alert("Ingen inloggad användare");
                         return;
                     }
-                    const addedSongsList = document.querySelector(".songs ul");
-                    // Om texten "no songs yet" finns, så töms listan
-                    if (addedSongsList.textContent.includes("no songs yet")) {
-                        addedSongsList.innerHTML = "";
+
+                    let playlistId = window.location.pathname.split("/")[2];
+                    if (playlistId) { // låtar ska läggas till i ett befintligt playlist, ex add songs i playlist.js 
+                        let playlistData = await api.getRequest(`/api/playlists/${playlistId}`);
+                        let alreadyAdded = false;
+                        for (let playlistSong of playlistData.playlist.songs) {
+                            if (playlistSong.songId === song.id) {
+                                alreadyAdded = true;
+                                break;
+                            }
+                        }
+                        if (alreadyAdded) {
+                            alert("Den låten är redan tillagd!");
+                            return;
+                        }
+                        await api.patchRequest(`/api/playlists/${playlistId}`, {
+                            songId: song.id,
+                            editorId: currentUser.id
+                        });
+                    } else { // låtar ska läggas till i ett nytt playlist, ex add songs i newPlaylist.js 
+                        let alreadyAdded = false;
+                        for (let addedSong of addedSongs) {
+                            if (addedSong.songId === song.id) {
+                                alreadyAdded = true;
+                                break;
+                            }
+                        }
+                        if (alreadyAdded) {
+                            alert("Den låten är redan tillagd!");
+                            return;
+                        }
+                        addedSongs.push({
+                            songId: song.id,
+                            editorId: currentUser.id
+                        });
                     }
+                    let wrapper = document.getElementById("wrapperForAddedSongsList")
+                    if(wrapper){
+                        wrapper.classList.remove("hidden")
+                        wrapper.classList.add("input")
+                    }
+                    const addedSongsList = document.querySelector("#addedSongsList");
                     let addedLi = document.createElement("li");
-                    addedLi.textContent = `${song.name} - ${song.artist}`;
-                    addedSongsList.appendChild(addedLi);
-                    addedSongs.push({
-                        songId: song.id,
-                        editorId: currentUser.id
+                    addedLi.innerHTML = `
+                    ${song.name} - ${song.artist}
+                    <button type="button" class="Play StopPlaying"></button>
+                    <button type="button" class="RemoveSongButton WhiteButton">Remove Song</button>
+                    `;
+                    let removeButton = addedLi.querySelector(".RemoveSongButton");
+                    removeButton.addEventListener("click", function () {
+                        for (let i = 0; i < addedSongs.length; i++) {
+                            if (addedSongs[i].songId === song.id) {
+                                addedSongs.splice(i, 1);
+                                break;
+                            }
+                        }
+                        addedLi.remove();
                     });
+                    if (addedSongsList) {
+                        addedSongsList.appendChild(addedLi);
+                    }
                 });
             } else {
-                // Vanlig rendering av låtar i spellistor
+                // vanlig rendering av befintliga låtar
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
                     <button class="Play StopPlaying"></button>
-                    <button class="RemoveSongButton">Remove</button>
+                    <button class="RemoveSongButton WhiteButton">Remove Song</button>
                 `;
                 let removeButton = li.querySelector(".RemoveSongButton");
                 removeButton.addEventListener("click", async function () {
@@ -206,30 +264,39 @@ class UI {
             }
             position.appendChild(li);
         }
+        let container = document.querySelector("#SearchResultSongs");
+        container.classList.remove("hidden")
+        container.classList.add("input")
+        if(!position.innerHTML){
+            position.innerHTML = "no song found"
+        };
     }
     
     async renderPlaylistInfo(playlist, position) {
         if (!position) return;
         // hämtar den inloggade användaren
-        // let currentUser = await api.getRequest("/api/profile/info");
+        let currentUser = await api.getRequest("/api/profile/info");
         // skapar delete knappen bara om användaren äger spellistan
         let deleteButton = "";
-        if (/* currentUser && currentUser.id ==  */playlist.ownerId) {
+        if (currentUser && currentUser.id == playlist.ownerId) {
             deleteButton = `
-                <button class="DeletePlaylistButton">
+                <button class="DeletePlaylistButton OrangeButton">
                     Delete playlist
                 </button>
             `;
+            let deletePlaceholder = document.querySelector("div.edit-actions")
+            deletePlaceholder.innerHTML = `${deleteButton}`
         }
         position.innerHTML = `
             <h1 id="PlaylistName" class="title">${playlist.name}</h1>
             <p id="PlaylistDescription" class="system-UI">${playlist.description}</p>
-            <p id="PlaylistTag" class="system-UI-accent">${playlist.tags}</p>
+            <p id="PlaylistTag" class="system-UI-accent">${formatTags(playlist.tags)}</p>
             <img src="${playlist.imgUrl}">
-            ${deleteButton}
         `;
         // delete knappen finns bara för ägaren
-        let deleteButtonElement = position.querySelector(".DeletePlaylistButton");
+        let deleteButtonElement = document.querySelector(".DeletePlaylistButton");
+        console.log(deleteButtonElement);
+        
         if (deleteButtonElement) {
             deleteButtonElement.addEventListener("click", async function () {
                 let playlistId = playlist.id;
@@ -245,9 +312,9 @@ class UI {
             likeButton.addEventListener("click", async function(event) {
                 event.preventDefault();
                 let playlistId = window.location.pathname.split("/")[2];
-                await api.patchRequest(`/api/playlists/${playlistId}/like`);
-                let updatedPlaylist =  await api.getRequest( `/api/playlists/${playlistId}`);
-                likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length;
+                await api.patchRequest(`/api/playlists/${playlistId}/like`); //patch lägger till och tar bort användarens like
+                let updatedPlaylist =  await api.getRequest( `/api/playlists/${playlistId}`); //hämtar den upptaderade spellistan
+                likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length; //så att den nya antalet likes kan visas direkt i knappen
             });
         }
     }

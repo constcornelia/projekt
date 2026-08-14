@@ -218,7 +218,7 @@ async function handler(request) {
             let user = getActiveUser(activeCookie, cookies, users);
 
             let playlist = addSongToPlaylist(playlists, id, user, songReq);
-            Deno.writeTextFileSync("../data/databse.json", JSON.stringify(data, null, 2));
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
 
             let body = JSON.stringify(playlist);
             return handleResponse(body, 200, headers);
