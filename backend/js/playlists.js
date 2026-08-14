@@ -41,7 +41,7 @@ export function getPlaylistsBySearch(playlists, phrase) {
     let playlistsBySearch = [];
 
     for (let playlist of playlists) {            
-        phrase.toLowerCase();
+        phrase = phrase.toLowerCase();
         let name = playlist.name.toLowerCase();
         let description = playlist.description.toLowerCase();
         
