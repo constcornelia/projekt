@@ -313,9 +313,9 @@ class UI {
             likeButton.addEventListener("click", async function(event) {
                 event.preventDefault();
                 let playlistId = window.location.pathname.split("/")[2];
-                await api.patchRequest(`/api/playlists/${playlistId}/like`);
-                let updatedPlaylist =  await api.getRequest( `/api/playlists/${playlistId}`);
-                likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length;
+                await api.patchRequest(`/api/playlists/${playlistId}/like`); //patch lägger till och tar bort användarens like
+                let updatedPlaylist =  await api.getRequest( `/api/playlists/${playlistId}`); //hämtar den upptaderade spellistan
+                likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length; //så att den nya antalet likes kan visas direkt i knappen
             });
         }
     }
