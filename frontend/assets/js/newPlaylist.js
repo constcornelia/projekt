@@ -49,7 +49,7 @@ createPlaylistForm.addEventListener("submit", async function (event) {
     // Lägger till alla sparade låtar
     formData.append("songs", JSON.stringify(addedSongs));
     // Skickar spellistan till servern
-    await fetch("/api/playlists", {
+    await fetch("/new-playlist", {
         method: "POST",
         body: formData
     });

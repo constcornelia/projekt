@@ -89,7 +89,7 @@ export function getSpecifiedPlaylists(playlists, user, specification) {
         }
 
         if (specification == "owned") {
-            if (ownerId == user.id) {
+            if (playlist.ownerId == user.id) {
                 specifiedPlaylists.push(playlist);
             }
         }
@@ -102,7 +102,6 @@ export function getSpecifiedPlaylists(playlists, user, specification) {
             }
         }
     }
-
     return specifiedPlaylists;
 }
 
@@ -135,33 +134,8 @@ export function addSongToPlaylist(playlists, id, user, song) {
 }
 
 
-    // if (request.method == "PATCH") {
-    //     let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs" });
-    //     if (songRoute.test(request.url)) {
-    //         let match = songRoute.exec(request.url);
-    //         let playlistId = match.pathname.groups.id;
-    //         let body = await request.json();
-    //         let playlist = null;
-    //         for (let p of playlists) {
-    //             if (p.id == playlistId) {
-    //                 playlist = p;
-    //             }
-    //         }
-    //         if (!playlist) {
-    //             return handleResponse("Playlist not found", 404, null);
-    //         }
-    //         playlist.songs.push({
-    //             songId: body.songId,
-    //             editorId: body.editorId
-    //         });
-    //         Deno.writeTextFileSync(
-    //             "../data/database.json",
-    //             JSON.stringify(data, null, 2)
-    //         );
-    //         return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
-    //         );
-    //     }
-    // }
+export function createPlaylist(playlistReq, playlists, filename, id) {}
+
 
 
 
@@ -212,20 +186,6 @@ export function addSongToPlaylist(playlists, id, user, song) {
 //     return contributedPlaylists;
 // }
 
-
-
-// export function getPlaylistBySearch(playlists, query) {
-//     let filteredPlaylists = [];
-
-//     let q = query.toLowerCase();
-
-//     for (let playlist of playlists) {
-//         if (playlist.name.toLowerCase().includes(q) || playlist.tags.includes(q) || playlist.description.toLowerCase().includes(q)) {
-//             filteredPlaylists.push(playlist);
-//         }
-//     }
-//     return filteredPlaylists;
-// }
 
 
 

@@ -21,17 +21,71 @@ export function checkLogin(users, req, cookieId, cookies) {
     return false;
 }
 
-export function checkSignup(users, req, cookieId, cookies) {
-    // Sätt required på fälten
-    // Informera användaren om ett användarnamn redan är taget
-    // Skapa cookie + användare
+export function checkSignup(users, req, filename, cookieId, cookies, id) {
+    const username = req.get("username");
+    const password = req.get("password");
+
     for (let user of users) {
         if (user.username == req.username) {
+            console.log("1")
             return false;
         }
     }
-    return true;
+
+    if (!username || !password) {
+        console.log("2");
+        return false;
+    }
+    console.log("test");
+
+    let newUser = {
+        id: id,
+        username: username,
+        password: password,
+        profilePicUrl: `../uploads/${filename}`,
+    };
+    console.log('newuser: ', newUser);
+    users.push(newUser);
+
+    let cookie = { username: req.username, cookie: cookieId };
+    cookies.push(cookie);
+
+    return newUser;
 }
+
+/* 
+checkSignup(users, filename, signupReq)
+                // for (let user of users) {
+                //     if (username == user.username) {
+                //         return handleResponse("Username is already taken", 401);
+                //     }
+                // }
+                
+                // if (!username || !password) {
+                //     return handleResponse("Input data missing", 400);
+                // }
+            
+                // createUser(users, filename, username, password);
+                // Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
+                
+                // let cookieId = createRandomString();
+                // let cookie = { username: username, cookie: cookieId };
+                // cookies.push(cookie);
+            
+                // let headers = {
+                //     "Set-Cookie": "session_id=" + cookieId + "; Max-Age=86400; Path=/",
+                //     "Location": "/"
+                // };
+                // return handleResponse(null, 303, headers);
+
+
+    {
+      "id": "u-3",
+      "username": "dilara",
+      "password": "moni",
+      "profilePicUrl": "msp.png"
+    }
+*/
 
 export function getActiveUser(activeCookie, cookies, users) {
     let activeUser = null;
@@ -46,6 +100,7 @@ export function getActiveUser(activeCookie, cookies, users) {
             }
         }
     }
+
     return activeUser;
 }
 
@@ -58,6 +113,15 @@ export function getUserByUsername(users, username) {
     }
     return foundUser;
 }
+
+/* 
+    {
+      "id": "u-3",
+      "username": "dilara",
+      "password": "moni",
+      "profilePicUrl": "msp.png"
+    }
+*/
 
 
 // /* 

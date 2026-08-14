@@ -520,6 +520,10 @@
         {
           "songId": "s-1",
           "editorId": "u-3"
+        },
+        {
+          "songId": "s-28",
+          "editorId": "u-2"
         }
       ]
     },
@@ -546,7 +550,10 @@
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
       "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
-      "likes": [],
+      "likes": [
+        "u-1",
+        "u-2"
+      ],
       "tags": [
         "workout",
         "hype"
@@ -601,6 +608,10 @@
         {
           "songId": "s-44",
           "editorId": "u-1"
+        },
+        {
+          "songId": "s-17",
+          "editorId": "u-2"
         }
       ]
     },
