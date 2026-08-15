@@ -43,6 +43,13 @@ async function handler(request) {
 
     if (url.pathname == "/welcome" && request.method == "GET") return serveFile(request, "../../frontend/intro.html");
 
+    let authorizedPages = ["edit.html", "main.html", "new-playlist.html", "personal.html", "public-playlist.html"];
+    if (url.pathname.includes(authorizedPages) && request.method == "GET") {
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) return serveFile(request, "../../frontend/intro.html");
+    }
+
     if (url.pathname == "/" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
 
@@ -132,6 +139,13 @@ async function handler(request) {
     if (url.pathname == "/api/tags" && request.method == "GET") {
         let tags = getTags(playlists);
 
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) {
+            let body = JSON.stringify({ message: "No access" });
+            return handleResponse(body, 401, headers);
+        }
+
         if (!tags) {
             let body = JSON.stringify({ message: "No tags found" });
             return handleResponse(body, 404, headers);
@@ -143,6 +157,13 @@ async function handler(request) {
 
     // Sort playlists
     if (url.pathname == "/api/playlists" && request.method == "GET") {
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) {
+            let body = JSON.stringify({ message: "No access" });
+            return handleResponse(body, 401, headers);
+        }
+
         let tag = url.searchParams.get("tag");
         if (tag) playlists = filterPlaylistsByTag(playlists, tag);
 
@@ -160,6 +181,13 @@ async function handler(request) {
 
     // Search for a playlist by name and description
     if (url.pathname == "/api/playlists/search" && request.method == "GET") {
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) {
+            let body = JSON.stringify({ message: "No access" });
+            return handleResponse(body, 401, headers);
+        }
+
         let phrase = url.searchParams.get("q");
         if (phrase) playlists = getPlaylistsBySearch(playlists, phrase);
 
@@ -174,6 +202,13 @@ async function handler(request) {
 
     // Get all users 
     if (url.pathname == "/api/users" && request.method == "GET") {
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) {
+            let body = JSON.stringify({ message: "No access" });
+            return handleResponse(body, 401, headers);
+        }
+
         if (!users) {
             let body = JSON.stringify({ message: "No users found" });
             return handleResponse(body, 404, headers);
@@ -184,8 +219,15 @@ async function handler(request) {
     }
 
     // Get logged in user's info + edit user info **
-    if (url.pathname == "/api/profile/info") {
+    if (url.pathname == "/api/profile/info" && request.method == "GET") {
         if (request.method == "GET") {
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) {
+            let body = JSON.stringify({ message: "No access" });
+            return handleResponse(body, 401, headers);
+        }
+
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
 
@@ -204,7 +246,14 @@ async function handler(request) {
     }
 
     // Search for a song by artist or title to add to a playlist
-    if (url.pathname == "/api/songs/search") {
+    if (url.pathname == "/api/songs/search" && request.method == "GET") {
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) {
+            let body = JSON.stringify({ message: "No access" });
+            return handleResponse(body, 401, headers);
+        }
+
         let phrase = url.searchParams.get("q");
         if (phrase) songs = getSongsBySearch(songs, phrase);
 
@@ -228,6 +277,13 @@ async function handler(request) {
         let id = match.pathname.groups.id;
 
         if (request.method == "GET") {
+            let cookie = request.headers.get("cookie");
+            let session = checkSession(cookie, cookies);
+            if (!session) {
+                let body = JSON.stringify({ message: "No access" });
+                return handleResponse(body, 401, headers);
+            }
+
             let playlist = getPlaylistById(playlists, songs, id);
 
             if (!playlist) {
@@ -264,6 +320,13 @@ async function handler(request) {
 
     // Get all songs
     if (url.pathname == "/api/songs" && request.method == "GET") {
+        let cookie = request.headers.get("cookie");
+        let session = checkSession(cookie, cookies);
+        if (!session) {
+            let body = JSON.stringify({ message: "No access" });
+            return handleResponse(body, 401, headers);
+        }
+        
         if (!songs) {
             let body = JSON.stringify({ message: "No songs found" });
             handleResponse(body, 404, headers);
@@ -313,11 +376,16 @@ async function handler(request) {
         let match = profileRoute.exec(request.url);
         let username = match.pathname.groups.username;
 
+        if (request.method == "GET") {
+            let user = getUserByUsername(users, username);
+            let body = JSON.stringify(user);
+            return handleResponse(body, 200, headers); 
+        }
+
+        if (request.method == "PATCH") {}
+
         // Felhantera
 
-        let user = getUserByUsername(users, username);
-        let body = JSON.stringify(user);
-        return handleResponse(body, 200, headers); 
     }
 
     // Like playlists
@@ -348,8 +416,8 @@ async function handler(request) {
     }
 
     // Create new playlist
-    if (url.pathname == "/new-playlist") {
-        if (request.method == "GET") return serveFile(request, "../../frontend/new-playlist.html");
+    if (url.pathname == "/new-playlist") { 
+        if (request.method == "GET") return serveFile(request, "../../frontend/new-playlist.html"); // AUTHORIZE
 
         if (request.method == "POST") {
             let playlistReq = await request.formData();

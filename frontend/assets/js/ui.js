@@ -251,6 +251,8 @@ class UI {
             } else {
                 // vanlig rendering av befintliga låtar
                 let currentUser = await api.getRequest("/api/profile/info");
+                console.log(currentUser);
+                console.log(playlist)
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
                     <button class="Play StopPlaying"></button>
