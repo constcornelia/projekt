@@ -140,7 +140,7 @@ class UI {
             <button class="Play StopPlaying"></button>
           </div>
           <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
-          <img src="${playlist.imgUrl}">
+        <img src="../../../backend/uploads/${playlist.imgUrl}">
         </div>
         `;
         section.appendChild(a);
