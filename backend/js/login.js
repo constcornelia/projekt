@@ -33,10 +33,8 @@ export function checkSignup(users, req, filename, cookieId, cookies, id) {
     }
 
     if (!username || !password) {
-        console.log("2");
         return false;
     }
-    console.log("test");
 
     let newUser = {
         id: id,
@@ -44,7 +42,6 @@ export function checkSignup(users, req, filename, cookieId, cookies, id) {
         password: password,
         profilePicUrl: `../uploads/${filename}`,
     };
-    console.log('newuser: ', newUser);
     users.push(newUser);
 
     let cookie = { username: req.username, cookie: cookieId };
@@ -82,6 +79,26 @@ export function getUserByUsername(users, username) {
         }
     }
     return foundUser;
+}
+
+export function updateProfile(user, users, req) {
+
+    // Kolla så att användarnamn inte upptaget
+
+    let username = req.get("username");
+
+    for (let user of users) {
+        if (user.username == username) {
+            return null; 
+        }
+    }
+
+
+    let updatedPlaylist = {
+        username: "",
+        password: "",
+        profilePicUrl: ""
+    };
 }
 
 
