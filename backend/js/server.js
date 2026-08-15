@@ -1,7 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
-import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById, deleteSongFromPlaylist, getSpecifiedPlaylists /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById, deleteSongFromPlaylist, getSpecifiedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -239,10 +239,6 @@ async function handler(request) {
             let body = JSON.stringify(user);
             return handleResponse(body, 200, headers);
         }
-
-        if (request.method == "PATCH") {
-            // Redigera profil?
-        }
     }
 
     // Search for a song by artist or title to add to a playlist
@@ -341,24 +337,6 @@ async function handler(request) {
 
     // -------------------------- FORTSÄTT MED FINSLIPNING HÄR --------------------------
 
-
-
-
-    // Get playlists liked, edited and owned by logged in user
-
-    // if (url.pathname == "/api/profile/playlists/liked" && request.method == "GET") {
-    //     const activeCookie = request.headers.get("cookie");
-    //     let user = getActiveUser(activeCookie, cookies, users);
-
-    //     let likedPlaylists = getLikedPlaylists(playlists, user);
-    //     if (!likedPlaylists) {
-    //         let body = JSON.stringify({ message: "No playlists found" });
-    //         return handleResponse(body, 404, headers);
-    //     }
-
-    //     let body = JSON.stringify(likedPlaylists);
-    //     return handleResponse(body, 200, headers);
-    // }
     if (url.pathname == "/api/profile/playlists" && request.method == "GET") {
         const activeCookie = request.headers.get("cookie");
         let user = getActiveUser(activeCookie, cookies, users);
@@ -395,16 +373,79 @@ async function handler(request) {
             let body = JSON.stringify(user);
             return handleResponse(body, 200, headers); 
         }
-
-        if (request.method == "PATCH") {}
-
-        // Felhantera
-
     }
 
     if (url.pathname == "/edit") {
-        if (request.method == "GET") return serveFile(request, "../../frontend/edit.html")
+        if (request.method == "GET") return serveFile(request, "../../frontend/edit.html");
+
+        if (request.method == "PATCH") {
+            let userReq = await request.formData();
+
+            const activeCookie = request.headers.get("cookie");
+            let user = getActiveUser(activeCookie, cookies, users);
+            if (!user) {
+                let body = JSON.stringify({ message: "Not logged in" });
+                return handleResponse(body, 401, headers);
+            }
+
+            let updatedUser = updateUser(user, users, userReq);
+        }
     }
+
+    /* 
+            let playlist = addSongToPlaylist(playlists, id, user, songReq);
+            if (!playlist) {
+                let body = JSON.stringify({ message: "No playlist found" });
+                return handleResponse(body, 404, headers);
+            }
+
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+
+            let body = JSON.stringify(playlist);
+            return handleResponse(body, 200, headers);
+        }
+
+
+
+        let productRoute = new URLPattern({ pathname: "/api/v1/products/:id" });
+        if (productRoute.test(request.url)) {
+            let match = productRoute.exec(request.url);
+            let id = match.pathname.groups.id;
+
+            let productData = await request.json();
+            if (!productData || !productData.name || !productData.category || !productData.description || 
+                productData.price == undefined || productData.inStock == undefined || !productData.imageUrl) {
+                let body = JSON.stringify({ error: "Bad Request" });
+                return handleResponse(body, 400, options);
+            }
+
+            let product = updateProductById(products, id, productData);
+            if (!product) {
+                let body = JSON.stringify({ error: "Not Found" });
+                return handleResponse(body, 404, options);
+            }
+
+            Deno.writeTextFileSync("database.json", JSON.stringify(data));
+            return handleResponse(null, 204, options);
+        }
+
+
+    export function updateProductById(products, id, productData) {
+    for (let product of products) {
+        if (product.id == id) {
+            product.name = productData.name;
+            product.category = productData.category;
+            product.description = productData.description;
+            product.price = productData.price;
+            product.inStock = productData.inStock;
+            product.imageUrl = productData.imageUrl;
+
+            return product;
+        }
+    }
+    return null;
+}
+    */
 
     // Like playlists
     let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
@@ -523,10 +564,7 @@ async function handler(request) {
             }
 
             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
-            return handleResponse(null, 204, null);
-
-            // Delete personal playlist by id
-        }
+            return handleResponse(null, 204, null);        }
     }
     
     // Delete song from playlist if owner
@@ -557,169 +595,7 @@ async function handler(request) {
         return serveFile(request, `../uploads/${filename}`);
     }
 
-
-
-
-    /* 
-    let uploadRoute = new URLPattern({ pathname: "/backend/uploads/:filename" });
-
-if (uploadRoute.test(request.url)) {
-    let match = uploadRoute.exec(request.url);
-    let filename = match.pathname.groups.filename;
-
-    return serveFile(request, `../uploads/${filename}`);
-}
-    */
-
-    
-//     if (request.method == "GET") {
-//         let headers = { "Content-Type": "application/json" };
-//         // Hämtar cookie från requesten
-//         // Exempel: "session_id=abc123"
-//         let cookie = request.headers.get("cookie");
-//         // Sparar den inloggade användaren
-//         let currentUser = null;
-//         // Kör bara om en cookie finns
-//         if (cookie) {
-//             // Delar upp cookie-strängen vid "="
-//             // Exempel:
-//             // ["session_id", "abc123"]
-//             let parts = cookie.split("=");
-//             // Hämtar själva cookie-id:t
-//             // Exempel:
-//             // "abc123"
-//             let cookieId = parts[1];
-//             // Loopar igenom alla sparade sessions-cookies
-//             for (let i = 0; i < cookies.length; i++) {
-//                 // Om cookie-id:t matchar en sparad cookie
-//                 if (cookies[i].cookie == cookieId) {
-//                     // Sparar användaren som är inloggad
-//                     // Exempel:
-//                     // {
-//                         //   username: "cornelia",
-//                         //   cookie: "abc123"
-//                         // }
-//                         currentUser = cookies[i];
-//                     }
-//                 }
-//             }
-            
-
-
-
-//         // const cookie = request.headers.get("cookie");
-//         // let user = getUser(users, cookies, cookie); // Här ska man få usern genom att para username med den från json
-//         // if (url.pathname == "/api/profile/info") {
-//         //     let body = JSON.stringify(user);
-//         //     return new Response(body, {
-//         //         status: 200,
-//         //         headers: headers
-//         //     });
-//         //     // Get users name + pfp
-//         // }
-
-//         if (url.pathname == "/api/profile/info") {
-//             // Exempel: "session_id=abc123"
-//             let cookie = request.headers.get("cookie");
-//             // Om ingen cookie finns så är användaren är inte inloggad
-//             if (!cookie) {
-//                 return new Response(null, { status: 401 });
-//             }
-//             // Delar upp texten vid "="
-//             // Exempel: ["session_id", "abc123"]
-//             let parts = cookie.split("=");
-//             let cookieId = parts[1]; // tar bara själva id:t ["abc123"]
-
-//             // Sparar användaren om det hittar rätt cookie
-//             let user = null;
-//             for (let i = 0; i < cookies.length; i++) {  // Loopar igenom alla sparade cookies
-//                 if (cookies[i].cookie == cookieId) {  // Kollar om cookie-id:t matchar
-//                     let foundUser = null;
-//                     for (let u of users) {
-//                         if (u.username == cookies[i].username) {
-//                             foundUser = u; //hittar user som lagt till en låt
-//                         }
-//                     }
-//                     user = {
-//                         id: foundUser.id,
-//                         username: foundUser.username
-//                     };
-//                     break;
-//                 }
-//             }
-//             if (!user) { // Om ingen användare
-//                 return new Response(null, { status: 404 });
-//             }
-//             return new Response(JSON.stringify(user), {
-//                 status: 200,
-//                 headers: { "Content-Type": "application/json" }
-//             });
-//         }
-
-//         if (url.pathname == "/api/profile/playlists/owned") {
-//             let ownedPlaylists = getOwnedPlaylists(playlists, user);
-//             let body = JSON.stringify(ownedPlaylists);
-//             return new Response(body, {
-//                 status: 200,
-//                 headers: headers
-//             });
-//         }
-
-//         // if (url.pathname == "/api/profile/playlists/liked") {
-//         //     let likedPlaylists = getLikedPlaylists(playlists, user);
-//         //     let body = JSON.stringify(likedPlaylists);
-//         //     return new Response(body, {
-//         //         status: 200,
-//         //         headers: headers
-//         //     });
-//         // }
-
-//         if (url.pathname == "/api/profile/playlists/liked") {
-//             if (!currentUser) return handleResponse("Unauthorized", 401, null);
-//             let foundUser = null;
-//             for (let user of users) {
-//                 if (user.username == currentUser.username) {
-//                     foundUser = user;
-//                 }
-//             }
-//             let likedPlaylists = getLikedPlaylists(playlists, foundUser);
-//             let tag = url.searchParams.get("tag");
-//             if (tag) {
-//                 likedPlaylists = filterPlaylistsByTag(likedPlaylists, tag);
-//             }
-//             let sort = url.searchParams.get("sort");
-//             if (sort === "likes") {
-//                 likedPlaylists = sortPlaylistsByLikes(likedPlaylists);
-//             }
-//             let body = JSON.stringify(likedPlaylists);
-//             return new Response(body, {
-//                 status: 200,
-//                 headers: headers
-//             });
-//         }
-        
-//         if (url.pathname == "/api/profile/playlists/contributed") {
-//             let contributedPlaylist = getContributedPlaylists(playlists, user);
-//             let body = JSON.stringify(contributedPlaylist);
-//             return new Response(body, {
-//                 status: 200,
-//                 headers: headers
-//             });
-//         }
-
-
-
-
-
-
-
     return serveDir(request, { fsRoot: "../../frontend" });
-
-
-
-
-    
-    
-    }
+}
 
 Deno.serve(handler);
