@@ -92,6 +92,21 @@ async function showLikedPlaylists() {
     let section = document.querySelector("#PersonalPlaylistsCollection");
     ui.renderPersonalPlaylists(playlists, section);
 }
+
+async function showContributedPlaylists () {
+    let playlists = await api.getRequest("/api/profile/playists?type=edited");
+    let section = document.querySelector("#PersonalPlaylistsCollection");
+    ui.renderPersonalPlaylists(playlists, section);
+}
+
+async function showOwnedPlaylists () {
+    let playlists = await api.getRequest("/api/profile/playists?type=owned");
+    let section = document.querySelector("#PersonalPlaylistsCollection");
+    ui.renderPersonalPlaylists(playlists, section);
+}
+
 ui.showProfile();
-showLikedPlaylists();
 ui.dropDownsTags(tagInput);
+showLikedPlaylists();
+showContributedPlaylists();
+showOwnedPlaylists();

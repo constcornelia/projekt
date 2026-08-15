@@ -163,7 +163,7 @@ class UI {
     }
 }
 
-    renderSongs(songs, position, add) {
+   async renderSongs(songs, position, add, playlist) {
         // Om ingen position skickats in, så stoppas funktionen
         if (!position) return;
         position.innerHTML = "";
@@ -250,17 +250,23 @@ class UI {
                 });
             } else {
                 // vanlig rendering av befintliga låtar
+                let currentUser = await api.getRequest("/api/profile/info");
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
                     <button class="Play StopPlaying"></button>
-                    <button class="RemoveSongButton WhiteButton">Remove Song</button>
                 `;
-                let removeButton = li.querySelector(".RemoveSongButton");
-                removeButton.addEventListener("click", async function () {
-                    let playlistId = window.location.pathname.split("/")[2];
-                    await api.deleteRequest(`/api/playlists/${playlistId}/songs/${song.id}`);
-                    li.remove();
-                });
+                if (currentUser && currentUser.id == playlist.ownerId) {
+                    // måste använda += för att behålla det som redan finns och lägg till det också
+                    li.innerHTML += ` 
+                    <button class="RemoveSongButton WhiteButton">Remove Song</button>
+                    `;
+                    let removeButton = li.querySelector(".RemoveSongButton");
+                    removeButton.addEventListener("click", async function () {
+                        let playlistId = window.location.pathname.split("/")[2];
+                        await api.deleteRequest(`/api/playlists/${playlistId}/songs/${song.id}`);
+                        li.remove();
+                    });
+                }
             }
             position.appendChild(li);
         }

@@ -10,7 +10,7 @@ async function loadPlaylist() {
     // Hämtar positionen där låtarna ska visas
     const positionSong = document.querySelector(".songs ul");
     // Renderar spellistans låtar
-    ui.renderSongs(playlistData.songs, positionSong, false);
+    ui.renderSongs(playlistData.songs, positionSong, false, playlistData.playlist);
     // Hämtar positionen där spellistans info ska visas
     const positionInfo = document.querySelector(".info");
     // Renderar spellistans information
