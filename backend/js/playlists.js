@@ -106,6 +106,8 @@ export function getSpecifiedPlaylists(playlists, user, specification) {
 }
 
 export function likePlaylist(playlist, user) {
+    console.log(playlist);
+    console.log(playlist.likes);
     let liked = false;
 
     for (let i = 0; i < playlist.likes.length; i++) {
@@ -134,19 +136,125 @@ export function addSongToPlaylist(playlists, id, user, song) {
 }
 
 
-export function createPlaylist(playlistReq, playlists, filename, id) {}
+export function createPlaylist(req, user, playlists, filename, id) {
+    console.log('req:',req);
+    let name = req.get("name");
+    let description = req.get("description");
+    let tags = req.getAll("tag"); // Dubbelkolla
+    let songs = req.getAll("songs"); // Dubbelkolla
+
+    let newPlaylist = {
+        id: id, 
+        ownerId: user.id,
+        name: name,
+        description: description,
+        imgUrl: filename,
+        likes: [],
+        tags: tags,
+        songs: songs,
+    }
+
+    playlists.push(newPlaylist);
+    console.log('newplaylist:',newPlaylist);
+    return newPlaylist;
+}
 
 
+/* 
+//     if (request.method == "POST") {
+//         if (url.pathname == "/api/playlists") {
+//             let formData = await request.formData();
 
+//             // Variabler för datan från formuläret
+//             let name;
+//             let description;
+//             let tag;
+//             let songs;
+//             let file;
 
-// export function getPlaylistById(playlists, id) {
-//     for (let playlist of playlists) {
-//         if (playlist.id == id) {
-//             return playlist;
+//             // Loopar igenom all formdata
+//             for (let data of formData) {
+//                 // Första värdet är fältets namn
+//                 // Exempel:
+//                 // "name"
+//                 let key = data[0];
+//                 // Andra värdet är innehållet
+//                 // Exempel:
+//                 // "My playlist"
+//                 let value = data[1];
+
+//                 // Sparar spellistans data
+//                 if (key == "name") name = value;
+//                 if (key == "description") description = value;
+//                 if (key == "tag") tag = value;
+//                 // JSON.parse gör om texten tillbaka till en array
+//                 if (key == "songs") songs = JSON.parse(value);
+//                 if (key == "cover") file = value;
+//             }
+//             let filename = "";
+//             if (file && file.name) {
+//                 const fileStr = crypto.randomUUID();;
+//                 const extension = extname(file.name);
+//                 filename = fileStr + extension;
+//                 const bytes = await file.bytes();
+//                 Deno.writeFileSync(`../uploads/${filename}`, bytes);
+//             }
+
+//             let newPlaylist = {
+//                 id: newId,
+//                 ownerId: foundUser.id,
+//                 name: name,
+//                 description: description,
+//                 imgUrl: `/uploads/${filename}`,
+//                 likes: [],
+//                 tags: playlistTags,
+//                 songs: songs
+//             };
+//             playlists.push(newPlaylist);
+//             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+//             let headers = { "Content-Type": "application/json" };
+//             return handleResponse(JSON.stringify(newPlaylist), 201, headers);
 //         }
 //     }
-//     return null;
-// }
+
+*/
+
+/* 
+    {
+      "id": "p-1",
+      "ownerId": "u-1",
+      "name": "My Emo Romance",
+      "description": "Playlist for the emos",
+      "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
+      "likes": [
+        "u-2",
+        "u-3"
+      ],
+      "tags": [
+        "emo",
+        "punk"
+      ],
+      "songs": [
+        {
+          "songId": "s-1",
+          "editorId": "u-3"
+        },
+        {
+          "songId": "s-28",
+          "editorId": "u-2"
+        }
+      ]
+    },
+*/
+
+export function getPlaylistDataById(playlists, id) {
+    for (let playlist of playlists) {
+        if (playlist.id == id) {
+            return playlist;
+        }
+    }
+    return null;
+}
 
 
 // export function getOwnedPlaylists(playlists, user) {

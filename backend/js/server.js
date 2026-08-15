@@ -1,7 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
-import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist, createPlaylist /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -272,10 +272,10 @@ async function handler(request) {
         let match = likeRoute.exec(request.url);
         let id = match.pathname.groups.id;
 
-        if (request.method == "POST") {
+        if (request.method == "PATCH") {
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
-            let playlist = getPlaylistById(playlists, songs, id);
+            let playlist = getPlaylistDataById(playlists, id);
 
             if (!playlist) {
                 let body = JSON.stringify({ error: "Playlist Not Found" });
@@ -298,27 +298,41 @@ async function handler(request) {
 
         if (request.method == "POST") {
             let playlistReq = await request.formData();
-            const file = playlistReq.get("add-cover");
-            
-            if (!file) return handleResponse("Cover is missing", 400, null);
+            console.log('playlistreq:',playlistReq);
+
+            const activeCookie = request.headers.get("cookie");
+            let user = getActiveUser(activeCookie, cookies, users);
+
+            const file = playlistReq.get("cover");
+            console.log('file:', file);
+            if (!file) {
+                console.log("error inte file");
+                let body = JSON.stringify({ error: "Cover is missing" });
+                return handleResponse(body, 400, headers);
+            } 
 
             const fileStr = crypto.randomUUID();
             const extension = extname(file.name);
             const filename = fileStr + extension;
 
-            const bytes = await file.bytes();
-            if (bytes > 100000) return handleResponse("File is too large", 400, null);
-            console.log(bytes);
-            // Deno.writeFileSync(`../uploads/${filename}`, bytes);
+            console.log('filename:',filename)
 
-            console.log(playlistReq);
+            const bytes = await file.bytes();
+            if (bytes > 100000) {
+                console.log("error för stor fil")
+                let body = JSON.stringify({ error: "File is too large" });
+                return handleResponse(body, 400, headers);
+            }
+            console.log('bytes:',bytes);
+            Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             let id = generateId("p", playlists);
-            let newPlaylist = createPlaylist(playlistReq, playlists, filename, id);
+            let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id);
+            console.log('newplaylist nu i server:', newPlaylist);
             if (!newPlaylist) {}
 
-            // Deno.writeTextFileSync("../data/users.json", JSON.stringify(data, null, 2));
-            // return handleResponse(null, 303, headers);
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            return handleResponse(null, 303, headers);
         }
     }
 

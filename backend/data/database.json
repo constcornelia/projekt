@@ -621,7 +621,9 @@
       "name": "Focus Mode",
       "description": "För plugg och jobb",
       "imgUrl": "https://i.pinimg.com/736x/cb/2c/f4/cb2cf4309fc100624b0cc77f8663abe4.jpg",
-      "likes": [],
+      "likes": [
+        "u-2"
+      ],
       "tags": [
         "lofi",
         "chill"
@@ -685,6 +687,22 @@
           "songId": "s-17",
           "editorId": "u-1"
         }
+      ]
+    },
+    {
+      "id": "p-10",
+      "ownerId": "u-2",
+      "name": "Study jams",
+      "description": "Deep in the books",
+      "imgUrl": "e3834ebe-2592-4599-9ecd-c992f1846556.jpg",
+      "likes": [],
+      "tags": [
+        "lofi",
+        "chill,lofi"
+      ],
+      "songs": [
+        "[{\"songId\":\"s-5\",\"editorId\":\"u-2\"}]",
+        "[{\"songId\":\"s-5\",\"editorId\":\"u-2\"}]"
       ]
     }
   ]
