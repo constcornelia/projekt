@@ -549,7 +549,27 @@ async function handler(request) {
         }
     }
         
+    let uploadRoute = new URLPattern({ pathname: "/backend/uploads/:filename" }); 
+    if (uploadRoute.exec(request.url)) {
+        let match = uploadRoute.exec(request.url);
+        let filename = match.pathname.groups.filename;
 
+        return serveFile(request, `../uploads/${filename}`);
+    }
+
+
+
+
+    /* 
+    let uploadRoute = new URLPattern({ pathname: "/backend/uploads/:filename" });
+
+if (uploadRoute.test(request.url)) {
+    let match = uploadRoute.exec(request.url);
+    let filename = match.pathname.groups.filename;
+
+    return serveFile(request, `../uploads/${filename}`);
+}
+    */
 
     
 //     if (request.method == "GET") {
@@ -687,6 +707,19 @@ async function handler(request) {
 //             });
 //         }
 
+
+
+
+
+
+
     return serveDir(request, { fsRoot: "../../frontend" });
+
+
+
+
+    
+    
     }
+
 Deno.serve(handler);
