@@ -179,7 +179,7 @@ async function handler(request) {
             return handleResponse(body, 404, headers);
         }
         
-        body = JSON.stringify(users);
+        let body = JSON.stringify(users);
         return handleResponse(body, 200, headers);
     }
 
@@ -273,7 +273,13 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
+
+
+
     // -------------------------- FORTSÄTT MED FINSLIPNING HÄR --------------------------
+
+
+
 
     // Get playlists liked, edited and owned by logged in user
     if (url.pathname == "/api/profile/playlists" && request.method == "GET") {
@@ -448,8 +454,8 @@ async function handler(request) {
 
             let removed = deleteSongFromPlaylist(playlists, playlistId, songId);
             if (!removed) {
-                let body = JSON.stringify({ error: "Song not found" });
-                return handleResponse(body, 404, null);
+                let body = JSON.stringify({ message: "Song not found" });
+                return handleResponse(body, 404, headers);
             }
 
             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
