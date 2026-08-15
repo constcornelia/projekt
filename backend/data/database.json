@@ -679,6 +679,48 @@
           "editorId": "u-1"
         }
       ]
+    },
+    {
+      "id": "p-10",
+      "ownerId": "u-2",
+      "name": "Songs to hang myself to",
+      "description": "#darkpsychology",
+      "imgUrl": "../uploads/6c2ddec4-b051-48bb-affc-0091c00f5236.jpg",
+      "likes": [],
+      "tags": [
+        "emo,sad"
+      ],
+      "songs": [
+        {
+          "songId": "s-87",
+          "editorId": "u-2"
+        },
+        {
+          "songId": "s-77",
+          "editorId": "u-2"
+        },
+        {
+          "songId": "s-36",
+          "editorId": "u-2"
+        }
+      ]
+    },
+    {
+      "id": "p-11",
+      "ownerId": "u-2",
+      "name": "test",
+      "description": "test",
+      "imgUrl": "../../../backend/uploads/ad594bab-6fbf-4904-ab52-76cccfab3ef8.jpg",
+      "likes": [],
+      "tags": [
+        "calm"
+      ],
+      "songs": [
+        {
+          "songId": "s-3",
+          "editorId": "u-2"
+        }
+      ]
     }
   ]
 }

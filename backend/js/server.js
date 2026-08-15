@@ -435,7 +435,7 @@ async function handler(request) {
 
     // Create new playlist
     if (url.pathname == "/new-playlist") { 
-        if (request.method == "GET") return serveFile(request, "../../frontend/new-playlist.html"); // AUTHORIZE
+        if (request.method == "GET") return serveFile(request, "../../frontend/new-playlist.html");
 
         if (request.method == "POST") {
             let playlistReq = await request.formData();
