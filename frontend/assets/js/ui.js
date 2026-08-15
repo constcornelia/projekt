@@ -141,7 +141,7 @@ class UI {
             <button class="Play StopPlaying"></button>
           </div>
           <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
-        <img src="${playlist.imgUrl}">
+        <img src="backend/uploads/${playlist.imgUrl}">
         </div>
         `;
         section.appendChild(a);
@@ -307,11 +307,13 @@ class UI {
             let deletePlaceholder = document.querySelector("div.edit-actions")
             deletePlaceholder.innerHTML = `${deleteButton}`
         }
+
+        // profilePicture.src = "../../../backend/uploads/" + currentUser.profilePicUrl
         position.innerHTML = `
             <h1 id="PlaylistName" class="title">${playlist.name}</h1>
             <p id="PlaylistDescription" class="system-UI">${playlist.description}</p>
             <p id="PlaylistTag" class="system-UI-accent">${formatTags(playlist.tags)}</p>
-            <img src="${playlist.imgUrl}">
+            <img src="backend/uploads/${playlist.imgUrl}">
         `;
         // delete knappen finns bara för ägaren
         let deleteButtonElement = document.querySelector(".DeletePlaylistButton");
