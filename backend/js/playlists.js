@@ -148,7 +148,7 @@ export function createPlaylist(req, user, playlists, filename, id, songs) {
         ownerId: user.id,
         name: name,
         description: description,
-        imgUrl: filename,
+        imgUrl: `../uploads/${filename}`,
         likes: [],
         tags: tags,
         songs: songs,
