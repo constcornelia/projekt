@@ -25,7 +25,7 @@
 // });
 
 const position = document.querySelector("#PersonalPlaylistsCollection");
-const title = document.querySelector("#filters .title-UI");
+const title = document.querySelector("#profile-header .title-UI");
 const profilePicture = document.querySelector("#ProfilePicture");
 
 const api = new API();
