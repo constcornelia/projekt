@@ -94,13 +94,13 @@ async function showLikedPlaylists() {
 }
 
 async function showContributedPlaylists () {
-    let playlists = await api.getRequest("/api/profile/playists?type=edited");
+    let playlists = await api.getRequest("/api/profile/playlists?type=edited");
     let section = document.querySelector("#PersonalPlaylistsCollection");
     ui.renderPersonalPlaylists(playlists, section);
 }
 
 async function showOwnedPlaylists () {
-    let playlists = await api.getRequest("/api/profile/playists?type=owned");
+    let playlists = await api.getRequest("/api/profile/playlists?type=owned");
     let section = document.querySelector("#PersonalPlaylistsCollection");
     ui.renderPersonalPlaylists(playlists, section);
 }

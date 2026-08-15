@@ -402,6 +402,10 @@ async function handler(request) {
 
     }
 
+    if (url.pathname == "/edit") {
+        if (request.method == "GET") return serveFile(request, "../../frontend/edit.html")
+    }
+
     // Like playlists
     let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
     if (likeRoute.test(request.url)) {
