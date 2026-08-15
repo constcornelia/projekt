@@ -136,12 +136,12 @@ export function addSongToPlaylist(playlists, id, user, song) {
 }
 
 
-export function createPlaylist(req, user, playlists, filename, id) {
+export function createPlaylist(req, user, playlists, filename, id, songs) {
     console.log('req:',req);
     let name = req.get("name");
     let description = req.get("description");
     let tags = req.getAll("tag"); // Dubbelkolla
-    let songs = req.getAll("songs"); // Dubbelkolla
+    // let songs = req.getAll("songs"); // Dubbelkolla
 
     let newPlaylist = {
         id: id, 

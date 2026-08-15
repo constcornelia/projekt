@@ -326,28 +326,19 @@ async function handler(request) {
             console.log('bytes:',bytes);
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
+            let songs = JSON.parse(playlistReq.get("songs"));
+
             let id = generateId("p", playlists);
-            let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id);
+            let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id, songs);
             console.log('newplaylist nu i server:', newPlaylist);
             if (!newPlaylist) {}
 
             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            let body = JSON.stringify(newPlaylist);
             return handleResponse(null, 303, headers);
         }
     }
 
-/* 
-    
-            let id = generateId("u", users);
-            let newUser = checkSignup(users, signupReq, filename, cookieId, cookies, id);
-            if (!newUser) {
-                let body = JSON.stringify({ error: "Missing data" });
-                return handleResponse(body, 400, headers);
-            }
-
-            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
-            return handleResponse(null, 303, headers);
-*/
 
     
 //     if (request.method == "GET") {
