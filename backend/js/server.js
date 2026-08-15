@@ -1,7 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
-import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById, deleteSongFromPlaylist /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById, deleteSongFromPlaylist, getSpecifiedPlaylists /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -345,6 +345,20 @@ async function handler(request) {
 
 
     // Get playlists liked, edited and owned by logged in user
+
+    // if (url.pathname == "/api/profile/playlists/liked" && request.method == "GET") {
+    //     const activeCookie = request.headers.get("cookie");
+    //     let user = getActiveUser(activeCookie, cookies, users);
+
+    //     let likedPlaylists = getLikedPlaylists(playlists, user);
+    //     if (!likedPlaylists) {
+    //         let body = JSON.stringify({ message: "No playlists found" });
+    //         return handleResponse(body, 404, headers);
+    //     }
+
+    //     let body = JSON.stringify(likedPlaylists);
+    //     return handleResponse(body, 200, headers);
+    // }
     if (url.pathname == "/api/profile/playlists" && request.method == "GET") {
         const activeCookie = request.headers.get("cookie");
         let user = getActiveUser(activeCookie, cookies, users);
@@ -357,10 +371,10 @@ async function handler(request) {
         if (type == "owned") specification = "owned";
 
         let specifiedPlaylists = getSpecifiedPlaylists(playlists, user, specification);
-        if (!specifiedPlaylists) {
-            let body = JSON.stringify({ error: "Not Found "});
-            return handleResponse(body, 404, headers);
-        }
+        // if (!specifiedPlaylists) {
+        //     let body = JSON.stringify({ error: "Not Found "});
+        //     return handleResponse(body, 404, headers);
+        // }
 
         let body = JSON.stringify(specifiedPlaylists)
         return handleResponse(body, 200, headers);
@@ -386,6 +400,10 @@ async function handler(request) {
 
         // Felhantera
 
+    }
+
+    if (url.pathname == "/edit") {
+        if (request.method == "GET") return serveFile(request, "../../frontend/edit.html")
     }
 
     // Like playlists

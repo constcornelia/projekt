@@ -621,9 +621,7 @@
       "name": "Focus Mode",
       "description": "För plugg och jobb",
       "imgUrl": "https://i.pinimg.com/736x/cb/2c/f4/cb2cf4309fc100624b0cc77f8663abe4.jpg",
-      "likes": [
-        "u-2"
-      ],
+      "likes": [],
       "tags": [
         "lofi",
         "chill"
@@ -636,7 +634,9 @@
       "name": "Sad Hours",
       "description": "När man vill känna allt",
       "imgUrl": "https://i.pinimg.com/736x/a6/ad/53/a6ad53d0faeb3c5560c7ed69305bca47.jpg",
-      "likes": [],
+      "likes": [
+        "u-2"
+      ],
       "tags": [
         "sad",
         "ballad"
