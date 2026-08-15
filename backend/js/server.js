@@ -1,7 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
-import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById, deleteSongFromPlaylist /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -400,6 +400,28 @@ async function handler(request) {
             // Delete personal playlist by id
         }
     }
+    
+    // Delete song from playlist if owner
+    let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs/:songId" });
+    if (songRoute.test(request.url)) {
+        let match = songRoute.exec(request.url);
+
+        if (request.method == "DELETE") {
+            let playlistId = match.pathname.groups.id;
+            let songId = match.pathname.groups.songId;
+
+            let removed = deleteSongFromPlaylist(playlists, playlistId, songId);
+            if (!removed) {
+                let body = JSON.stringify({ error: "Song not found" });
+                return handleResponse(body, 404, null);
+            }
+
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            return handleResponse( JSON.stringify({ message: "Song removed" }), 200, { "Content-Type": "application/json" });
+        }
+    }
+        
+        
 
 
 /* 
@@ -685,113 +707,6 @@ async function handler(request) {
 //         }
 //     }
     
-//     if (request.method == "PATCH") {
-//         let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
-//         if (likeRoute.test(request.url)) {
-//             let match = likeRoute.exec(request.url);
-//             let playlistId = match.pathname.groups.id;
-//             let cookie = request.headers.get("cookie");
-//             // Om ingen cookie finns är användaren inte inloggad
-//             if (!cookie) return handleResponse("Unauthorized", 401, null);
-
-//             // Delar upp cookie strängen vid "="
-//             let parts = cookie.split("=");
-//             // Hämtar själva cookie-id:t
-//             let cookieId = parts[1];
-
-//             let currentUser = null;
-//             // Loopar igenom sparade cookies för att hitta rätt användare
-//             for (let i = 0; i < cookies.length; i++) {
-//                 // Om cookie id:t matchar
-//                 if (cookies[i].cookie == cookieId) {
-//                     // Sparar användarens username
-//                     currentUser = cookies[i].username;
-//                 }
-//             }
-//             // Om ingen användare hittades
-//             if (!currentUser) return handleResponse("Unauthorized", 401, null);
-//             let playlist = null;
-//             // Loopar igenom alla spellistor
-//             for (let i = 0; i < playlists.length; i++) {
-//                 // Om spellistans id matchar
-//                 if (playlists[i].id == playlistId) {
-//                     // Sparar rätt spellista
-//                     playlist = playlists[i];
-//                 }
-//             }
-//             // Om spellistan inte finns
-//             if (!playlist) return handleResponse("Playlist not found", 404, null);
-//             let alreadyLiked = false;
-//             // Sparar vilken plats i arrayen användaren finns på och -1 betyder "inte hittad"
-//             let likeIndex = -1;
-//             // Loopar igenom alla användare som har likat spellistan
-//             for (let i = 0; i < playlist.likes.length; i++) {
-//                 // Kollar om användaren i arrayen är samma som den inloggade användaren
-//                 if (playlist.likes[i] == currentUser) {
-//                     // Om användaren hittas betyder det att den redan har likat
-//                     alreadyLiked = true;
-//                     // Sparar vilken position användaren finns på i arrayen
-//                     // Exempel:
-//                     // ["dilara", "cornelia", "elena"]
-//                     // Om currentUser är "cornelia" blir likeIndex = 1
-//                     likeIndex = i;
-//                 }
-//             }
-//             if (alreadyLiked) {
-//                 // Första värdet är positionen
-//                 // Andra värdet är hur många element som ska tas bort
-
-//                 // Exempel:
-//                 // ["dilara", "cornelia", "elena"]
-//                 // splice(1, 1)
-//                 // Resultat:
-//                 // ["dilara", "elena"]
-//                 playlist.likes.splice(likeIndex, 1);
-//             } else {
-//                 // Om användaren INTE redan finns i likes-arrayen
-//                 // läggs användaren till sist i arrayen
-
-//                 // Exempel:
-//                 // ["dilara", "cornelia"]
-//                 // push("elena")
-//                 // Resultat:
-//                 // ["dilara", "cornelia", "elena"]
-//                 playlist.likes.push(currentUser);
-
-//             }
-//             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
-//             let headers = { "Content-Type": "application/json"};
-//             let body = JSON.stringify(playlist);
-//             return handleResponse(body, 200, headers);
-//         }
-//         let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs" });
-//         if (songRoute.test(request.url)) {
-//             let match = songRoute.exec(request.url);
-//             let playlistId = match.pathname.groups.id;
-//             let body = await request.json();
-//             let playlist = null;
-//             for (let p of playlists) {
-//                 if (p.id == playlistId) {
-//                     playlist = p;
-//                 }
-//             }
-//             if (!playlist) {
-//                 return handleResponse("Playlist not found", 404, null);
-//             }
-//             playlist.songs.push({
-//                 songId: body.songId,
-//                 editorId: body.editorId
-//             });
-//             Deno.writeTextFileSync(
-//                 "../data/database.json",
-//                 JSON.stringify(data, null, 2)
-//             );
-//             return handleResponse(JSON.stringify(playlist), 200, { "Content-Type": "application/json" }
-//             );
-//         }
-//     }
-
-
 //     if (request.method == "DELETE") {
 //         // delete song from playlist if owner
 //         let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs/:songId" });
