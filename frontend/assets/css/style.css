@@ -845,6 +845,10 @@ button.AddSongButton, button.RemoveSongButton{
 
 }
 
+
+
+
+
 #profile-header {
     display: flex;
     flex-direction: column;
@@ -892,4 +896,29 @@ nav .space {
     border: 5px solid var(--bright-color);
     box-shadow: 0 8px 20px var(--shadowing-color);
     display: block;
+}
+
+
+
+
+
+
+#PersonalPlaylistsCollection {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.playlist-category {
+    width: 100%;
+}
+
+.playlist-category > h2 {
+    margin-bottom: 20px;
+}
+
+.playlists-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }

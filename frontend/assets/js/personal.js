@@ -1,30 +1,7 @@
-// const createPlaylist = document.querySelector("#CreatePlaylist");
+const likedPosition = document.querySelector("#LikedPlaylistsCollection");
+const ownedPosition = document.querySelector("#OwnedPlaylistsCollection");
+const editedPosition = document.querySelector("#EditedPlaylistsCollection");
 
-// const createPlaylistButton = document.querySelector(".CreatePlaylist-Button");
-// createPlaylistButton.addEventListener("click", function onClick(event) {
-//     createPlaylist.style.display = "block";
-// });
-
-// const cancel = document.querySelector("#CancelCreateButton");
-// cancel.addEventListener("click", function onClick(event) {
-//     createPlaylist.style.display = "none";
-// });
-
-// const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
-// createPlaylistForm.addEventListener("submit", async function onSubmit(event) {
-//     event.preventDefault();
-
-//     const data = new FormData(createPlaylistForm);
-
-//     let options = {
-//         method: "POST",
-//         body: data
-//     };
-
-//     let response = await fetch("", options);
-// });
-
-const position = document.querySelector("#PersonalPlaylistsCollection");
 const title = document.querySelector("#profile-header .title-UI");
 const profilePicture = document.querySelector("#ProfilePicture");
 
@@ -37,25 +14,35 @@ async function showProfileTitle () {
     profilePicture.src = "../../../backend/uploads/" + profile.profilePicUrl;
 }
 
-async function showLikedPlaylists() {
-    let playlists = await api.getRequest("/api/profile/playlists?type=liked");
-    ui.renderPersonalPlaylists(playlists, position);
+async function showProfilePlaylists () {
+    let currentUser = await api.getRequest("/api/profile/info");
+    if (!currentUser) {
+        return;
+    }
+    let playlists = await api.getRequest("/api/playlists");
+    let likedPlaylists = [];
+    let ownedPlaylists = [];
+    let editedPlaylists = [];
+    for (let playlist of playlists) {
+        if (playlist.ownerId === currentUser.id) {
+            ownedPlaylists.push(playlist);
+        }
+        if (playlist.likes.includes(currentUser.id)) {
+            likedPlaylists.push(playlist);
+        }
+        for (let song of playlist.songs) {
+            if (song.editorId === currentUser.id) {
+                editedPlaylists.push(playlist);
+                break;
+            }
+        }
+    }
+    ui.renderPersonalPlaylists(likedPlaylists, likedPosition);
+    ui.renderPersonalPlaylists(ownedPlaylists, ownedPosition);
+    ui.renderPersonalPlaylists(editedPlaylists, editedPosition);
 }
 
-async function showContributedPlaylists () {
-    let playlists = await api.getRequest("/api/profile/playlists?type=edited");
-    let section = document.querySelector("#PersonalPlaylistsCollection");
-    ui.renderPersonalPlaylists(playlists, position);
-}
-
-async function showOwnedPlaylists () {
-    let playlists = await api.getRequest("/api/profile/playlists?type=owned");
-    let section = document.querySelector("#PersonalPlaylistsCollection");
-    ui.renderPersonalPlaylists(playlists, position);
-}
 
 ui.showProfile();
 showProfileTitle();
-showLikedPlaylists();
-showContributedPlaylists();
-showOwnedPlaylists();
+showProfilePlaylists();

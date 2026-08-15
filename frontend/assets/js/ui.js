@@ -107,16 +107,17 @@ class UI {
   async renderPersonalPlaylists(playlists, section) {
     if (!section) return;
     // Behåller create-playlist kortet
-    section.innerHTML = `
-    <a href="/new-playlist" class="clear-link">
-      <div id="CreatePlaylistLink" class="add-playlist-card system-UI-accent">
-        <img src="/assets/images/icons/add.svg">
-        <p class="system-UI-accent">Create new playlist</p>
-      </div>
-    </a>
-    `;
-
+    section.innerHTML = "";
+    let currentUser = await api.getRequest("/api/profile/info");
     let users = await api.getRequest("/api/users");
+    if (!playlists || playlists.length === 0) {
+        section.innerHTML = `
+            <p class="system-UI-accent">
+                No playlists found.
+            </p>
+        `;
+        return;
+    }
     for (let playlist of playlists) {
         let a = document.createElement("a");
         a.href = `/playlists/${playlist.id}`;
@@ -160,6 +161,15 @@ class UI {
             // Om användaren tog bort sin like så tas spellistan bort från "My Collection"
             if (!updatedPlaylist.playlist.likes.includes(currentUser.id)) {
                 a.remove();
+            }
+        });
+        let playButton = a.querySelector(".Play");
+        playButton.addEventListener("click", async function (event) {
+            event.preventDefault();
+            if (playButton.classList.contains("StopPlaying")) {
+                playButton.classList.remove("StopPlaying");
+            } else {
+                playButton.classList.add("StopPlaying");
             }
         });
     }
