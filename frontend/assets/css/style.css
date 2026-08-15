@@ -876,3 +876,20 @@ button.AddSongButton, button.RemoveSongButton{
 nav .space {
     flex-grow: 1;
 }
+
+.current-profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.current-profile #ProfilePicture {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid var(--bright-color);
+    box-shadow: 0 8px 20px var(--shadowing-color);
+    display: block;
+}

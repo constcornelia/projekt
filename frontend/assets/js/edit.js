@@ -4,6 +4,7 @@
 // api.patchRequest(endpoint) ;
 
 const editAccountForm = document.querySelector("#editAccountForm");
+const profilePicture = document.querySelector("#ProfilePicture");
 const usernameInput = document.querySelector("#username");
 const passwordInput = document.querySelector("#password");
 const profileInput = document.querySelector("#profile");
@@ -20,6 +21,9 @@ async function getProfileInfo() {
     }
     usernameInput.value = currentUser.username;
     passwordInput.value = currentUser.password;
+    if (currentUser.profilePicUrl) {
+        profilePicture.src = "../../../backend/uploads/" + currentUser.profilePicUrl;
+    }
 }
 
 editAccountForm.addEventListener("submit", async function (event) {
@@ -34,6 +38,11 @@ editAccountForm.addEventListener("submit", async function (event) {
     const updatedUser = await api.patchRequest(endpoint, formData);
     if (updatedUser) {
         currentUser = updatedUser; 
+        usernameInput.value = currentUser.username;
+        passwordInput.value = currentUser.password;
+        if (currentUser.profilePicUrl) {
+            profilePicture.src = "../../../backend/uploads/" + currentUser.profilePicUrl;
+        }
     }
 });
 
