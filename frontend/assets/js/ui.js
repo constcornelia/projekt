@@ -300,7 +300,7 @@ class UI {
         if (deleteButtonElement) {
             deleteButtonElement.addEventListener("click", async function () {
                 let playlistId = playlist.id;
-                let response = await api.deleteRequest(`/api/playlists/${playlistId}`);
+                let response = await api.deleteRequest(`/api/profile/playlist/${playlistId}`);
                 alert("Successfully deleted!");
                 window.location.href = "/main.html";
             });

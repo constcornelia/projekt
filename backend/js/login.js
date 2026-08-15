@@ -53,55 +53,25 @@ export function checkSignup(users, req, filename, cookieId, cookies, id) {
     return newUser;
 }
 
-/* 
-checkSignup(users, filename, signupReq)
-                // for (let user of users) {
-                //     if (username == user.username) {
-                //         return handleResponse("Username is already taken", 401);
-                //     }
-                // }
-                
-                // if (!username || !password) {
-                //     return handleResponse("Input data missing", 400);
-                // }
-            
-                // createUser(users, filename, username, password);
-                // Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
-                
-                // let cookieId = createRandomString();
-                // let cookie = { username: username, cookie: cookieId };
-                // cookies.push(cookie);
-            
-                // let headers = {
-                //     "Set-Cookie": "session_id=" + cookieId + "; Max-Age=86400; Path=/",
-                //     "Location": "/"
-                // };
-                // return handleResponse(null, 303, headers);
-
-
-    {
-      "id": "u-3",
-      "username": "dilara",
-      "password": "moni",
-      "profilePicUrl": "msp.png"
-    }
-*/
-
 export function getActiveUser(activeCookie, cookies, users) {
-    let activeUser = null;
+    if (activeCookie == null) return null;
+
     activeCookie = activeCookie.split("=")[1];
+
+    // let activeUser = null;
 
     for (let cookie of cookies) {
         if (cookie.cookie == activeCookie) {
             for (let user of users) {
                 if (user.username == cookie.username) {
-                    activeUser = user;
+                    // activeUser = user;
+                    return user;
                 }
             }
         }
     }
 
-    return activeUser;
+    return null;
 }
 
 export function getUserByUsername(users, username) {
@@ -113,15 +83,6 @@ export function getUserByUsername(users, username) {
     }
     return foundUser;
 }
-
-/* 
-    {
-      "id": "u-3",
-      "username": "dilara",
-      "password": "moni",
-      "profilePicUrl": "msp.png"
-    }
-*/
 
 
 // /* 

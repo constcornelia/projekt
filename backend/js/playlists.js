@@ -159,93 +159,22 @@ export function createPlaylist(req, user, playlists, filename, id, songs) {
     return newPlaylist;
 }
 
+export function deletePlaylistById(playlists, id, user) {
+    for (let i = 0; i < playlists.length; i++) {
+        if (playlists[i].id == id) {
+            const playlist = playlists[i];
 
-/* 
-//     if (request.method == "POST") {
-//         if (url.pathname == "/api/playlists") {
-//             let formData = await request.formData();
+            if (playlist.ownerId != user.id) return null;
 
-//             // Variabler för datan från formuläret
-//             let name;
-//             let description;
-//             let tag;
-//             let songs;
-//             let file;
-
-//             // Loopar igenom all formdata
-//             for (let data of formData) {
-//                 // Första värdet är fältets namn
-//                 // Exempel:
-//                 // "name"
-//                 let key = data[0];
-//                 // Andra värdet är innehållet
-//                 // Exempel:
-//                 // "My playlist"
-//                 let value = data[1];
-
-//                 // Sparar spellistans data
-//                 if (key == "name") name = value;
-//                 if (key == "description") description = value;
-//                 if (key == "tag") tag = value;
-//                 // JSON.parse gör om texten tillbaka till en array
-//                 if (key == "songs") songs = JSON.parse(value);
-//                 if (key == "cover") file = value;
-//             }
-//             let filename = "";
-//             if (file && file.name) {
-//                 const fileStr = crypto.randomUUID();;
-//                 const extension = extname(file.name);
-//                 filename = fileStr + extension;
-//                 const bytes = await file.bytes();
-//                 Deno.writeFileSync(`../uploads/${filename}`, bytes);
-//             }
-
-//             let newPlaylist = {
-//                 id: newId,
-//                 ownerId: foundUser.id,
-//                 name: name,
-//                 description: description,
-//                 imgUrl: `/uploads/${filename}`,
-//                 likes: [],
-//                 tags: playlistTags,
-//                 songs: songs
-//             };
-//             playlists.push(newPlaylist);
-//             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
-//             let headers = { "Content-Type": "application/json" };
-//             return handleResponse(JSON.stringify(newPlaylist), 201, headers);
-//         }
-//     }
-
-*/
-
-/* 
-    {
-      "id": "p-1",
-      "ownerId": "u-1",
-      "name": "My Emo Romance",
-      "description": "Playlist for the emos",
-      "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
-      "likes": [
-        "u-2",
-        "u-3"
-      ],
-      "tags": [
-        "emo",
-        "punk"
-      ],
-      "songs": [
-        {
-          "songId": "s-1",
-          "editorId": "u-3"
-        },
-        {
-          "songId": "s-28",
-          "editorId": "u-2"
+            playlists.splice(i, 1);
+            return playlist;
         }
-      ]
-    },
-*/
+    }
+    return null;
+}
+
+
+
 
 export function getPlaylistDataById(playlists, id) {
     for (let playlist of playlists) {
@@ -372,69 +301,3 @@ export function getPlaylistDataById(playlists, id) {
 // //     return true;
 // // }
 
-// export function createPlaylistId (database) {
-//     let highestId = 0;
-
-//     for (let playlist of database.playlists) {
-//         let id = parseInt(playlist.id.split("-")[1]);
-
-//         if (id > highestId) {
-//             highestId = id;
-//         }
-//     }
-//     return `p-${highestId + 1}`;
-// }
-
-// export function createPlaylistById (database, body) {
-//     let playlists = database.playlists;
-
-//     let newId = createPlaylistId(database);
-
-//     let newPlaylist = {
-//         id: newId,
-//         // ownerId: "u-1", måste fixa getUser??
-//         name: body.name,
-//         description: body.description,
-//         imgUrl: body.imgUrl,
-//         tags: body.tags,
-//         songs: body.songs
-//     };
-//     playlists.push(newPlaylist);
-
-//     Deno.writeTextFileSync("database.json", JSON.stringify(database));
-
-//     return newPlaylist;
-// }
-
-
-
-// function getNewPlaylistId(playlists) {
-//     let highest = 0;
-
-//     for (let playlist of playlists) {
-//         let idNr = playlist.id.substring(2);
-//         idNr = parseInt(idNr);
-
-//         if (highest < idNr) {
-//             highest = idNr;
-//         }
-//     }
-//     let newNr = highest + 1;
-//     return "p-" + newNr;
-// }
-
-
-// export function createPlaylist(playlists, file, title, description) {
-//     let id = getNewPlaylistId(playlists);
-
-//     let newPlaylist = {
-//         id: id,
-//         ownerId: "",
-//         name: title,
-//         description: description,
-//         imgUrl: file,
-//         likes: [],
-//         tags: "",
-//         songs: []
-//     };
-// }

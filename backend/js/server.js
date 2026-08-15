@@ -1,7 +1,7 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
 import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
-import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
+import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, getSpecifiedPlaylists, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById /* deletePlaylistById, removeSongFromPlaylist, getOwnedPlaylists, getLikedPlaylists, getContributedPlaylists */ } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
 const data = JSON.parse(Deno.readTextFileSync("../data/database.json"));
@@ -51,6 +51,7 @@ async function handler(request) {
         else return handleResponse(null, 303, { "Location": "/welcome" });
     }
 
+    // Sign up
     if (url.pathname == "/signup") {
         if (request.method == "GET") return serveFile(request, "../../frontend/signup.html");
 
@@ -86,6 +87,7 @@ async function handler(request) {
         }
     }
 
+    // Log in
     if (url.pathname == "/login") {
         if (request.method == "GET") return serveFile(request, "../../frontend/login.html");
 
@@ -108,6 +110,7 @@ async function handler(request) {
         }
     }
 
+    // Log out
     if (url.pathname == "/logout" && request.method == "GET") {
         let headers = {
             "Location": "/welcome",
@@ -116,6 +119,7 @@ async function handler(request) {
         return handleResponse(null, 303, headers);
     }
 
+    // Get all tags (for dropdowns)
     if (url.pathname == "/api/tags" && request.method == "GET") {
         let tags = getTags(playlists);
 
@@ -128,7 +132,7 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-    // Sorted playlists
+    // Sort playlists
     if (url.pathname == "/api/playlists" && request.method == "GET") {
         let tag = url.searchParams.get("tag");
         if (tag) playlists = filterPlaylistsByTag(playlists, tag);
@@ -159,6 +163,7 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
+    // Get all users **
     if (url.pathname == "/api/users" && request.method == "GET") {
         users = JSON.stringify(users);
         return new Response(users, {
@@ -167,6 +172,7 @@ async function handler(request) {
         });
     }
 
+    // Get logged in user's info + edit user info **
     if (url.pathname == "/api/profile/info") {
         if (request.method == "GET") {
             const activeCookie = request.headers.get("cookie");
@@ -186,7 +192,7 @@ async function handler(request) {
         }
     }
 
-    // Search for a song by artist or title to add to a playlist
+    // Search for a song by artist or title to add to a playlist **
     if (url.pathname == "/api/songs/search") {
         let phrase = url.searchParams.get("q");
         if (phrase) songs = getSongsBySearch(songs, phrase);
@@ -197,15 +203,16 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
+    // Show page for one playlist (by id)
     let playlistPage = new URLPattern({ pathname: "/playlists/:id" });
     if (playlistPage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
 
+    // Get playlist info by id + add songs to it as a logged in user
     let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
     if (playlistRoute.test(request.url)) {
         let match = playlistRoute.exec(request.url);
         let id = match.pathname.groups.id;
 
-        // Felhantera
         if (request.method == "GET") {
             let playlist = getPlaylistById(playlists, songs, id);
             // Felhantera
@@ -226,11 +233,13 @@ async function handler(request) {
         }
     }
 
+    // Get all songs
     if (url.pathname == "/api/songs" && request.method == "GET") {
         let body = JSON.stringify(songs);
         return handleResponse(body, 200, headers);
     }
 
+    // Get playlists liked, edited and owned by logged in user
     if (url.pathname == "/api/profile/playlists" && request.method == "GET") {
         const activeCookie = request.headers.get("cookie");
         let user = getActiveUser(activeCookie, cookies, users);
@@ -252,9 +261,11 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
+    // Get profile page of logged in user
     let profilePage = new URLPattern({ pathname: "/profile/:username" });
     if (profilePage.test(request.url)) return serveFile(request, "../../frontend/personal.html");
 
+    // Get profile info of logged in user
     let profileRoute = new URLPattern({ pathname: "/api/profile/:username" });
     if (profileRoute.test(request.url)) {
         let match = profileRoute.exec(request.url);
@@ -267,6 +278,7 @@ async function handler(request) {
         return handleResponse(body, 200, headers); 
     }
 
+    // Like playlists
     let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
     if (likeRoute.test(request.url)) {
         let match = likeRoute.exec(request.url);
@@ -293,6 +305,7 @@ async function handler(request) {
         // return handleResponse(body, 405, null);
     }
 
+    // Create new playlist
     if (url.pathname == "/new-playlist") {
         if (request.method == "GET") return serveFile(request, "../../frontend/new-playlist.html");
 
@@ -338,6 +351,97 @@ async function handler(request) {
             return handleResponse(null, 303, headers);
         }
     }
+
+    // Get page for owned playlist by id
+    let personalPlaylistPage = new URLPattern({ pathname: "/profile/playlist/:id" });
+    if (personalPlaylistPage.test(request.url)) return serveFile(request, "../../frontend/personal-playlist.html");
+
+    // Get info for owned playlist, edit it or delete it as owner (by id)
+    let personalPlaylistRoute = new URLPattern({ pathname: "/api/profile/playlist/:id" });
+    if (personalPlaylistRoute.test(request.url)) {
+        let match = personalPlaylistRoute.exec(request.url);
+        let id = match.pathname.groups.id;
+
+        const activeCookie = request.headers.get("cookie");
+        console.log('cookie',activeCookie);
+        let user = getActiveUser(activeCookie, cookies, users);
+        console.log('user',user);
+
+        if (!user) {
+            let body = JSON.stringify({ error: "Unauthorized" });
+            return handleResponse(body, 401, headers);
+        }
+
+        if (request.method == "GET") {
+            let playlist = getPlaylistById(playlists, songs, id);
+
+            // Felhantera
+
+            let body = JSON.stringify(playlist);
+            return handleResponse(body, 200, headers);
+            // Get personal playlist by id
+        }
+
+        if (request.method == "PATCH") {
+            // Patch personal playlist by id
+        }
+        
+        if (request.method == "DELETE") {
+            let deletedPlaylist = deletePlaylistById(playlists, id, user);
+
+            if (!deletedPlaylist) {
+                let body = JSON.stringify({ error: "Playlist not found" });
+                return handleResponse(body, 404, headers);
+            }
+
+            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
+            return handleResponse(null, 204, null);
+
+            // Delete personal playlist by id
+        }
+    }
+
+
+/* 
+
+
+//             // hitta spellistan
+//             let foundPlaylist = null;
+//             for (let playlist of playlists) {
+//                 if (playlist.id == playlistId) {
+//                     foundPlaylist = playlist;
+//                     break;
+//                 }
+//             }
+//             if (!foundPlaylist) {
+//                 return handleResponse("Playlist not found", 404, null);
+//             }
+//             // kontrollera att användaren är ägaren
+//             if (foundPlaylist.ownerId != foundUser.id) {
+//                 return handleResponse(
+//                     "You are not the owner of this playlist",
+//                     403,
+//                     null
+//                 );
+//             }
+//             // Radera spellistan
+//             let deleted = deletePlaylistById(data, playlistId);
+//             if (!deleted) {
+//                 return handleResponse(
+//                     "Playlist could not be deleted",
+//                     404,
+//                     null
+//                 );
+//             }
+//             // Spara databasen
+//             Deno.writeTextFileSync(
+//                 "../data/database.json",
+//                 JSON.stringify(data, null, 2)
+//             );
+//             return handleResponse(null, 204, null);
+//         }
+//     }
+*/
 
 
     
