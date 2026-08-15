@@ -507,7 +507,7 @@
       "ownerId": "u-1",
       "name": "My Emo Romance",
       "description": "Playlist for the emos",
-      "imgUrl": "https://i0.wp.com/www.wikimetal.com.br/wp-content/uploads/2026/02/My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.jpg?resize=1170%2C658&ssl=1",
+      "imgUrl": "My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.webp",
       "likes": [
         "u-2",
         "u-3"
@@ -532,7 +532,7 @@
       "ownerId": "u-1",
       "name": "Late Night Drive",
       "description": "Perfekt för nattliga bilturer",
-      "imgUrl": "https://i.pinimg.com/736x/27/20/45/272045dccb59100f1fdc575bad67350f.jpg",
+      "imgUrl": "272045dccb59100f1fdc575bad67350f.jpg",
       "likes": [],
       "tags": [
         "chill"
@@ -549,7 +549,7 @@
       "ownerId": "u-1",
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
-      "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
+      "imgUrl": "422cee71a2583f436499248e1049b4fc.jpg",
       "likes": [
         "u-1",
         "u-2"
@@ -570,7 +570,7 @@
       "ownerId": "u-1",
       "name": "Sunday Morning Coffee",
       "description": "Lugn start på dagen",
-      "imgUrl": "https://i.pinimg.com/736x/c2/4b/d7/c24bd7863e87ffc89b596618cfcde852.jpg",
+      "imgUrl": "c24bd7863e87ffc89b596618cfcde852.jpg",
       "likes": [],
       "tags": [
         "acoustic",
@@ -596,7 +596,7 @@
       "ownerId": "u-1",
       "name": "Party Bangers",
       "description": "Musik som höjer stämningen",
-      "imgUrl": "https://i.pinimg.com/1200x/25/2b/c6/252bc611b9e0bae4ce0fc170d7ff9791.jpg",
+      "imgUrl": "252bc611b9e0bae4ce0fc170d7ff9791.jpg",
       "likes": [
         "u-3"
       ],
@@ -620,7 +620,7 @@
       "ownerId": "u-1",
       "name": "Focus Mode",
       "description": "För plugg och jobb",
-      "imgUrl": "https://i.pinimg.com/736x/cb/2c/f4/cb2cf4309fc100624b0cc77f8663abe4.jpg",
+      "imgUrl": "cb2cf4309fc100624b0cc77f8663abe4.jpg",
       "likes": [],
       "tags": [
         "lofi",
@@ -633,7 +633,7 @@
       "ownerId": "u-1",
       "name": "Sad Hours",
       "description": "När man vill känna allt",
-      "imgUrl": "https://i.pinimg.com/736x/a6/ad/53/a6ad53d0faeb3c5560c7ed69305bca47.jpg",
+      "imgUrl": "a6ad53d0faeb3c5560c7ed69305bca47.jpg",
       "likes": [
         "u-2"
       ],
@@ -653,7 +653,7 @@
       "ownerId": "u-1",
       "name": "Summer Vibes",
       "description": "Sol, värme och semester",
-      "imgUrl": "https://i.pinimg.com/736x/de/f0/e6/def0e6a60a8b9bd2bc3eec453ff4430c.jpg",
+      "imgUrl": "def0e6a60a8b9bd2bc3eec453ff4430c.jpg",
       "likes": [
         "u-3"
       ],
@@ -668,7 +668,7 @@
       "ownerId": "u-1",
       "name": "Throwback Hits",
       "description": "Nostalgi från tidigare år",
-      "imgUrl": "https://i.pinimg.com/736x/ea/22/8c/ea228cd7bb05a6fa947fd652a3480714.jpg",
+      "imgUrl": "ea228cd7bb05a6fa947fd652a3480714.jpg",
       "likes": [],
       "tags": [
         "nostalgia"
