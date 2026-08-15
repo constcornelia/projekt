@@ -88,7 +88,7 @@ clear.addEventListener("click", async function clearFilters(event) {
 
 
 async function showLikedPlaylists() {
-    let playlists = await api.getRequest("/api/profile/playlists/liked");
+    let playlists = await api.getRequest("/api/profile/playlists?type=liked");
     let section = document.querySelector("#PersonalPlaylistsCollection");
     ui.renderPersonalPlaylists(playlists, section);
 }

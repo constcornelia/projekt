@@ -520,10 +520,6 @@
         {
           "songId": "s-1",
           "editorId": "u-3"
-        },
-        {
-          "songId": "s-28",
-          "editorId": "u-2"
         }
       ]
     },
@@ -550,10 +546,7 @@
       "name": "Gym Motivation",
       "description": "Energi och tempo för träningen",
       "imgUrl": "https://i.pinimg.com/1200x/42/2c/ee/422cee71a2583f436499248e1049b4fc.jpg",
-      "likes": [
-        "u-1",
-        "u-2"
-      ],
+      "likes": [],
       "tags": [
         "workout",
         "hype"
@@ -582,11 +575,7 @@
           "editorId": "u-1"
         },
         {
-          "songId": "s-7",
-          "editorId": "u-2"
-        },
-        {
-          "songId": "s-32",
+          "songId": "s-5",
           "editorId": "u-2"
         }
       ]
@@ -608,10 +597,6 @@
         {
           "songId": "s-44",
           "editorId": "u-1"
-        },
-        {
-          "songId": "s-17",
-          "editorId": "u-2"
         }
       ]
     },
@@ -621,14 +606,17 @@
       "name": "Focus Mode",
       "description": "För plugg och jobb",
       "imgUrl": "https://i.pinimg.com/736x/cb/2c/f4/cb2cf4309fc100624b0cc77f8663abe4.jpg",
-      "likes": [
-        "u-2"
-      ],
+      "likes": [],
       "tags": [
         "lofi",
         "chill"
       ],
-      "songs": []
+      "songs": [
+        {
+          "songId": "s-43",
+          "editorId": "u-1"
+        }
+      ]
     },
     {
       "id": "p-7",
@@ -642,6 +630,10 @@
         "ballad"
       ],
       "songs": [
+        {
+          "songId": "s-5",
+          "editorId": "u-1"
+        },
         {
           "songId": "s-92",
           "editorId": "u-3"

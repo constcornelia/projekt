@@ -21,41 +21,67 @@ export function checkLogin(users, req, cookieId, cookies) {
     return false;
 }
 
-export function checkSignup(users, req, cookieId, cookies) {
-    // Sätt required på fälten
-    // Informera användaren om ett användarnamn redan är taget
-    // Skapa cookie + användare
+export function checkSignup(users, req, filename, cookieId, cookies, id) {
+    const username = req.get("username");
+    const password = req.get("password");
+
     for (let user of users) {
         if (user.username == req.username) {
+            console.log("1")
             return false;
         }
     }
-    return true;
+
+    if (!username || !password) {
+        console.log("2");
+        return false;
+    }
+    console.log("test");
+
+    let newUser = {
+        id: id,
+        username: username,
+        password: password,
+        profilePicUrl: `../uploads/${filename}`,
+    };
+    console.log('newuser: ', newUser);
+    users.push(newUser);
+
+    let cookie = { username: req.username, cookie: cookieId };
+    cookies.push(cookie);
+
+    return newUser;
 }
 
 export function getActiveUser(activeCookie, cookies, users) {
-    let activeUser = null;
+    if (activeCookie == null) return null;
+
     activeCookie = activeCookie.split("=")[1];
+
+    // let activeUser = null;
 
     for (let cookie of cookies) {
         if (cookie.cookie == activeCookie) {
             for (let user of users) {
                 if (user.username == cookie.username) {
-                    activeUser = user;
+                    // activeUser = user;
+                    return user;
                 }
             }
         }
     }
-    return activeUser;
+
+    return null;
 }
 
 export function getUserByUsername(users, username) {
+    let foundUser = null;
     for (let user of users) {
-        if (user.usename == username) {
-            return user;
+        if (user.username == username) {
+            foundUser = user;
         }
     }
-    return null;
+    return foundUser;
 }
 
 

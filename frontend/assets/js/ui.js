@@ -20,7 +20,6 @@ AddSongForm.addEventListener("submit", function (event) {
 // Brand     =   Song 
 // Category  =   Tags
 
-
 let sections = [
     document.querySelector("#PublicPlaylistsCollection"),
     document.querySelector("#PersonalPlaylistsCollection")
@@ -202,7 +201,7 @@ class UI {
                             alert("Den låten är redan tillagd!");
                             return;
                         }
-                        await api.patchRequest(`/api/playlists/${playlistId}/songs`, {
+                        await api.patchRequest(`/api/playlists/${playlistId}`, {
                             songId: song.id,
                             editorId: currentUser.id
                         });
@@ -301,7 +300,7 @@ class UI {
         if (deleteButtonElement) {
             deleteButtonElement.addEventListener("click", async function () {
                 let playlistId = playlist.id;
-                let response = await api.deleteRequest(`/api/playlists/${playlistId}`);
+                let response = await api.deleteRequest(`/api/profile/playlist/${playlistId}`);
                 alert("Successfully deleted!");
                 window.location.href = "/main.html";
             });
