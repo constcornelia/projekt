@@ -138,7 +138,7 @@ class UI {
             <button class="LikePlaylist-Button WhiteLike system-UI">
               <span>${playlist.likes.length}</span>
             </button>
-            <button class="Play StopPlaying"></button>
+            <button class="Play"></button>
           </div>
           <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
         <img src="${playlist.imgUrl}">

@@ -907,7 +907,6 @@ nav .space {
     display: flex;
     flex-direction: column;
     gap: 40px;
-    width: 80%;
     margin: 0 auto;
 }
 
@@ -921,6 +920,6 @@ nav .space {
 
 .playlists-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
 }
