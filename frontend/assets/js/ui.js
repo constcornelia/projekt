@@ -65,6 +65,8 @@ class UI {
             }
         }
 
+        console.log(playlist)
+
         a.innerHTML = `
         <div class="playlist-card">
           <h1 class="title-UI">${playlist.name} </h1>
@@ -74,7 +76,7 @@ class UI {
             <button class="Play"></button>
           </div>
           <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
-          <img src="${playlist.imgUrl}">
+          <img src="../../../backend/uploads/${playlist.imgUrl}">
         </div>
         `;
         section.appendChild(a);

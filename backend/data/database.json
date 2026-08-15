@@ -685,7 +685,7 @@
       "ownerId": "u-2",
       "name": "Songs to hang myself to",
       "description": "#darkpsychology",
-      "imgUrl": "../uploads/6c2ddec4-b051-48bb-affc-0091c00f5236.jpg",
+      "imgUrl": "6c2ddec4-b051-48bb-affc-0091c00f5236.jpg",
       "likes": [],
       "tags": [
         "emo,sad"
@@ -710,7 +710,7 @@
       "ownerId": "u-2",
       "name": "test",
       "description": "test",
-      "imgUrl": "../../../backend/uploads/ad594bab-6fbf-4904-ab52-76cccfab3ef8.jpg",
+      "imgUrl": "ad594bab-6fbf-4904-ab52-76cccfab3ef8.jpg",
       "likes": [],
       "tags": [
         "calm"
