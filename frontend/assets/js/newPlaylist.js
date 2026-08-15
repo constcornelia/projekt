@@ -16,7 +16,6 @@ createPlaylistForm.addEventListener("submit", async function (event) {
    
     let nameInput = document.querySelector("#playlist-name");
     let descriptionInput = document.querySelector("#playlist-description");
-    let tagInput = document.querySelector("#playlist-tag");
     let coverInput = document.querySelector("#add-cover");
 
     let formData = new FormData();
@@ -26,16 +25,11 @@ createPlaylistForm.addEventListener("submit", async function (event) {
     formData.append("description", descriptionInput.value);
     
     // Gör om alla valda tags till en sträng
-    let tagString = "";
     for (let tag of selectedTags) {
-        if (tagString != "") {
-            tagString += ",";
-        }
-        tagString += tag;
+        // Lägger till vald tag
+        formData.append("tag", tag);
     }
 
-    // Lägger till vald tag
-    formData.append("tag", tagString);
     // Lägger till omslagsbild
     formData.append("cover", coverInput.files[0]);
     // Lägger till alla sparade låtar
@@ -100,7 +94,7 @@ if (addTagButton) {
         selectedTags.push(selectedTag);
         let tagList = document.querySelector("#SelectedTags");
         let tag = document.createElement("p");
-        tag.textContent = selectedTag;
+        tag.textContent = "#" + selectedTag;
         tagList.append(tag);
         //ny
         // div id="SearchResultSongs" bli synlig
