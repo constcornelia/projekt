@@ -30,9 +30,7 @@ class API {
            let request = new Request (url + endpoint, {
                method: "POST",
                headers: {
-                "Authorization": "Bearer 67",
                 "Content-Type": "application/json"
-
                },
                body: JSON.stringify(body)
            });
@@ -53,9 +51,6 @@ class API {
        try {
            let request = new Request (url + endpoint, {
                method: "PATCH",
-               headers: {
-                "Authorization": "Bearer 67",
-               },
                body: body
            });
            let response = await fetch (request);
@@ -65,7 +60,6 @@ class API {
                return null;
             }
             let data = await response.json();
-            alert("Successfully edited!");
             return data;
        } catch (error) {
             // position.innerHTML = "Couldn't edit product " + error;
@@ -77,9 +71,6 @@ class API {
         try {
             let request = new Request(url + endpoint, {
                 method: "DELETE",
-                headers: {
-                    "Authorization": "Bearer 67"
-                }
             });
             let response = await fetch(request);
             return response;

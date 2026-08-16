@@ -70,6 +70,6 @@ clear.addEventListener("click", async function clearFilters(event) {
     form.reset();
     searchBar.reset();
 });
-
+ui.showProfile();
 ui.getPlaylists();
 ui.dropDownsTags(tagInput);
