@@ -54,18 +54,19 @@ class API {
            let request = new Request (url + endpoint, {
                method: "PATCH",
                headers: {
-                 "Authorization": "Bearer 67",
-                "Content-Type": "application/json"
+                "Authorization": "Bearer 67",
                },
-               body: JSON.stringify(body)
+               body: body
            });
            let response = await fetch (request);
-           let data = null;
-           if (response.status !== 204) {
-               data = await response.json();
-               return data;
-           }
-           alert("Successfully edited!");
+           if (!response.status) {
+               let data = await response.json();
+               console.log(data);
+               return null;
+            }
+            let data = await response.json();
+            alert("Successfully edited!");
+            return data;
        } catch (error) {
             // position.innerHTML = "Couldn't edit product " + error;
             console.log(error);
