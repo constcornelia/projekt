@@ -129,6 +129,5 @@ coverage/
 
 # Built Visual Studio Code Extensions
 *.vsix
-uploads/*
 
 data/users.json
