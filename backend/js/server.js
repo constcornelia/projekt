@@ -9,6 +9,8 @@ const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
 
 const cookies = [];
 
+
+console.log("hej");
 function handleResponse(body, status, headers) {
     return new Response(body, {
         status: status,
