@@ -65,7 +65,6 @@ class API {
                return null;
             }
             let data = await response.json();
-            alert("Successfully edited!");
             return data;
        } catch (error) {
             // position.innerHTML = "Couldn't edit product " + error;
