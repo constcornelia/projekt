@@ -74,7 +74,7 @@ class UI {
             <button class="Play"></button>
           </div>
           <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
-          <img src="backend/uploads/${playlist.imgUrl}">
+          <img src="/backend/uploads/${playlist.imgUrl}">
         </div>
         `;
         section.appendChild(a);
@@ -138,7 +138,7 @@ class UI {
             <button class="Play"></button>
           </div>
           <p class="system-UI-accent">${formatTags(playlist.tags)}</p>
-        <img src="backend/uploads/${playlist.imgUrl}">
+        <img src="/backend/uploads/${playlist.imgUrl}">
         </div>
         `;
         section.appendChild(a);
@@ -308,7 +308,7 @@ class UI {
             <h1 id="PlaylistName" class="title">${playlist.name}</h1>
             <p id="PlaylistDescription" class="system-UI">${playlist.description}</p>
             <p id="PlaylistTag" class="system-UI-accent">${formatTags(playlist.tags)}</p>
-            <img src="backend/uploads/${playlist.imgUrl}">
+            <img src="/backend/uploads/${playlist.imgUrl}">
         `;
         // delete knappen finns bara för ägaren
         let deleteButtonElement = document.querySelector(".DeletePlaylistButton");

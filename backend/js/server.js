@@ -9,8 +9,6 @@ const userData = JSON.parse(Deno.readTextFileSync("../data/users.json"));
 
 const cookies = [];
 
-
-console.log("hej");
 function handleResponse(body, status, headers) {
     return new Response(body, {
         status: status,
@@ -383,6 +381,8 @@ async function handler(request) {
         if (request.method == "PATCH") {
             let userReq = await request.formData();
             console.log('request:',userReq)
+
+            
 
             // const activeCookie = request.headers.get("cookie");
             // let user = getActiveUser(activeCookie, cookies, users);
