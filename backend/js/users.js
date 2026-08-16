@@ -75,26 +75,24 @@ export function getUserByUsername(users, username) {
     return foundUser;
 }
 
-export function updateUser(activeUser, users, req) {
+export function updateUser(user, users, req, newFile) {
+    console.log(user);
     let username = req.get("username");
     let password = req.get("password");
-    let filename = req.get("filename");
 
-    if (!username || !password || !file) {
-        return null;
-    }
+    console.log(username)
 
-    for (let user of users) {
-        if (user.username == username) {
-            return null; 
+    if (username) {
+        for (let u of users) {
+            if (u.username == username) {
+                return null;
+            }
         }
+        user.username = username;
     }
+    
+    if (password) user.password = password;
+    if (newFile) user.profilePicUrl = newFile;
 
-    let updatedUser = {
-        username: username,
-        password: password,
-        profilePicUrl: filename
-    };
-    users.push(updatedUser);
-    return updatedUser;
+    return user;
 }
