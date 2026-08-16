@@ -28,7 +28,8 @@ async function getProfileInfo() {
 
 editAccountForm.addEventListener("submit", async function (event) {
     event.preventDefault();
-    const endpoint = "/api/profile/" + currentUser.username;
+    // const endpoint = "/api/profile/" + currentUser.username;
+    const endpoint = "/edit";
     const formData = new FormData();
     formData.append("username", usernameInput.value);
     formData.append("password", passwordInput.value);

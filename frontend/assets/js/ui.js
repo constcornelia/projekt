@@ -65,8 +65,6 @@ class UI {
             }
         }
 
-        console.log(playlist)
-
         a.innerHTML = `
         <div class="playlist-card">
           <h1 class="title-UI">${playlist.name} </h1>
@@ -88,7 +86,6 @@ class UI {
             await api.patchRequest(`/api/playlists/${playlist.id}/like`);
             // Hämtar den uppdaterade spellistan från servern
             let updatedPlaylist = await api.getRequest(`/api/playlists/${playlist.id}`);
-            console.log(updatedPlaylist);
             // Uppdaterar siffran i like-knappen så att rätt antal likes visas direkt på sidan
             likeButton.querySelector("span").textContent = updatedPlaylist.playlist.likes.length;
         });
@@ -263,8 +260,6 @@ class UI {
             } else {
                 // vanlig rendering av befintliga låtar
                 let currentUser = await api.getRequest("/api/profile/info");
-                console.log(currentUser);
-                console.log(playlist)
                 li.innerHTML = `
                     ${song.name} - ${song.artist}
                     <button class="Play StopPlaying"></button>
@@ -317,7 +312,6 @@ class UI {
         `;
         // delete knappen finns bara för ägaren
         let deleteButtonElement = document.querySelector(".DeletePlaylistButton");
-        console.log(deleteButtonElement);
         
         if (deleteButtonElement) {
             deleteButtonElement.addEventListener("click", async function () {

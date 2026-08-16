@@ -1,6 +1,6 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./login.js";
+import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./users.js";
 import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById, deleteSongFromPlaylist, getSpecifiedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
@@ -380,15 +380,17 @@ async function handler(request) {
 
         if (request.method == "PATCH") {
             let userReq = await request.formData();
+            console.log('request:',userReq)
 
-            const activeCookie = request.headers.get("cookie");
-            let user = getActiveUser(activeCookie, cookies, users);
-            if (!user) {
-                let body = JSON.stringify({ message: "Not logged in" });
-                return handleResponse(body, 401, headers);
-            }
+            // const activeCookie = request.headers.get("cookie");
+            // let user = getActiveUser(activeCookie, cookies, users);
+            // if (!user) {
+            //     let body = JSON.stringify({ message: "Not logged in" });
+            //     return handleResponse(body, 401, headers);
+            // }
 
-            let updatedUser = updateUser(user, users, userReq);
+            // let updatedUser = updateUser(user, users, userReq);
+            // console.log('updated user:',updatedUser);
         }
     }
 
