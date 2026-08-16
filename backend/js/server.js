@@ -396,11 +396,11 @@ async function handler(request) {
                 const extension = extname(file.name);
                 const filename = fileStr();
 
-                const bytes = await file.bytes();
-                if (bytes > 100000) {
-                    let body = JSON.stringify({ message: "File is too large" });
-                    return handleResponse(body, 400, headers);
-                }
+                // const bytes = await file.bytes();
+                // if (bytes > 100000) {
+                //     let body = JSON.stringify({ message: "File is too large" });
+                //     return handleResponse(body, 400, headers);
+                // }
                 let newFile = filename;
                 // Deno.writeFileSync(`../uploads/${filename}`, bytes);
             }
