@@ -67,36 +67,38 @@ async function handler(request) {
 
         if (request.method == "POST") {
             let signupReq = await request.formData();
+            
             const file = signupReq.get("profile");
-
             if (!file) {
                 let body = JSON.stringify({ message: "Profile picture is missing." });
-                return handleResponse(body, 400, headers);
+                return handleResponse(body, 400);
             } 
+            
+            const bytes = await file.bytes();
+            console.log(bytes.length);
+            if (bytes.length > 1000000) {
+                let body = JSON.stringify({ message: "File is too large" });
+                return handleResponse(body, 400);
+            }
             
             const fileStr = crypto.randomUUID();
             const extension = extname(file.name);
             const filename = fileStr + extension;
-    
-            const bytes = await file.bytes();
-            if (bytes > 100000) {
-                let body = JSON.stringify({ message: "File is too large" });
-                return handleResponse(body, 400, headers);
-            }
-            Deno.writeFileSync(`../uploads/${filename}`, bytes);
-
+            
             let cookieId = crypto.randomUUID();
             let headers = {
                 "Set-Cookie": "session_id=" + cookieId + "; Max-Age=86400; Path=/",
                 "Location": "/"
             }
-
+            
             let id = generateId("u", users);
             let newUser = checkSignup(users, signupReq, filename, cookieId, cookies, id);
             if (!newUser) {
                 let body = JSON.stringify({ message: "Not acceptable input data." });
-                return handleResponse(body, 400, null);
+                return handleResponse(body, 400);
             }
+
+            Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             return handleResponse(null, 303, headers);

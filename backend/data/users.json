@@ -9,7 +9,7 @@
     {
       "id": "u-2",
       "username": "cornelia",
-      "password": "lucy",
+      "password": "luc",
       "profilePicUrl": "eabc425a-da3b-4d72-9b12-db55d6ba94a9.JPG"
     },
     {
@@ -29,6 +29,18 @@
       "username": "lucy",
       "password": "meow",
       "profilePicUrl": "64b63eba-5c6d-4d58-a240-33c8bd56a491.JPG"
+    },
+    {
+      "id": "u-6",
+      "username": "cornelia",
+      "password": "lucy",
+      "profilePicUrl": "3252fe42-1144-4385-96eb-c0a049092dfc.jpeg"
+    },
+    {
+      "id": "u-7",
+      "username": "cornelia0",
+      "password": "sfse",
+      "profilePicUrl": "169305af-cb69-4201-9c1b-c3358293edc1.JPG"
     }
   ]
 }

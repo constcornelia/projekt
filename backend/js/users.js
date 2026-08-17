@@ -22,26 +22,27 @@ export function checkLogin(users, req, cookieId, cookies) {
 export function checkSignup(users, req, filename, cookieId, cookies, id) {
     const username = req.get("username");
     const password = req.get("password");
-
-    for (let user of users) {
-        if (user.username == req.username) {
-            return false;
-        }
-    }
-
+    
     if (!username || !password) {
         return false;
     }
 
-    let newUser = {
+    for (let user of users) {
+        if (user.username == username) {
+            return false;
+        }
+    }
+
+    const newUser = {
         id: id,
         username: username,
         password: password,
         profilePicUrl: filename,
     };
+
     users.push(newUser);
 
-    let cookie = { username: req.username, cookie: cookieId };
+    const cookie = { username: username, cookie: cookieId };
     cookies.push(cookie);
 
     return newUser;

@@ -101,45 +101,6 @@ export function getSpecifiedPlaylists(playlists, user, specification) {
         }
     }
     return specifiedPlaylists;
-
-    // let specifiedPlaylists = [];
-
-    // console.log('start user:', user);
-    // console.log('start userid:', user.id);
-
-    // for (let playlist of playlists) {
-    //     console.log('playlist:', playlist)
-    //     console.log('user fortfarande:', user)
-
-    //     if (specification == "liked") {
-    //         console.log('likes:', playlist.likes)
-    //         ;
-    //         for (let like of playlist.likes) {
-    //             console.log('like:',like);
-    //             console.log('userid:', user.id);
-
-    //             if (like == user.id) {
-    //                 console.log("match")
-    //                 specifiedPlaylists.push(playlist);
-    //             }
-    //         }
-    //     }
-
-    //     if (specification == "owned") {
-    //         if (playlist.ownerId == user.id) {
-    //             specifiedPlaylists.push(playlist);
-    //         }
-    //     }
-
-    //     if (specification == "edited") {
-    //         for (let editor of playlist.songs) {
-    //             if (editor.editorId == user.id) {
-    //                 specifiedPlaylists.push(playlist);
-    //             }
-    //         }
-    //     }
-    // }
-    // return specifiedPlaylists;
 }
 
 export function likePlaylist(playlist, user) {
