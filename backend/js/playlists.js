@@ -53,7 +53,6 @@ export function getPlaylistsBySearch(playlists, phrase) {
 }
 
 export function getPlaylistById(playlists, songs, id) {
-    // Sparar spellistan som matchar id:t
     let foundPlaylist = null;
     for (let playlist of playlists) {
         if (playlist.id == id) {
@@ -62,13 +61,10 @@ export function getPlaylistById(playlists, songs, id) {
     }
 
     if (!foundPlaylist) return null;
-    // Array som ska innehålla alla fullständiga låt-objekt
     let playlistSongs = [];
     for (let song of songs) {
         for (let playlistSong of foundPlaylist.songs) {
-            // Om låtens id matchar songId i spellistan
             if (song.id === playlistSong.songId) {
-                // Lägg till hela låt-objektet i arrayen
                 playlistSongs.push(song);
             }
         }
@@ -104,8 +100,6 @@ export function getSpecifiedPlaylists(playlists, user, specification) {
 }
 
 export function likePlaylist(playlist, user) {
-    console.log(playlist);
-    console.log(playlist.likes);
     let liked = false;
 
     for (let i = 0; i < playlist.likes.length; i++) {
@@ -171,9 +165,6 @@ export function deletePlaylistById(playlists, id, user) {
     return null;
 }
 
-
-
-
 export function getPlaylistDataById(playlists, id) { // FIXA!!!!!!!!!!!!!!!!!!
     for (let playlist of playlists) {
         if (playlist.id == id) {
@@ -190,35 +181,6 @@ export function getPlaylistDataById(playlists, id) { // FIXA!!!!!!!!!!!!!!!!!!
     return ownedPlaylists;
 }
 
-export function getLikedPlaylists(playlists, user) {
-    let liked = [];
-
-    for (let playlist of playlists) {
-        // Kollar om användarens username finns i likes arrayen
-        for (let like of playlist.likes) {
-            if (like == user.id) {
-                liked.push(playlist);
-            }
-        }
-    }
-    return likedPlaylists;
-}
-
-export function getContributedPlaylists(playlists, user) {
-    let contributedPlaylists = [];
-
-    for (let playlist of playlists) {
-        for (let song of playlist.songs) {
-            if (song.editorId == user.id) {
-                contributedPlaylists.push(playlist);
-                break;
-            }
-        }
-    }
-    return contributedPlaylists;
-}
-
-
 export function deleteSongFromPlaylist (playlists, playlistId, songId) {
     for (let playlist of playlists) {
         if (playlist.id === playlistId) {
@@ -234,105 +196,3 @@ export function deleteSongFromPlaylist (playlists, playlistId, songId) {
     }
     return playlists;
 }
-
-
-// export function deletePlaylistById(database, playlistId) {
-//     // Ny array som ska innehålla alla spellistor
-//     // förutom den som ska tas bort
-//     let updatedPlaylists = [];
-
-//     let found = false;
-//     for (let playlist of database.playlists) {
-//         if (playlist.id === playlistId) {
-//             found = true;
-//         } else {
-//             // Alla andra spellistor sparas kvar
-//             updatedPlaylists.push(playlist);
-//         }
-//     } 
-//     if (!found) return false;
-
-//     // Ersätter gamla playlist-arrayen med den uppdaterade
-//     database.playlists = updatedPlaylists;
-//     // Returnerar true om spellistan togs bort
-//     return true;
-// }
-
-// export function deleteSongFromPlaylist (playlists, playlistId, songId) {
-//     for (let playlist of playlists) {
-
-//         if (playlist.id === playlistId) {
-//             let updatedSongs = [];
-
-//             for (let song of playlist.songs) {
-
-//                 if (song.songId !== songId) {
-//                     updatedSongs.push(song);
-//                 }
-
-//             }
-//             playlist.songs = updatedSongs;
-//         }
-//     }
-//     return playlists;
-// }
-
-// export function editPlaylistById(database, playlistId, body) {
-//     let found = false;
-//     for (let playlist of database.playlists) {
-//         if (playlist.id === playlistId) {
-//             found = true;
-//             if (body.name) {
-//                 playlist.name = body.name;
-//             }
-//             if (body.tags) {
-//                 playlist.tags = body.tags;
-//             }
-//             if (body.songs) {
-//                 playlist.songs = body.songs;
-//             }
-//             if (body.imgUrl) {
-//                 playlist.imgUrl = body.imgUrl;
-//             }
-//             if (body.description) {
-//                 playlist.description = body.description;
-//             }
-//         }
-//     }
-
-//     return true;
-// }
-
-// // export function editPlaylistById(database, playlistId, body) {
-// //     let found = false;
-
-// //     for (let playlist of database.playlists) {
-// //         if (playlist.id === playlistId) {
-
-// //             found = true;
-
-// //             if (body.name) {
-// //                 playlist.name = body.name;
-// //             }
-
-// //             if (body.tags) {
-// //                 playlist.tags = body.tags;
-// //             }
-
-// //             if (body.songs) {
-// //                 playlist.songs = body.songs;
-// //             }
-
-// //             if (body.imgUrl) {
-// //                 playlist.imgUrl = body.imgUrl;
-// //             }
-
-// //             if (body.description) {
-// //                 playlist.description = body.description;
-// //             }
-// //         }
-// //     }
-
-// //     return true;
-// // }
-

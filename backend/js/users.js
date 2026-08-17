@@ -92,11 +92,5 @@ export function updateUser(user, users, req, newFile) {
     if (password && password != undefined) user.password = password;
     if (newFile) user.profilePicUrl = newFile;
 
-    console.log('username:',username)
-    console.log('password:',password)
-    console.log('newFile:',newFile)
-
-    console.log('return value; user:', user)
-
     return user;
 }

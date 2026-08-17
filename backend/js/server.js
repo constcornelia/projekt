@@ -94,7 +94,7 @@ async function handler(request) {
             let id = generateId("u", users);
             let newUser = checkSignup(users, signupReq, filename, cookieId, cookies, id);
             if (!newUser) {
-                let body = JSON.stringify({ message: "Not acceptable input data." });
+                let body = JSON.stringify({ message: "Input missing or username taken" });
                 return handleResponse(body, 400);
             }
 
@@ -434,6 +434,7 @@ async function handler(request) {
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
             let playlist = getPlaylistDataById(playlists, id);
+            console.log(playlist);
 
             if (!playlist) {
                 let body = JSON.stringify({ error: "Playlist Not Found" });
