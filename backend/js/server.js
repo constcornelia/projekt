@@ -43,13 +43,6 @@ async function handler(request) {
 
     if (url.pathname == "/welcome" && request.method == "GET") return serveFile(request, "../../frontend/intro.html");
 
-    let authorizedPages = ["edit.html", "main.html", "new-playlist.html", "personal.html", "public-playlist.html"];
-    if (url.pathname.includes(authorizedPages) && request.method == "GET") {
-        let cookie = request.headers.get("cookie");
-        let session = checkSession(cookie, cookies);
-        if (!session) return serveFile(request, "../../frontend/intro.html");
-    }
-
     if (url.pathname == "/" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
 
@@ -370,6 +363,13 @@ async function handler(request) {
         let username = match.pathname.groups.username;
 
         if (request.method == "GET") {
+            let cookie = request.headers.get("cookie");
+            let session = checkSession(cookie, cookies);
+            if (!session) {
+                let body = JSON.stringify({ message: "No access" });
+                return handleResponse(body, 401, headers);
+            }
+            
             let user = getUserByUsername(users, username);
             let body = JSON.stringify(user);
             return handleResponse(body, 200, headers); 

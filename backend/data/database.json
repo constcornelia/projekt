@@ -510,7 +510,8 @@
       "imgUrl": "My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.webp",
       "likes": [
         "u-2",
-        "u-3"
+        "u-3",
+        "u-8"
       ],
       "tags": [
         "emo",
@@ -543,6 +544,10 @@
         {
           "songId": "s-52",
           "editorId": "u-1"
+        },
+        {
+          "songId": "s-28",
+          "editorId": "u-8"
         }
       ]
     },
