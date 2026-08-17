@@ -112,3 +112,4 @@ if (addTagButton) {
         wrapper.classList.add("input")
     });
 }
+console.log("hej");
