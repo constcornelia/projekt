@@ -20,7 +20,8 @@ class API {
            let data = await response.json();
            return data;
        } catch (error) {
-            throw error;
+            // position.innerHTML = "Couldn't reach data. Please try again! " + error;
+            console.log(error);
        }
    }
 
@@ -41,7 +42,8 @@ class API {
            }
            alert("Successfully posted!");
        } catch (error) {
-            throw error;
+            // position.innerHTML = "Couldn't post product " + error;
+            console.log(error);
        }
    }
 
@@ -60,7 +62,8 @@ class API {
             let data = await response.json();
             return data;
        } catch (error) {
-            throw error;
+            // position.innerHTML = "Couldn't edit product " + error;
+            console.log(error);
        }
    }
 
@@ -72,7 +75,7 @@ class API {
             let response = await fetch(request);
             return response;
         } catch (error) {
-            throw error;
+            console.log(error);
         }
     }
 }
