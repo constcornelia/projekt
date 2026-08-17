@@ -474,6 +474,10 @@ async function handler(request) {
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             let songs = JSON.parse(playlistReq.get("songs"));
+            if (!songs) {
+                let body = JSON.stringify({ message: "Songs missing" });
+                return handleResponse(body, 400, headers);
+            }
 
             let id = generateId("p", playlists);
             let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id, songs);
