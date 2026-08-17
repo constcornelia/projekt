@@ -124,7 +124,7 @@ async function handler(request) {
             }
 
             let body = JSON.stringify({ message: "Invalid login" })
-            return handleResponse(body, 400, null);
+            return handleResponse(body, 400);
         }
     }
 
