@@ -14,11 +14,7 @@ form.addEventListener("submit", async function(event) {
 
     if (response.status == 400) {
         const result = await response.json();
-        if (result.message === "Profile picture is missing.") {
-            errorAlert.textContent = "Please choose a profile picture.";
-        } else if (result.message === "Not acceptable input data.") {
-            errorAlert.textContent = "Username or password is invalid, or username is already taken.";
-        }
+        errorAlert.textContent = result.message;
         return;
     }
     if (response.status === 303 || response.ok) window.location.href = "/";
