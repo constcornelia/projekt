@@ -44,6 +44,8 @@ editAccountForm.addEventListener("submit", async function (event) {
         if (currentUser.profilePicUrl) {
             profilePicture.src = "../../../backend/uploads/" + currentUser.profilePicUrl;
         }
+        alert("Successfully edited!");
+        window.location.href = "/";
     }
 });
 

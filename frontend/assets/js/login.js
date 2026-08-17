@@ -19,7 +19,7 @@ form.addEventListener("submit", async function (event) {
 
     let response = await fetch("/login", options);
 
-    if (response.status == 401) {
+    if (response.status === 400) {
         document.querySelector(".error-note").innerHTML = "Incorrect username or password";
     }
 
