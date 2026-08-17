@@ -129,13 +129,11 @@ export function addSongToPlaylist(playlists, id, user, song) {
 
 
 export function createPlaylist(req, user, playlists, filename, id, songs) {
-    console.log('req:',req);
     let name = req.get("name");
     let description = req.get("description");
     let tags = req.getAll("tag");
 
     if (!id || !name || !description || !filename || !tags || tags.length == 0) {
-        console.log("data missing");
         return null;
     }
 
@@ -151,7 +149,6 @@ export function createPlaylist(req, user, playlists, filename, id, songs) {
     }
 
     playlists.push(newPlaylist);
-    console.log('newplaylist:',newPlaylist);
     return newPlaylist;
 }
 

@@ -54,7 +54,6 @@ async function handler(request) {
         }
     }
 
-    // Sign up
     if (url.pathname == "/signup") {
         if (request.method == "GET") return serveFile(request, "../../frontend/signup.html");
 
@@ -65,7 +64,7 @@ async function handler(request) {
             if (!file) {
                 let body = JSON.stringify({ message: "Profile picture is missing." });
                 return handleResponse(body, 400);
-            } 
+            }
             
             const bytes = await file.bytes();
             if (bytes.length > 1000000) {
@@ -91,13 +90,11 @@ async function handler(request) {
             }
 
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
-
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             return handleResponse(null, 303, headers);
         }
     }
 
-    // Log in
     if (url.pathname == "/login") {
         if (request.method == "GET") return serveFile(request, "../../frontend/login.html");
 
@@ -120,7 +117,6 @@ async function handler(request) {
         }
     }
 
-    // Log out
     if (url.pathname == "/logout" && request.method == "GET") {
         let headers = {
             "Location": "/welcome",
@@ -129,7 +125,6 @@ async function handler(request) {
         return handleResponse(null, 303, headers);
     }
 
-    // Get all tags (for dropdowns)
     if (url.pathname == "/api/tags" && request.method == "GET") {
         let tags = getTags(playlists);
 
@@ -149,7 +144,6 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-    // Sort playlists
     if (url.pathname == "/api/playlists" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
         let session = checkSession(cookie, cookies);
@@ -173,7 +167,6 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-    // Search for a playlist by name and description
     if (url.pathname == "/api/playlists/search" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
         let session = checkSession(cookie, cookies);
@@ -194,7 +187,6 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-    // Get all users 
     if (url.pathname == "/api/users" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
         let session = checkSession(cookie, cookies);
@@ -212,7 +204,6 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-    // Get logged in user's info + edit user info **
     if (url.pathname == "/api/profile/info" && request.method == "GET") {
         if (request.method == "GET") {
         let cookie = request.headers.get("cookie");
@@ -235,7 +226,6 @@ async function handler(request) {
         }
     }
 
-    // Search for a song by artist or title to add to a playlist
     if (url.pathname == "/api/songs/search" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
         let session = checkSession(cookie, cookies);
@@ -256,11 +246,9 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-    // Show page for one playlist (by id)
     let playlistPage = new URLPattern({ pathname: "/playlists/:id" });
     if (playlistPage.test(request.url)) return serveFile(request, "../../frontend/public-playlist.html");
 
-    // Get playlist info by id + add songs to it as a logged in user
     let playlistRoute = new URLPattern({ pathname: "/api/playlists/:id" });
     if (playlistRoute.test(request.url)) {
         let match = playlistRoute.exec(request.url);
@@ -275,12 +263,11 @@ async function handler(request) {
             }
 
             let playlist = getPlaylistById(playlists, songs, id);
-
             if (!playlist) {
                 let body = JSON.stringify({ message: "No playlist found with id" });
                 return handleResponse(body, 404, headers);
             }
-            // Felhantera
+
             let body = JSON.stringify(playlist);
             return handleResponse(body, 200, headers); 
         }
@@ -308,7 +295,6 @@ async function handler(request) {
         }
     }
 
-    // Get all songs
     if (url.pathname == "/api/songs" && request.method == "GET") {
         let cookie = request.headers.get("cookie");
         let session = checkSession(cookie, cookies);
@@ -326,11 +312,6 @@ async function handler(request) {
         return handleResponse(body, 200, headers);
     }
 
-
-
-
-    // -------------------------- FORTSÄTT MED FINSLIPNING HÄR --------------------------
-
     if (url.pathname == "/api/profile/playlists" && request.method == "GET") {
         const activeCookie = request.headers.get("cookie");
         let user = getActiveUser(activeCookie, cookies, users);
@@ -343,20 +324,18 @@ async function handler(request) {
         if (type == "owned") specification = "owned";
 
         let specifiedPlaylists = getSpecifiedPlaylists(playlists, user, specification);
-        // if (!specifiedPlaylists) {
-        //     let body = JSON.stringify({ error: "Not Found "});
-        //     return handleResponse(body, 404, headers);
-        // }
+        if (!specifiedPlaylists) {
+            let body = JSON.stringify({ message: "No playlists found "});
+            return handleResponse(body, 404, headers);
+        }
 
         let body = JSON.stringify(specifiedPlaylists)
         return handleResponse(body, 200, headers);
     }
 
-    // Get profile page of logged in user
     let profilePage = new URLPattern({ pathname: "/profile/:username" });
     if (profilePage.test(request.url)) return serveFile(request, "../../frontend/personal.html");
 
-    // Get profile info of logged in user
     let profileRoute = new URLPattern({ pathname: "/api/profile/:username" });
     if (profileRoute.test(request.url)) {
         let match = profileRoute.exec(request.url);
@@ -371,6 +350,11 @@ async function handler(request) {
             }
 
             let user = getUserByUsername(users, username);
+            if (!user) {
+                let body = JSON.stringify({ message: "No user found" });
+                return handleResponse(body, 404, headers);
+            }
+
             let body = JSON.stringify(user);
             return handleResponse(body, 200, headers); 
         }
@@ -378,34 +362,9 @@ async function handler(request) {
 
     if (url.pathname == "/edit") {
         if (request.method == "GET") return serveFile(request, "../../frontend/edit.html");
-
-        /* 
-const oldUsername = user.username;
-
-let updatedUser = updateUser(user, users, userReq, newFile);
-
-if (!updatedUser) {
-    return handleResponse(
-        JSON.stringify({ message: "Username already taken" }),
-        400,
-        headers
-    );
-}
-
-// Om username ändrades, uppdatera sessionen
-if (oldUsername !== updatedUser.username) {
-    // hitta aktuell session och ändra username där
-    const session = cookies.find(c => c.username === oldUsername);
-
-    if (session) {
-        session.username = updatedUser.username;
-    }
-}
-        */
         
         if (request.method == "PATCH") {
             let userReq = await request.formData();
-            console.log('REQUEST:', userReq);
 
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
@@ -414,11 +373,8 @@ if (oldUsername !== updatedUser.username) {
                 return handleResponse(body, 401, headers);
             }
 
-            console.log('USER:', user);
-
             let newFile = false
             let file = userReq.get("profile");
-            console.log('FILE:', file);
             if (file) {
                 const fileStr = crypto.randomUUID();
                 const extension = extname(file.name);
@@ -426,22 +382,17 @@ if (oldUsername !== updatedUser.username) {
 
                 const bytes = await file.bytes();
                 if (bytes.length > 1000000) {
-                    console.log("FILE IS TOO LARGE")
                     let body = JSON.stringify({ message: "File is too large" });
                     return handleResponse(body, 400, headers);
                 }
-                newFile = filename;
-                
-                console.log('NEWFILE: ', newFile);
+                newFile = filename;                
                 Deno.writeFileSync(`../uploads/${filename}`, bytes);
             }
 
             const oldUsername = user.username;
             
             let updatedUser = updateUser(user, users, userReq, newFile);
-            console.log('UPDATED USER:', updatedUser);
             if (!updatedUser) {
-                console.log("ERROR IN UPDATED USER")
                 let body = JSON.stringify({ message: "Username already taken" });
                 return handleResponse(body, 400, headers);
             }
@@ -451,21 +402,15 @@ if (oldUsername !== updatedUser.username) {
                 for (let cookie of cookies) {
                     if (cookie.username == oldUsername) {
                         cookie.username = updatedUser.username;
-                        console.log("NEW COOKIE", cookie);
                     }
                 }
             }
-
-
-
-            console.log('updated user:', updatedUser);
             
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             return handleResponse(null, 204, headers);
         }
     }
 
-    // Like playlists
     let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
     if (likeRoute.test(request.url)) {
         let match = likeRoute.exec(request.url);
@@ -487,25 +432,19 @@ if (oldUsername !== updatedUser.username) {
             let body = JSON.stringify(likedPlaylist);
             return handleResponse(body, 200, headers);
         }
-
-        // let body = JSON.stringify({ error: "Method not allowed" });
-        // return handleResponse(body, 405, null);
     }
 
-    // Create new playlist
     if (url.pathname == "/new-playlist") { 
         if (request.method == "GET") return serveFile(request, "../../frontend/new-playlist.html");
 
         if (request.method == "POST") {
             let playlistReq = await request.formData();
-            console.log('req:', playlistReq);
 
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
 
             const file = playlistReq.get("cover");
             if (!file || file == "undefined") {
-                console.log('file:',file);
                 let body = JSON.stringify({ message: "Cover is missing" });
                 return handleResponse(body, 400, headers);
             } 
@@ -528,7 +467,6 @@ if (oldUsername !== updatedUser.username) {
             
             let id = generateId("p", playlists);
             let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id, songs);
-            console.log('newplaylist:',newPlaylist);
             if (!newPlaylist) {
                 let body = JSON.stringify({ message: "Please add more info" });
                 return handleResponse(body, 404, headers);
@@ -541,11 +479,9 @@ if (oldUsername !== updatedUser.username) {
         }
     }
 
-    // Get page for owned playlist by id
     let personalPlaylistPage = new URLPattern({ pathname: "/profile/playlist/:id" });
     if (personalPlaylistPage.test(request.url)) return serveFile(request, "../../frontend/personal-playlist.html");
 
-    // Get info for owned playlist, edit it or delete it as owner (by id)
     let personalPlaylistRoute = new URLPattern({ pathname: "/api/profile/playlist/:id" });
     if (personalPlaylistRoute.test(request.url)) {
         let match = personalPlaylistRoute.exec(request.url);
@@ -553,7 +489,6 @@ if (oldUsername !== updatedUser.username) {
 
         const activeCookie = request.headers.get("cookie");
         let user = getActiveUser(activeCookie, cookies, users);
-
         if (!user) {
             let body = JSON.stringify({ message: "Unauthorized" });
             return handleResponse(body, 401, headers);
@@ -561,17 +496,17 @@ if (oldUsername !== updatedUser.username) {
 
         if (request.method == "GET") {
             let playlist = getPlaylistById(playlists, songs, id);
-
-            // Felhantera
+            if (!playlist) {
+                let body = JSON.stringify({ message: "No playlist found" });
+                return handleResponse(body, 404, headers);
+            }
 
             let body = JSON.stringify(playlist);
             return handleResponse(body, 200, headers);
-            // Get personal playlist by id
         }
         
         if (request.method == "DELETE") {
             let deletedPlaylist = deletePlaylistById(playlists, id, user);
-
             if (!deletedPlaylist) {
                 let body = JSON.stringify({ message: "Playlist not found" });
                 return handleResponse(body, 404, headers);
@@ -581,7 +516,6 @@ if (oldUsername !== updatedUser.username) {
             return handleResponse(null, 204, null);        }
     }
     
-    // Delete song from playlist if owner
     let songRoute = new URLPattern({ pathname: "/api/playlists/:id/songs/:songId" });
     if (songRoute.test(request.url)) {
         let match = songRoute.exec(request.url);
