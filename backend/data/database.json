@@ -508,7 +508,9 @@
       "name": "My Emo Romance",
       "description": "Playlist for the emos",
       "imgUrl": "My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.webp",
-      "likes": [],
+      "likes": [
+        "u-1"
+      ],
       "tags": [
         "emo",
         "punk"
@@ -520,6 +522,10 @@
         },
         {
           "songId": "s-56",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-1",
           "editorId": "u-1"
         }
       ]
