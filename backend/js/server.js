@@ -391,101 +391,36 @@ async function handler(request) {
 
             let newFile = false
             let file = userReq.get("profile");
+            console.log('file:',file);
             if (file) {
                 const fileStr = crypto.randomUUID();
                 const extension = extname(file.name);
-                const filename = fileStr();
+                const filename = fileStr + extension;
+                console.log('filename:',filename);
 
-                // const bytes = await file.bytes();
-                // if (bytes > 100000) {
-                //     let body = JSON.stringify({ message: "File is too large" });
-                //     return handleResponse(body, 400, headers);
-                // }
-                let newFile = filename;
-                // Deno.writeFileSync(`../uploads/${filename}`, bytes);
+                const bytes = await file.bytes();
+                if (bytes > 100000) {
+                    let body = JSON.stringify({ message: "File is too large" });
+                    return handleResponse(body, 400, headers);
+                }
+                console.log('bytes ok')
+                newFile = filename;
+                Deno.writeFileSync(`../uploads/${filename}`, bytes);
+
             }
-
+            console.log('new pfp:',newFile);
+            
             let updatedUser = updateUser(user, users, userReq, newFile);
-            if (!updateUser) {
-                let body = JSON.stringify({ message: "Something went wrong" });
+            if (!updatedUser) {
+                let body = JSON.stringify({ message: "Username already taken" });
                 return handleResponse(body, 400, headers);
             }
-
-            console.log(updatedUser);
-
-            // Deno.writeTextFileSync("database.json", JSON.stringify(data));
-            return handleResponse(null, 204, options);
-
-
-            /* 
-                        const fileStr = crypto.randomUUID();
-            const extension = extname(file.name);
-            const filename = fileStr + extension;
-    
-            const bytes = await file.bytes();
-            if (bytes > 100000) {
-                let body = JSON.stringify({ message: "File is too large" });
-                return handleResponse(body, 400, headers);
-            }
-            */
-            // console.log('updated user:',updatedUser);
+            console.log('updatedd user:',updatedUser);
+            
+            Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
+            return handleResponse(null, 204, headers);
         }
     }
-
-    /* 
-            let playlist = addSongToPlaylist(playlists, id, user, songReq);
-            if (!playlist) {
-                let body = JSON.stringify({ message: "No playlist found" });
-                return handleResponse(body, 404, headers);
-            }
-
-            Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
-
-            let body = JSON.stringify(playlist);
-            return handleResponse(body, 200, headers);
-        }
-
-
-
-        let productRoute = new URLPattern({ pathname: "/api/v1/products/:id" });
-        if (productRoute.test(request.url)) {
-            let match = productRoute.exec(request.url);
-            let id = match.pathname.groups.id;
-
-            let productData = await request.json();
-            if (!productData || !productData.name || !productData.category || !productData.description || 
-                productData.price == undefined || productData.inStock == undefined || !productData.imageUrl) {
-                let body = JSON.stringify({ error: "Bad Request" });
-                return handleResponse(body, 400, options);
-            }
-
-            let product = updateProductById(products, id, productData);
-            if (!product) {
-                let body = JSON.stringify({ error: "Not Found" });
-                return handleResponse(body, 404, options);
-            }
-
-            Deno.writeTextFileSync("database.json", JSON.stringify(data));
-            return handleResponse(null, 204, options);
-        }
-
-
-    export function updateProductById(products, id, productData) {
-    for (let product of products) {
-        if (product.id == id) {
-            product.name = productData.name;
-            product.category = productData.category;
-            product.description = productData.description;
-            product.price = productData.price;
-            product.inStock = productData.inStock;
-            product.imageUrl = productData.imageUrl;
-
-            return product;
-        }
-    }
-    return null;
-}
-    */
 
     // Like playlists
     let likeRoute = new URLPattern({ pathname: "/api/playlists/:id/like" });
