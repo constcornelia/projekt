@@ -13,36 +13,35 @@ let selectedTags = [];
 const createPlaylistForm = document.querySelector("#CreatePlaylistForm");
 createPlaylistForm.addEventListener("submit", async function (event) {
     event.preventDefault();
+    let nameInput = document.querySelector("#playlist-name");
+    let descriptionInput = document.querySelector("#playlist-description");
+    let coverInput = document.querySelector("#add-cover");
+    let errorMessage = document.querySelector("#CreatePlaylistError");
+    
+    let formData = new FormData();
+    // Lägger till spellistans namn
+    formData.append("name", nameInput.value);
+    // Lägger till spellistans beskrivning
+    formData.append("description", descriptionInput.value);
+    
+    // Gör om alla valda tags till en sträng
+    for (let tag of selectedTags) {
+        // Lägger till vald tag
+        formData.append("tag", tag);
+    }
+    
+    // Lägger till omslagsbild
+    formData.append("cover", coverInput.files[0]);
+    // Lägger till alla sparade låtar
+    // JSON.stringify gör arrayen till text så att den kan skickas
+    formData.append("songs", JSON.stringify(addedSongs));
+    
     try {
-        let nameInput = document.querySelector("#playlist-name");
-        let descriptionInput = document.querySelector("#playlist-description");
-        let coverInput = document.querySelector("#add-cover");
-        let errorMessage = document.querySelector("#CreatePlaylistError");
-    
-        let formData = new FormData();
-        // Lägger till spellistans namn
-        formData.append("name", nameInput.value);
-        // Lägger till spellistans beskrivning
-        formData.append("description", descriptionInput.value);
-        
-        // Gör om alla valda tags till en sträng
-        for (let tag of selectedTags) {
-            // Lägger till vald tag
-            formData.append("tag", tag);
-        }
-    
-        // Lägger till omslagsbild
-        formData.append("cover", coverInput.files[0]);
-        // Lägger till alla sparade låtar
-        // JSON.stringify gör arrayen till text så att den kan skickas
-        formData.append("songs", JSON.stringify(addedSongs));
-    
         // Skickar spellistan till servern
         const response = await fetch("/new-playlist", {
             method: "POST",
             body: formData
         });
-
         if (!response.ok) {
             const data = await response.json();
             errorMessage.textContent = data.message;
@@ -51,7 +50,6 @@ createPlaylistForm.addEventListener("submit", async function (event) {
         // Skickar användaren tillbaka till startsidan
         window.location.href = "/";
     } catch (error) {
-        const errorMessage = document.querySelector("#CreatePlaylistError");
         errorMessage.textContent = error.message;
     }
 });
