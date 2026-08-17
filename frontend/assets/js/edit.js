@@ -1,8 +1,3 @@
-//metod patch, /api/profile/:username
-
-// Let enpoint = “/api/profile/” + currentUser.username;
-// api.patchRequest(endpoint) ;
-
 const editAccountForm = document.querySelector("#editAccountForm");
 const profilePicture = document.querySelector("#ProfilePicture");
 const usernameInput = document.querySelector("#username");
@@ -10,7 +5,6 @@ const passwordInput = document.querySelector("#password");
 const profileInput = document.querySelector("#profile");
 const cancelButton = document.querySelector("#CancelCreateButton");
 const errorMessage = document.querySelector(".error-note");
-
 
 const api = new API();
 
@@ -30,20 +24,21 @@ async function getProfileInfo() {
 
 editAccountForm.addEventListener("submit", async function (event) {
     event.preventDefault();
-    // const endpoint = "/api/profile/" + currentUser.username;
     const formData = new FormData();
     formData.append("username", usernameInput.value);
     formData.append("password", passwordInput.value);
+
     if (profileInput.files.length > 0) {
         formData.append("profile", profileInput.files[0]);
     }
+
     const result = await api.patchRequest("/edit", formData);
-    console.log(result);
     if (result === null) {
         alert("Successfully edited!");
         window.location.href = "/";
         return;
     }
+
     if (result) {
         errorMessage.textContent = result.message;
     }
@@ -56,4 +51,5 @@ cancelButton.addEventListener("click", async function () {
     }
     window.location.href = `/profile/${currentUser.username}`;
 });
+
 getProfileInfo();

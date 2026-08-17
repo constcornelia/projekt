@@ -19,10 +19,13 @@ async function showProfilePlaylists () {
     if (!currentUser) {
         return;
     }
+
     let playlists = await api.getRequest("/api/playlists");
+
     let likedPlaylists = [];
     let ownedPlaylists = [];
     let editedPlaylists = [];
+
     for (let playlist of playlists) {
         if (playlist.ownerId === currentUser.id) {
             ownedPlaylists.push(playlist);
@@ -37,11 +40,11 @@ async function showProfilePlaylists () {
             }
         }
     }
+
     ui.renderPersonalPlaylists(likedPlaylists, likedPosition);
     ui.renderPersonalPlaylists(ownedPlaylists, ownedPosition);
     ui.renderPersonalPlaylists(editedPlaylists, editedPosition);
 }
-
 
 ui.showProfile();
 showProfileTitle();
