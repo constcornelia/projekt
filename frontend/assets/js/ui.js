@@ -345,7 +345,7 @@ class UI {
                 let playlistId = playlist.id;
                 let response = await api.deleteRequest(`/api/profile/playlist/${playlistId}`);
                 alert("Successfully deleted!");
-                window.location.href = "/main.html";
+                window.location.href = "/";
             });
         }
 
