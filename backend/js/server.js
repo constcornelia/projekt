@@ -369,7 +369,7 @@ async function handler(request) {
                 let body = JSON.stringify({ message: "No access" });
                 return handleResponse(body, 401, headers);
             }
-            
+
             let user = getUserByUsername(users, username);
             let body = JSON.stringify(user);
             return handleResponse(body, 200, headers); 
@@ -378,9 +378,34 @@ async function handler(request) {
 
     if (url.pathname == "/edit") {
         if (request.method == "GET") return serveFile(request, "../../frontend/edit.html");
+
+        /* 
+const oldUsername = user.username;
+
+let updatedUser = updateUser(user, users, userReq, newFile);
+
+if (!updatedUser) {
+    return handleResponse(
+        JSON.stringify({ message: "Username already taken" }),
+        400,
+        headers
+    );
+}
+
+// Om username ändrades, uppdatera sessionen
+if (oldUsername !== updatedUser.username) {
+    // hitta aktuell session och ändra username där
+    const session = cookies.find(c => c.username === oldUsername);
+
+    if (session) {
+        session.username = updatedUser.username;
+    }
+}
+        */
         
         if (request.method == "PATCH") {
             let userReq = await request.formData();
+            console.log('REQUEST:', userReq);
 
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
@@ -389,8 +414,11 @@ async function handler(request) {
                 return handleResponse(body, 401, headers);
             }
 
+            console.log('USER:', user);
+
             let newFile = false
             let file = userReq.get("profile");
+            console.log('FILE:', file);
             if (file) {
                 const fileStr = crypto.randomUUID();
                 const extension = extname(file.name);
@@ -398,19 +426,39 @@ async function handler(request) {
 
                 const bytes = await file.bytes();
                 if (bytes.length > 1000000) {
+                    console.log("FILE IS TOO LARGE")
                     let body = JSON.stringify({ message: "File is too large" });
                     return handleResponse(body, 400, headers);
                 }
                 newFile = filename;
+                
+                console.log('NEWFILE: ', newFile);
                 Deno.writeFileSync(`../uploads/${filename}`, bytes);
-
             }
+
+            const oldUsername = user.username;
             
             let updatedUser = updateUser(user, users, userReq, newFile);
+            console.log('UPDATED USER:', updatedUser);
             if (!updatedUser) {
+                console.log("ERROR IN UPDATED USER")
                 let body = JSON.stringify({ message: "Username already taken" });
                 return handleResponse(body, 400, headers);
             }
+
+
+            if (oldUsername != updatedUser.username) {
+                for (let cookie of cookies) {
+                    if (cookie.username == oldUsername) {
+                        cookie.username = updatedUser.username;
+                        console.log("NEW COOKIE", cookie);
+                    }
+                }
+            }
+
+
+
+            console.log('updated user:', updatedUser);
             
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             return handleResponse(null, 204, headers);
