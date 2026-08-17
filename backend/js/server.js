@@ -429,7 +429,7 @@ async function handler(request) {
             let playlist = getPlaylistDataById(playlists, id);
 
             if (!playlist) {
-                let body = JSON.stringify({ error: "Playlist Not Found" });
+                let body = JSON.stringify({ message: "Playlist Not Found" });
                 return handleResponse(body, 404, null);
             }
 
@@ -507,7 +507,7 @@ async function handler(request) {
         let user = getActiveUser(activeCookie, cookies, users);
 
         if (!user) {
-            let body = JSON.stringify({ error: "Unauthorized" });
+            let body = JSON.stringify({ message: "Unauthorized" });
             return handleResponse(body, 401, headers);
         }
 
@@ -525,7 +525,7 @@ async function handler(request) {
             let deletedPlaylist = deletePlaylistById(playlists, id, user);
 
             if (!deletedPlaylist) {
-                let body = JSON.stringify({ error: "Playlist not found" });
+                let body = JSON.stringify({ message: "Playlist not found" });
                 return handleResponse(body, 404, headers);
             }
 
