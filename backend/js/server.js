@@ -489,7 +489,7 @@ async function handler(request) {
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
             let body = JSON.stringify(newPlaylist);
-            return handleResponse(null, 303, headers);
+            return handleResponse(body, 201, headers);
         }
     }
 
