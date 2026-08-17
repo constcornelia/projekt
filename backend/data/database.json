@@ -525,6 +525,14 @@
         {
           "songId": "s-28",
           "editorId": "u-2"
+        },
+        {
+          "songId": "s-87",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-56",
+          "editorId": "u-1"
         }
       ]
     },
@@ -548,6 +556,10 @@
         {
           "songId": "s-28",
           "editorId": "u-8"
+        },
+        {
+          "songId": "s-4",
+          "editorId": "u-2"
         }
       ]
     },
@@ -571,8 +583,16 @@
           "editorId": "u-1"
         },
         {
-          "songId": "s-36",
-          "editorId": "u-2"
+          "songId": "s-24",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-26",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-31",
+          "editorId": "u-1"
         }
       ]
     },
@@ -623,6 +643,10 @@
         {
           "songId": "s-17",
           "editorId": "u-2"
+        },
+        {
+          "songId": "s-48",
+          "editorId": "u-1"
         }
       ]
     },
@@ -637,7 +661,20 @@
         "lofi",
         "chill"
       ],
-      "songs": []
+      "songs": [
+        {
+          "songId": "s-54",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-61",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-77",
+          "editorId": "u-1"
+        }
+      ]
     },
     {
       "id": "p-7",
@@ -660,6 +697,14 @@
         {
           "songId": "s-47",
           "editorId": "u-3"
+        },
+        {
+          "songId": "s-5",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-12",
+          "editorId": "u-1"
         }
       ]
     },
@@ -670,13 +715,23 @@
       "description": "Sol, värme och semester",
       "imgUrl": "def0e6a60a8b9bd2bc3eec453ff4430c.jpg",
       "likes": [
-        "u-3"
+        "u-3",
+        "u-10"
       ],
       "tags": [
         "summer",
         "electronic"
       ],
-      "songs": []
+      "songs": [
+        {
+          "songId": "s-6",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-60",
+          "editorId": "u-1"
+        }
+      ]
     },
     {
       "id": "p-9",
@@ -692,28 +747,14 @@
         {
           "songId": "s-17",
           "editorId": "u-1"
-        }
-      ]
-    },
-    {
-      "id": "p-10",
-      "ownerId": "u-3",
-      "name": "XO",
-      "description": "Til I overdose",
-      "imgUrl": "889e12fa-571e-4d07-8a73-0cbb5abd569f.png",
-      "likes": [],
-      "tags": [
-        "chill",
-        "sad"
-      ],
-      "songs": [
-        {
-          "songId": "s-63",
-          "editorId": "u-3"
         },
         {
-          "songId": "s-6",
-          "editorId": "u-3"
+          "songId": "s-11",
+          "editorId": "u-1"
+        },
+        {
+          "songId": "s-85",
+          "editorId": "u-1"
         }
       ]
     }

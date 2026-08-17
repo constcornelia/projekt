@@ -274,6 +274,7 @@ async function handler(request) {
 
         if (request.method == "PATCH") {
             let songReq = await request.json();
+            console.log(songReq);
 
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);

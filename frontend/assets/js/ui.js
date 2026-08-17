@@ -194,10 +194,12 @@ class UI {
                         }
 
                         let playlistOwnerId = playlistData.playlist.ownerId;
-                        await api.patchRequest(`/api/playlists/${playlistId}`, {
+                    
+
+                        await api.patchRequest(`/api/playlists/${playlistId}`, JSON.stringify({
                             songId: song.id,
                             editorId: currentUser.id
-                        });
+                        }));
 
                         let wrapper = document.getElementById("wrapperForAddedSongsList")
                         if(wrapper){

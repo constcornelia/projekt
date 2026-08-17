@@ -2,57 +2,9 @@
   "users": [
     {
       "id": "u-1",
-      "username": "yourtomboi",
-      "password": "moni",
+      "username": "admin",
+      "password": "test",
       "profilePicUrl": "0c27163d-5e7f-4eb4-a467-4c81fa0f57b8.png"
-    },
-    {
-      "id": "u-2",
-      "username": "cornelia",
-      "password": "lucy",
-      "profilePicUrl": "8359207a-600f-4ca3-9c48-eadb8f711d92.JPG"
-    },
-    {
-      "id": "u-3",
-      "username": "dilara",
-      "password": "moni",
-      "profilePicUrl": "24c00fc6-539c-4791-bfdf-af582bea2d4b.jpg"
-    },
-    {
-      "id": "u-4",
-      "username": "lucyfer",
-      "password": "meow",
-      "profilePicUrl": "9bd9d1fb-142b-4bf8-8caa-fc83ffd1d781.JPG"
-    },
-    {
-      "id": "u-5",
-      "username": "lucy",
-      "password": "meow",
-      "profilePicUrl": "64b63eba-5c6d-4d58-a240-33c8bd56a491.JPG"
-    },
-    {
-      "id": "u-6",
-      "username": "cor",
-      "password": "lucy",
-      "profilePicUrl": "3252fe42-1144-4385-96eb-c0a049092dfc.jpeg"
-    },
-    {
-      "id": "u-7",
-      "username": "cornelia0",
-      "password": "sfse",
-      "profilePicUrl": "169305af-cb69-4201-9c1b-c3358293edc1.JPG"
-    },
-    {
-      "id": "u-8",
-      "username": "cornelia6",
-      "password": "hej",
-      "profilePicUrl": "2b398eb5-bdd6-4944-ae44-72ce2c5de59b.JPG"
-    },
-    {
-      "id": "u-9",
-      "username": "cornelia67",
-      "password": "lucy",
-      "profilePicUrl": "16ed387b-5ebc-462b-831f-8194180496a3.JPG"
     }
   ]
 }
