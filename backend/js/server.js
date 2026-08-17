@@ -471,14 +471,13 @@ async function handler(request) {
                 let body = JSON.stringify({ message: "File is too large" });
                 return handleResponse(body, 400, headers);
             }
-            Deno.writeFileSync(`../uploads/${filename}`, bytes);
-
+            
             let songs = JSON.parse(playlistReq.get("songs"));
             if (!songs) {
-                let body = JSON.stringify({ message: "Songs missing" });
+                let body = JSON.stringify({ message: "Please add songs" });
                 return handleResponse(body, 400, headers);
             }
-
+            
             let id = generateId("p", playlists);
             let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id, songs);
             console.log('newplaylist:',newPlaylist);
@@ -486,7 +485,8 @@ async function handler(request) {
                 let body = JSON.stringify({ message: "Input data missing" });
                 return handleResponse(body, 404, headers);
             }
-
+            
+            Deno.writeFileSync(`../uploads/${filename}`, bytes);
             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
             let body = JSON.stringify(newPlaylist);
             return handleResponse(null, 303, headers);
