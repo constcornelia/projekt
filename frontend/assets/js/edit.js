@@ -31,7 +31,6 @@ async function getProfileInfo() {
 editAccountForm.addEventListener("submit", async function (event) {
     event.preventDefault();
     // const endpoint = "/api/profile/" + currentUser.username;
-    const endpoint = "/edit";
     const formData = new FormData();
     formData.append("username", usernameInput.value);
     formData.append("password", passwordInput.value);
@@ -39,6 +38,7 @@ editAccountForm.addEventListener("submit", async function (event) {
         formData.append("profile", profileInput.files[0]);
     }
     const result = await api.patchRequest("/edit", formData);
+    console.log(result);
     if (result === null) {
         alert("Successfully edited!");
         window.location.href = "/";
