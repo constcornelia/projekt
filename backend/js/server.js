@@ -75,7 +75,6 @@ async function handler(request) {
             } 
             
             const bytes = await file.bytes();
-            console.log(bytes.length);
             if (bytes.length > 1000000) {
                 let body = JSON.stringify({ message: "File is too large" });
                 return handleResponse(body, 400);
@@ -382,7 +381,6 @@ async function handler(request) {
         
         if (request.method == "PATCH") {
             let userReq = await request.formData();
-            console.log('request:',userReq)
 
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
@@ -393,31 +391,26 @@ async function handler(request) {
 
             let newFile = false
             let file = userReq.get("profile");
-            console.log('file:',file);
             if (file) {
                 const fileStr = crypto.randomUUID();
                 const extension = extname(file.name);
                 const filename = fileStr + extension;
-                console.log('filename:',filename);
 
                 const bytes = await file.bytes();
-                if (bytes > 100000) {
+                if (bytes.length > 1000000) {
                     let body = JSON.stringify({ message: "File is too large" });
                     return handleResponse(body, 400, headers);
                 }
-                console.log('bytes ok')
                 newFile = filename;
                 Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             }
-            console.log('new pfp:',newFile);
             
             let updatedUser = updateUser(user, users, userReq, newFile);
             if (!updatedUser) {
                 let body = JSON.stringify({ message: "Username already taken" });
                 return handleResponse(body, 400, headers);
             }
-            console.log('updatedd user:',updatedUser);
             
             Deno.writeTextFileSync("../data/users.json", JSON.stringify(userData, null, 2));
             return handleResponse(null, 204, headers);
@@ -434,7 +427,6 @@ async function handler(request) {
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
             let playlist = getPlaylistDataById(playlists, id);
-            console.log(playlist);
 
             if (!playlist) {
                 let body = JSON.stringify({ error: "Playlist Not Found" });
@@ -458,16 +450,15 @@ async function handler(request) {
 
         if (request.method == "POST") {
             let playlistReq = await request.formData();
-            console.log('playlistreq:',playlistReq);
+            console.log('req:', playlistReq);
 
             const activeCookie = request.headers.get("cookie");
             let user = getActiveUser(activeCookie, cookies, users);
 
             const file = playlistReq.get("cover");
-            console.log('file:', file);
-            if (!file) {
-                console.log("error inte file");
-                let body = JSON.stringify({ error: "Cover is missing" });
+            if (!file || file == "undefined") {
+                console.log('file:',file);
+                let body = JSON.stringify({ message: "Cover is missing" });
                 return handleResponse(body, 400, headers);
             } 
 
@@ -475,23 +466,22 @@ async function handler(request) {
             const extension = extname(file.name);
             const filename = fileStr + extension;
 
-            console.log('filename:',filename)
-
             const bytes = await file.bytes();
-            if (bytes > 100000) {
-                console.log("error för stor fil")
-                let body = JSON.stringify({ error: "File is too large" });
+            if (bytes.length > 1000000) {
+                let body = JSON.stringify({ message: "File is too large" });
                 return handleResponse(body, 400, headers);
             }
-            console.log('bytes:',bytes);
             Deno.writeFileSync(`../uploads/${filename}`, bytes);
 
             let songs = JSON.parse(playlistReq.get("songs"));
 
             let id = generateId("p", playlists);
             let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id, songs);
-            console.log('newplaylist nu i server:', newPlaylist);
-            if (!newPlaylist) {}
+            console.log('newplaylist:',newPlaylist);
+            if (!newPlaylist) {
+                let body = JSON.stringify({ message: "Input data missing" });
+                return handleResponse(body, 404, headers);
+            }
 
             Deno.writeTextFileSync("../data/database.json", JSON.stringify(data, null, 2));
             let body = JSON.stringify(newPlaylist);
@@ -510,9 +500,7 @@ async function handler(request) {
         let id = match.pathname.groups.id;
 
         const activeCookie = request.headers.get("cookie");
-        console.log('cookie',activeCookie);
         let user = getActiveUser(activeCookie, cookies, users);
-        console.log('user',user);
 
         if (!user) {
             let body = JSON.stringify({ error: "Unauthorized" });
@@ -527,10 +515,6 @@ async function handler(request) {
             let body = JSON.stringify(playlist);
             return handleResponse(body, 200, headers);
             // Get personal playlist by id
-        }
-
-        if (request.method == "PATCH") {
-            // Patch personal playlist by id
         }
         
         if (request.method == "DELETE") {

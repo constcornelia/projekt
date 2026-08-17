@@ -132,8 +132,12 @@ export function createPlaylist(req, user, playlists, filename, id, songs) {
     console.log('req:',req);
     let name = req.get("name");
     let description = req.get("description");
-    let tags = req.getAll("tag"); // Dubbelkolla
-    // let songs = req.getAll("songs"); // Dubbelkolla
+    let tags = req.getAll("tag");
+
+    if (!id || !name || !description || !filename || !tags || tags.length == 0) {
+        console.log("data missing");
+        return null;
+    }
 
     let newPlaylist = {
         id: id, 
@@ -165,20 +169,13 @@ export function deletePlaylistById(playlists, id, user) {
     return null;
 }
 
-export function getPlaylistDataById(playlists, id) { // FIXA!!!!!!!!!!!!!!!!!!
+export function getPlaylistDataById(playlists, id) { 
     for (let playlist of playlists) {
         if (playlist.id == id) {
             return playlist;
         }
     }
     return null;
-
-    for (let playlist of playlists) {
-        if(playlist.ownerId == user.id) {
-            ownedPlaylists.push(playlist)
-        }
-    }
-    return ownedPlaylists;
 }
 
 export function deleteSongFromPlaylist (playlists, playlistId, songId) {
