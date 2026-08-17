@@ -533,7 +533,9 @@
       "name": "Late Night Drive",
       "description": "Perfekt för nattliga bilturer",
       "imgUrl": "272045dccb59100f1fdc575bad67350f.jpg",
-      "likes": [],
+      "likes": [
+        "u-2"
+      ],
       "tags": [
         "chill"
       ],
