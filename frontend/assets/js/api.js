@@ -51,7 +51,7 @@ class API {
        try {
            let request = new Request (url + endpoint, {
                method: "PATCH",
-               body: JSON.stringify(body)
+               body: body
            });
            let response = await fetch (request);
            if (!response.status) {
