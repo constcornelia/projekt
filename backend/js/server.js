@@ -473,7 +473,7 @@ async function handler(request) {
             }
             
             let songs = JSON.parse(playlistReq.get("songs"));
-            if (!songs) {
+            if (!songs || songs.length == 0) {
                 let body = JSON.stringify({ message: "Please add songs" });
                 return handleResponse(body, 400, headers);
             }
@@ -482,7 +482,7 @@ async function handler(request) {
             let newPlaylist = createPlaylist(playlistReq, user, playlists, filename, id, songs);
             console.log('newplaylist:',newPlaylist);
             if (!newPlaylist) {
-                let body = JSON.stringify({ message: "Input data missing" });
+                let body = JSON.stringify({ message: "Please add more info" });
                 return handleResponse(body, 404, headers);
             }
             
