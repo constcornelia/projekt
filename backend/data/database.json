@@ -508,24 +508,12 @@
       "name": "My Emo Romance",
       "description": "Playlist for the emos",
       "imgUrl": "My-Chemical-Romance-em-Sao-Paulo-2026.-Creditos-30e.webp",
-      "likes": [
-        "u-2",
-        "u-3",
-        "u-8"
-      ],
+      "likes": [],
       "tags": [
         "emo",
         "punk"
       ],
       "songs": [
-        {
-          "songId": "s-1",
-          "editorId": "u-3"
-        },
-        {
-          "songId": "s-28",
-          "editorId": "u-2"
-        },
         {
           "songId": "s-87",
           "editorId": "u-1"
@@ -542,9 +530,7 @@
       "name": "Late Night Drive",
       "description": "Perfekt för nattliga bilturer",
       "imgUrl": "272045dccb59100f1fdc575bad67350f.jpg",
-      "likes": [
-        "u-2"
-      ],
+      "likes": [],
       "tags": [
         "chill"
       ],
@@ -552,14 +538,6 @@
         {
           "songId": "s-52",
           "editorId": "u-1"
-        },
-        {
-          "songId": "s-28",
-          "editorId": "u-8"
-        },
-        {
-          "songId": "s-4",
-          "editorId": "u-2"
         }
       ]
     },
@@ -570,8 +548,7 @@
       "description": "Energi och tempo för träningen",
       "imgUrl": "422cee71a2583f436499248e1049b4fc.jpg",
       "likes": [
-        "u-1",
-        "u-2"
+        "u-1"
       ],
       "tags": [
         "workout",
@@ -611,14 +588,6 @@
         {
           "songId": "s-15",
           "editorId": "u-1"
-        },
-        {
-          "songId": "s-7",
-          "editorId": "u-2"
-        },
-        {
-          "songId": "s-32",
-          "editorId": "u-2"
         }
       ]
     },
@@ -628,9 +597,7 @@
       "name": "Party Bangers",
       "description": "Musik som höjer stämningen",
       "imgUrl": "252bc611b9e0bae4ce0fc170d7ff9791.jpg",
-      "likes": [
-        "u-3"
-      ],
+      "likes": [],
       "tags": [
         "party",
         "hype"
@@ -639,10 +606,6 @@
         {
           "songId": "s-44",
           "editorId": "u-1"
-        },
-        {
-          "songId": "s-17",
-          "editorId": "u-2"
         },
         {
           "songId": "s-48",
@@ -682,22 +645,12 @@
       "name": "Sad Hours",
       "description": "När man vill känna allt",
       "imgUrl": "a6ad53d0faeb3c5560c7ed69305bca47.jpg",
-      "likes": [
-        "u-2"
-      ],
+      "likes": [],
       "tags": [
         "sad",
         "ballad"
       ],
       "songs": [
-        {
-          "songId": "s-92",
-          "editorId": "u-3"
-        },
-        {
-          "songId": "s-47",
-          "editorId": "u-3"
-        },
         {
           "songId": "s-5",
           "editorId": "u-1"
@@ -714,10 +667,7 @@
       "name": "Summer Vibes",
       "description": "Sol, värme och semester",
       "imgUrl": "def0e6a60a8b9bd2bc3eec453ff4430c.jpg",
-      "likes": [
-        "u-3",
-        "u-10"
-      ],
+      "likes": [],
       "tags": [
         "summer",
         "electronic"
