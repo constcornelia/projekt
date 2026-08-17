@@ -1,6 +1,6 @@
 import { serveDir, serveFile } from "jsr:@std/http/file-server";
 import { extname } from "jsr:@std/path";
-import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername } from "./users.js";
+import { checkSession, checkLogin, checkSignup, getActiveUser, getUserByUsername, updateUser } from "./users.js";
 import { getTags, filterPlaylistsByTag, sortPlaylistsByLikes, getPlaylistsBySearch, getPlaylistById, likePlaylist, addSongToPlaylist, getPlaylistDataById, createPlaylist, deletePlaylistById, deleteSongFromPlaylist, getSpecifiedPlaylists } from "./playlists.js";
 import { getSongsBySearch } from "./songs.js";
 
@@ -377,21 +377,57 @@ async function handler(request) {
 
     if (url.pathname == "/edit") {
         if (request.method == "GET") return serveFile(request, "../../frontend/edit.html");
-
+        
         if (request.method == "PATCH") {
             let userReq = await request.formData();
             console.log('request:',userReq)
 
-            
+            const activeCookie = request.headers.get("cookie");
+            let user = getActiveUser(activeCookie, cookies, users);
+            if (!user) {
+                let body = JSON.stringify({ message: "Not logged in" });
+                return handleResponse(body, 401, headers);
+            }
 
-            // const activeCookie = request.headers.get("cookie");
-            // let user = getActiveUser(activeCookie, cookies, users);
-            // if (!user) {
-            //     let body = JSON.stringify({ message: "Not logged in" });
-            //     return handleResponse(body, 401, headers);
-            // }
+            let newFile = false
+            let file = userReq.get("profile");
+            if (file) {
+                const fileStr = crypto.randomUUID();
+                const extension = extname(file.name);
+                const filename = fileStr();
 
-            // let updatedUser = updateUser(user, users, userReq);
+                // const bytes = await file.bytes();
+                // if (bytes > 100000) {
+                //     let body = JSON.stringify({ message: "File is too large" });
+                //     return handleResponse(body, 400, headers);
+                // }
+                let newFile = filename;
+                // Deno.writeFileSync(`../uploads/${filename}`, bytes);
+            }
+
+            let updatedUser = updateUser(user, users, userReq, newFile);
+            if (!updateUser) {
+                let body = JSON.stringify({ message: "Something went wrong" });
+                return handleResponse(body, 400, headers);
+            }
+
+            console.log(updatedUser);
+
+            // Deno.writeTextFileSync("database.json", JSON.stringify(data));
+            return handleResponse(null, 204, options);
+
+
+            /* 
+                        const fileStr = crypto.randomUUID();
+            const extension = extname(file.name);
+            const filename = fileStr + extension;
+    
+            const bytes = await file.bytes();
+            if (bytes > 100000) {
+                let body = JSON.stringify({ message: "File is too large" });
+                return handleResponse(body, 400, headers);
+            }
+            */
             // console.log('updated user:',updatedUser);
         }
     }
