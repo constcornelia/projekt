@@ -54,13 +54,14 @@ class API {
                body: body
            });
            let response = await fetch (request);
-           if (!response.status) {
-               let data = await response.json();
-               console.log(data);
-               return null;
+           if (response.status === 204) {
+                return null;
             }
-            let data = await response.json();
-            return data;
+           if (!response.ok) {
+                let data = await response.json();
+                return data;
+           }
+            return await response.json();
        } catch (error) {
             // position.innerHTML = "Couldn't edit product " + error;
             console.log(error);

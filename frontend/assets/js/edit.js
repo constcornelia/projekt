@@ -9,6 +9,8 @@ const usernameInput = document.querySelector("#username");
 const passwordInput = document.querySelector("#password");
 const profileInput = document.querySelector("#profile");
 const cancelButton = document.querySelector("#CancelCreateButton");
+const errorMessage = document.querySelector(".error-note");
+
 
 const api = new API();
 
@@ -36,16 +38,14 @@ editAccountForm.addEventListener("submit", async function (event) {
     if (profileInput.files.length > 0) {
         formData.append("profile", profileInput.files[0]);
     }
-    const updatedUser = await api.patchRequest(endpoint, formData);
-    if (updatedUser) {
-        currentUser = updatedUser; 
-        usernameInput.value = currentUser.username;
-        passwordInput.value = currentUser.password;
-        if (currentUser.profilePicUrl) {
-            profilePicture.src = "../../../backend/uploads/" + currentUser.profilePicUrl;
-        }
+    const result = await api.patchRequest("/edit", formData);
+    if (result === null) {
         alert("Successfully edited!");
         window.location.href = "/";
+        return;
+    }
+    if (result) {
+        errorMessage.textContent = result.message;
     }
 });
 
